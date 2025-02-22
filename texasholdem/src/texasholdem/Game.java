@@ -1,4 +1,5 @@
 package texasholdem;
+import java.util.Scanner;
 
 public class Game {
 static int round = 1;
@@ -13,6 +14,17 @@ static int round = 1;
 		round = round + 1;
 	}
 	public static void exitGame() {
-		System.exit(0);
+		String sure;
+		Scanner input = new Scanner(System.in);
+		System.out.println("Are you sure you want to exit? (Y/N): ");
+		sure = input.toString();
+		
+		if(sure == "Y" || sure == "y") {
+			System.out.println("Goodbye!");
+			System.exit(0);
+		}else if(sure == "N" || sure == "n") {
+
+		}
+		
 	}
 }
