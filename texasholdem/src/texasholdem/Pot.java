@@ -11,7 +11,10 @@ public class Pot {
 		money+=bet;
 	}
 	
-	public static void payOut() {
+	public static int payOut() {
+		int pay=money;
+		money=0;
 		
+		return pay;
 	}
 }
