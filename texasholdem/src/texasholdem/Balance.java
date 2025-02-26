@@ -1,13 +1,17 @@
 package texasholdem;
 
 public class Balance {
-	int balance=1000;
+	static int balance=1000;
 	
 	Balance() {
 		
 	}
 	
-	Balance(int setBal) {
-		this.balance=setBal;
+	static int currentBalance(int setBal) {
+		int balance = setBal;
+		return balance;
 	}
+	
+	public int void 
+
 }

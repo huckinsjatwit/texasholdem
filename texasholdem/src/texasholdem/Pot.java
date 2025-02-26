@@ -2,7 +2,7 @@ package texasholdem;
 
 public class Pot {
 	static int money=0;
-	
+	static Balance bet = new Balance();
 	
 	Pot() {
 	}
