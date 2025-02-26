@@ -11,9 +11,10 @@ static int round = 1;
 			System.out.println("Round " + round + "!");
 	}
 	public static void setRound() {
-		round = round + 1;
+		round++;
 	}
 	public static void exitGame() {
+		
 		String sure;
 		Scanner input = new Scanner(System.in);
 		System.out.println("Are you sure you want to exit? (Y/N): ");
@@ -23,7 +24,9 @@ static int round = 1;
 			System.out.println("Goodbye!");
 			System.exit(0);
 		}else if(sure == "N" || sure == "n") {
-
+			
+		}else {
+			System.out.println("Please enter 'Y' for yes or 'N' for no");
 		}
 		
 	}
