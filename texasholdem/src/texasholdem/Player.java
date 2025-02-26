@@ -4,7 +4,6 @@ import java.util.Scanner;
 public class Player {
 	
 	static boolean fold = false;
-	static Balance bet = new Balance();
 	static Pot balls = new Pot();
 	public static int Bal = 1000;
 	
@@ -19,7 +18,7 @@ public class Player {
 		}
 	}
 	
-	public static int makeBet() {
+	public static void makeBet() {
 		Scanner input = new Scanner(System.in);
 		int betAmount;
 		
@@ -31,7 +30,6 @@ public class Player {
 		}
 			Bal = Bal - betAmount;
 			Pot.addBet(betAmount);
-			return betAmount;
 		}
 
 }
