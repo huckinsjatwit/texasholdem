@@ -15,31 +15,23 @@ public class Player {
 	}
 	public static void foldHand(boolean fold) {
 		if(fold == false) {
-			//end round code
+			//skip over player and let bots play code
 		}
 	}
 	
-	public static void enterBet() {
+	public static int makeBet() {
 		Scanner input = new Scanner(System.in);
 		int betAmount;
 		
+		do {
 		System.out.print("Enter amount to bet:");
 		betAmount = input.nextInt();
-		
-		if(betAmount > Bal) {
-			System.out.println("Cannot bet more than you have");
-		}else {
-			Bal = Bal - betAmount;
+		}while(betAmount > Bal); {
+			System.out.println("Bet amount cannot exceed balance.");
 		}
-		
-	}
-	public static int makeBet(int bet) {
-		int currentBal = Balance.balance;
-		Pot.addBet(currentBal);
-		return currentBal;
-		
-	}
-	public static void setBalance(Object Balance) {
-		
-	}
+			Bal = Bal - betAmount;
+			Pot.addBet(betAmount);
+			return betAmount;
+		}
+
 }

@@ -11,7 +11,5 @@ public class Balance {
 		int balance = setBal;
 		return balance;
 	}
-	
-	public int void 
 
 }
