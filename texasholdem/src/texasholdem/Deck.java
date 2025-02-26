@@ -1,6 +1,6 @@
 package texasholdem;
 
-import java.util.random;
+import java.util.Random;
 
 public class Deck {
 	static int[] deck=new int[52];
@@ -12,7 +12,26 @@ public class Deck {
 	}
 	
 	public static void shuffleDeck() {
-		
+		Random random= new Random();
+		int n=52;
+		for (int i = n - 1; i > 0; i--) {
+            int j = random.nextInt(i + 1);
+
+            int temp = deck[i];
+            deck[i] = deck[j];
+            deck[j] = temp;
+        }
+    }
+	public static void printDeck() {
+		for (int i=0; i<52;i++) {
+			if (i==51) {
+				System.out.printf("%d",deck[i]);
+			} else {
+			System.out.printf("%d, ",deck[i]);
+			}
+		}
+		System.out.println();
 	}
 }
+
 	
