@@ -34,6 +34,12 @@ public class Deck {
 		}
 		System.out.println();
 	}
+	
+	public static String getCard() {
+		//cardDeck
+	}
 }
+
+	public static
 
 	
