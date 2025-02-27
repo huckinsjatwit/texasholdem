@@ -1,9 +1,11 @@
 package texasholdem;
 
+import java.io.File;
 import java.util.Random;
 
 public class Deck {
 	static int[] deck=new int[52];
+	File cardDeck = new File("texasholden/texasholdem/scr/texasholdem/deck");
 	
 	Deck() {
 		for (int i=0; i<52; i++) {
