@@ -4,6 +4,7 @@ public class Bot {
 	
 	private int Balance=1000;
 	private int Confidence=0;
+	//When balance reaches 0 remove bot
 	
 	Bot() {
 		//define hand;
