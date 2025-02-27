@@ -1,18 +1,25 @@
 package texasholdem;
 
-import java.io.File;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
 public class Deck {
-	static int[] deck=new int[52];
+	static String[] suits={"Hearts", "Clubs", "Spades", "Diamonds"};
+	static int[] values={2,3,4,5,6,7,8,9,10,11,12,13,14};
+	static Card[] deck= new Card[52];
 
-	public static File cardDeck = new File("texasholden/texasholdem/scr/texasholdem/deck");
-
-	
 	Deck() {
-		for (int i=0; i<52; i++) {
-			deck[i]=i+1;
+		buildDeck();
+	}
+	
+	public static void buildDeck() {
+		int c=0;
+		for (int i=0; i<4; i++) {
+			for (int j=0; j<13;j++) {
+				deck[c]=new Card(suits[i], values[j]);
+				c++;
+			}
 		}
 	}
 	
@@ -22,7 +29,7 @@ public class Deck {
 		for (int i = n - 1; i > 0; i--) {
             int j = random.nextInt(i + 1);
 
-            int temp = deck[i];
+            Card temp = deck[i];
             deck[i] = deck[j];
             deck[j] = temp;
         }
@@ -30,23 +37,22 @@ public class Deck {
 	public static void printDeck() {
 		for (int i=0; i<52;i++) {
 			if (i==51) {
-				System.out.printf("%d",deck[i]);
+				System.out.printf(deck[i].toString());
 			} else {
-			System.out.printf("%d, ",deck[i]);
+			System.out.printf(deck[i].toString()+", ");
 			}
 		}
 		System.out.println();
 	}
+	
+	public static void main(String[] args) {
+		Deck deck= new Deck();
+		deck.shuffleDeck();
+		deck.printDeck();
+	}
 }
 	
-	//public static String getCard() {
-		//cardDeck
-	//}
-//}
-
-	//public static String getSuit() {
-		
-	//}
+	
 	
 		
 
