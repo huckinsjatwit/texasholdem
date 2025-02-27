@@ -6,7 +6,11 @@ import java.util.Scanner;
 
 public class Deck {
 	static int[] deck=new int[52];
+<<<<<<< HEAD
 	static File cardDeck = new File("texasholden/texasholdem/scr/texasholdem/deck");
+=======
+	public static File cardDeck = new File("texasholden/texasholdem/scr/texasholdem/deck");
+>>>>>>> branch 'main' of https://github.com/huckinsjatwit/texasholdem.git
 	
 	Deck() {
 		for (int i=0; i<52; i++) {

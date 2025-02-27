@@ -5,7 +5,7 @@ public class Player {
 	
 	static boolean fold = false;
 	static Pot balls = new Pot();
-	public static int Bal = 1000;
+	private static int Bal = 1000;
 	
 	Player(){
 	}
