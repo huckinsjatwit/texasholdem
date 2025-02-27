@@ -44,12 +44,7 @@ public class Deck {
 		}
 		System.out.println();
 	}
-	
-	public static void main(String[] args) {
-		Deck deck= new Deck();
-		deck.shuffleDeck();
-		deck.printDeck();
-	}
+
 }
 	
 	
