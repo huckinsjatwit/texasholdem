@@ -3,7 +3,7 @@ package texasholdem;
 public class Bot {
 	
 	private int Balance=1000;
-	private int Confidence=0;
+	private int Confidence=1;
 	//When balance reaches 0 remove bot
 	
 	Bot() {
