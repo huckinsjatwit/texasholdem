@@ -2,10 +2,11 @@ package texasholdem;
 
 import java.io.File;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Deck {
 	static int[] deck=new int[52];
-	File cardDeck = new File("texasholden/texasholdem/scr/texasholdem/deck");
+	static File cardDeck = new File("texasholden/texasholdem/scr/texasholdem/deck");
 	
 	Deck() {
 		for (int i=0; i<52; i++) {
@@ -35,11 +36,15 @@ public class Deck {
 		System.out.println();
 	}
 	
-	public static String getCard() {
+	//public static String getCard() {
 		//cardDeck
-	}
-}
+	//}
+//}
 
-	public static
+	//public static String getSuit() {
+		
+	//}
+	
+		
 
 	
