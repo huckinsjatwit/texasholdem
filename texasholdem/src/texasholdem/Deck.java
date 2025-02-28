@@ -2,12 +2,12 @@ package texasholdem;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 
 public class Deck {
 	static String[] suits={"Hearts", "Clubs", "Spades", "Diamonds"};
 	static int[] values={2,3,4,5,6,7,8,9,10,11,12,13,14};
 	static Card[] deck= new Card[52];
+	private final Card dealedCard = new Card("",0);
 
 	Deck() {
 		buildDeck();
@@ -44,7 +44,21 @@ public class Deck {
 		}
 		System.out.println();
 	}
-
+	
+	
+	public Card[] deal(int numCards) {
+		int c=0;
+		while (deck[c].equals(dealedCard)) {
+			c++;
+		}
+		
+		Card[] deal = new Card[numCards];
+		for (int i=0; i<numCards; i++) {
+			deal[i]=new Card(deck[c].getSuit(), deck[c].getValue());
+			c++;
+		}
+		return deal;
+	}
 }
 	
 	
