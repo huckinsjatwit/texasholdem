@@ -9,6 +9,9 @@ public class Bot {
 	Bot() {
 		//define hand;
 	}
+	private static int analzyeHand1() {
+		return Balance;
+	}
 }
 	
 	//private static int analyzeHand1(//river) { first round

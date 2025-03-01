@@ -6,8 +6,11 @@ import java.util.Random;
 public class Deck {
 	static String[] suits={"Hearts", "Clubs", "Spades", "Diamonds"};
 	static int[] values={2,3,4,5,6,7,8,9,10,11,12,13,14};
-	static Card[] deck= new Card[52];
-	private final Card dealedCard = new Card("",0);
+	public static Card[] deck= new Card[52];
+	private static final Card dealedCard = new Card("",0);
+	public final int maxRiver = 5;
+	public final int minRiver = 3;
+	public int riverRound = 0;
 
 	Deck() {
 		buildDeck();
@@ -46,7 +49,7 @@ public class Deck {
 	}
 	
 	
-	public Card[] deal(int numCards) {
+	public static Card[] deal(int numCards) {
 		int c=0;
 		while (deck[c].equals(dealedCard)) {
 			c++;
@@ -58,6 +61,21 @@ public class Deck {
 			c++;
 		}
 		return deal;
+	}
+	
+	public static void river1() {
+		Card[] balls = deal(3);
+		
+		for(int i = 0; i < balls.length; i++) {
+			System.out.println(deal(i));
+		}
+		
+	}
+	
+	public static void river2() {
+		System.out.println(deal(1));
+		
+		
 	}
 }
 	
