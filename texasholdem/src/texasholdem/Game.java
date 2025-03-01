@@ -2,7 +2,7 @@ package texasholdem;
 import java.util.Scanner;
 
 public class Game {
-static int round = 1;
+public static int round = 1;
 	
 	Game(){
 	}		
@@ -24,7 +24,7 @@ static int round = 1;
 			System.out.println("Goodbye!");
 			System.exit(0);
 		}else if(sure == "N" || sure == "n") {
-			
+			System.out.print("ok");																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																						
 		}else {
 			System.out.println("Please enter 'Y' for yes or 'N' for no");
 		}
