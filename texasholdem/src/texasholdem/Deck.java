@@ -60,32 +60,10 @@ public class Deck {
 		}
 		return deal;
 	}
-	
-	
-	public static ArrayList<Card> riverCreate() {
-		ArrayList<Card> river = new ArrayList<>();
-		Card[] temp = deal(3);
-		Collections.addAll(river, temp);		
-		return river;
-	}
-	
-	public static ArrayList<Card> riverAdd(ArrayList<Card> river) {
-		Card[] temp = deal(1);
-		Collections.addAll(river, temp);		
-		return river;
-	}
-	
-	public static void printRiver(ArrayList<Card> river) {
-		for (int i=0; i<river.size(); i++) {
-			if (i==river.size()-1) {
-				System.out.print(river.get(i));
-			} else {
-				System.out.printf(river.get(i).toString()+", ");
-			}
-		}
-	}
-	
 }
+	
+	
+	
 	
 	
 	

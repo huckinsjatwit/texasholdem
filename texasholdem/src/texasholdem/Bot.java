@@ -1,14 +1,14 @@
 package texasholdem;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Bot {
 	
 	private int Balance=1000;
 	private int Confidence=0;
-	public Hand botHand;
+	public  Hand botHand;
 	
 	Bot() {
-		
 	}
 	
 	public void makeHand() {
@@ -16,24 +16,40 @@ public class Bot {
 		this.botHand=botHand;
 	}
 
-	private static int analzyeHand1() {
+	private int analzyeHand1() {
 		
 		return 0;
 	}
 	
-	private static int analyzeBets(ArrayList<Card> river) {
+	private int analyzeBets(ArrayList<Card> river) {
 		return 0;
 	}
 	
-	private static int analyzeHand2(ArrayList<Card> river) {
+	private int analyzeHand2(River River) {
+		Card[] bigHand= new Card[5];
+		bigHand[0]=botHand.getCard(0);
+		bigHand[1]=botHand.getCard(1);
+		bigHand[2]=River.river.get(0);
+		bigHand[3]=River.river.get(1);
+		bigHand[4]=River.river.get(2);
+		
+		int[] suitCount=countSuits(bigHand);
+		int[] valueCount=countValues(bigHand);
+		
+		if (checkRoyalFlush(suitCount, valueCount)) return 750;
+		
+		int SF=checkStraightFlush(suitCount, valueCount);
+		
+		
+		if (SF>0) return 600+SF;
 		return 0;
 	}
 	
-	private static int analyzeHand3(ArrayList<Card> river) {
+	private int analyzeHand3(ArrayList<Card> river) {
 		return 0;
 	}
 	
-	private static int analyzeHand4(ArrayList<Card> river) {
+	private int analyzeHand4(ArrayList<Card> river) {
 		return 0;
 	}
 
