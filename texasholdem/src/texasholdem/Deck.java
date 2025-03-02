@@ -12,6 +12,7 @@ public class Deck {
 
 	Deck() {
 		buildDeck();
+		shuffleDeck();
 	}
 	
 	public static void buildDeck() {
