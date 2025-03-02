@@ -1,16 +1,20 @@
 package texasholdem;
 
 public class Hand {
-	public static Card[] hand;
+	public Card[] hand;
 	
 	
 	Hand() {
 		makeHand();
 	}
 	
-	public static Card[] makeHand() {
+	public Card[] makeHand() {
 	hand = Deck.deal(2);
 	return hand;
+	}
+	
+	public Card getCard(int index) {
+		return hand[index];
 	}
 
 	
