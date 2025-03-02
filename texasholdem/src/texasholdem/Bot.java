@@ -179,6 +179,13 @@ public class Bot {
 	}
 	
 	/*
+	 * Will find and return a matrix of all possible combinations of 5 from any amount of cards
+	 */
+	private Card[][] findHandCombos(Card[] allCards) {
+		
+	}
+	
+	/*
 	 * Counts how many of each value
 	 */
 	public static int[] countValues(Card[] bigHand) {
