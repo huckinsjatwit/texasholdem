@@ -5,16 +5,17 @@ public class Bot {
 	
 	private int Balance=1000;
 	private int Confidence=0;
-	private Card[] hand = new Card[2];
-	//When balance reaches 0 remove bot
+	private Hand botHand;
 	
 	Bot() {
-		Card[] handed = Deck.deal(2);
 		
-		for(int i = 0; i < handed.length; i++) {
-			hand[i] = handed[i];
-		}
 	}
+	
+	public void makeHand() {
+		Hand botHand= new Hand();
+		this.botHand=botHand;
+	}
+
 	private static int analzyeHand1(ArrayList<Card> river) {
 		
 		

@@ -1,20 +1,21 @@
 package texasholdem;
 
 public class Hand {
+	public static Card[] hand;
+	
 	
 	Hand() {
-		
+		makeHand();
 	}
-	public static Card[] makeHand() {
 	
-	Card[] handed = Deck.deal(2);
-	Card[] hand = new Card[2];
-		
-		for(int i = 0; i < handed.length; i++) {
-			hand[i] = handed[i];
-		}
+	public static Card[] makeHand() {
+	hand = Deck.deal(2);
+	return hand;
+	}
+
+	
+	public String toString() {
+		String hand=this.hand[0].toString()+", "+this.hand[1].toString();
 		return hand;
 	}
-	
-	
 }
