@@ -1,4 +1,5 @@
 package texasholdem;
+import java.util.ArrayList;
 
 public class Bot {
 	
@@ -7,10 +8,28 @@ public class Bot {
 	//When balance reaches 0 remove bot
 	
 	Bot() {
-		//define hand;
+		Card[] hand = Deck.deal(2);
 	}
-	private static int analzyeHand1() {
-		return Balance;
+	private static int analzyeHand1(ArrayList<Card> river) {
+		
+		
+		return 0;
+	}
+	
+	private static int analyzeBets(ArrayList<Card> river) {
+		return 0;
+	}
+	
+	private static int analyzeHand2(ArrayList<Card> river) {
+		return 0;
+	}
+	
+	private static int analyzeHand3(ArrayList<Card> river) {
+		return 0;
+	}
+	
+	private static int analyzeHand4(ArrayList<Card> river) {
+		return 0;
 	}
 }
 	

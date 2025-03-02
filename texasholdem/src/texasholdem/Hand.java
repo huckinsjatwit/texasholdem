@@ -9,7 +9,7 @@ public class Hand {
 	}
 	
 	public static void getCards() {
-	//	hand=Deck.deal;
+		
 		
 	}
 }

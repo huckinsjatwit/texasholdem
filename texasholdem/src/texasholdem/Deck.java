@@ -9,9 +9,6 @@ public class Deck {
 	static int[] values={2,3,4,5,6,7,8,9,10,11,12,13,14};
 	public static Card[] deck= new Card[52];
 	private static final Card dealedCard = new Card("",0);
-	public final int maxRiver = 5;
-	public final int minRiver = 3;
-	public int riverRound = 0;
 
 	Deck() {
 		buildDeck();
@@ -63,6 +60,7 @@ public class Deck {
 		}
 		return deal;
 	}
+	
 	
 	public static ArrayList<Card> riverCreate() {
 		ArrayList<Card> river = new ArrayList<>();
