@@ -2,14 +2,19 @@ package texasholdem;
 
 public class Hand {
 	
-	public int[] hand;
-	
-	Hand () {
+	Hand() {
 		
 	}
+	public static Card[] makeHand() {
 	
-	public static void getCards() {
-	//	hand=Deck.deal;
+	Card[] handed = Deck.deal(2);
+	Card[] hand = new Card[2];
 		
+		for(int i = 0; i < handed.length; i++) {
+			hand[i] = handed[i];
+		}
+		return hand;
 	}
+	
+	
 }

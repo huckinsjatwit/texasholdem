@@ -6,6 +6,7 @@ public class Player {
 	static boolean fold = false;
 	static Pot balls = new Pot();
 	private static int Bal = 1000;
+	private static Card[] hand = new Card[2];
 	
 	Player(){
 	}
@@ -31,5 +32,14 @@ public class Player {
 			Bal = Bal - betAmount;
 			Pot.addBet(betAmount);
 		}
+	public static Card[] makeHand() {
+		Card[] handed = Deck.deal(2);
+		
+		for(int i = 0; i < handed.length; i++) {
+			hand[i] = handed[i];
+		}
+		return hand;
+	}
+	
 
 }
