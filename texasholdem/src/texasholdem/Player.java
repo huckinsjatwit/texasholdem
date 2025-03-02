@@ -46,13 +46,14 @@ public class Player {
 		
 		Deck.buildDeck();
 		Deck.shuffleDeck();
-		makeHand();
+		hand = Hand.makeHand();
 		
 		for(int i = 0; i < 2; i++) {
 			handed = hand[i].toString();
 			System.out.print(handed);
 		}
 		
+
 	}
 
 }
