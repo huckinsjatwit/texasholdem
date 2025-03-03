@@ -6,6 +6,7 @@ public class Player {
 	static boolean fold = false;
 	static Pot balls = new Pot();
 	private static int Bal = 1000;
+	private Hand playerHand;
 	
 	Player(){
 	}
@@ -23,7 +24,7 @@ public class Player {
 		int betAmount;
 		
 		do {
-		System.out.print("Enter amount to bet:");
+		System.out.print("Enter amount to bet: ");
 		betAmount = input.nextInt();
 		}while(betAmount > Bal); {
 			System.out.println("Bet amount cannot exceed balance.");
@@ -31,5 +32,11 @@ public class Player {
 			Bal = Bal - betAmount;
 			Pot.addBet(betAmount);
 		}
+	
+	public void makeHand() {
+		Hand playerHand= new Hand();
+		this.playerHand=playerHand;
+	}
+	
 
 }

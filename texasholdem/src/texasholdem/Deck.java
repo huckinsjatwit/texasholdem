@@ -5,16 +5,14 @@ import java.util.Collections;
 import java.util.Random;
 
 public class Deck {
-	static String[] suits={"Hearts", "Clubs", "Spades", "Diamonds"};
-	static int[] values={2,3,4,5,6,7,8,9,10,11,12,13,14};
+	public static String[] suits={"Hearts", "Clubs", "Spades", "Diamonds"};
+	public static int[] values={2,3,4,5,6,7,8,9,10,11,12,13,14};
 	public static Card[] deck= new Card[52];
 	private static final Card dealedCard = new Card("",0);
-	public final int maxRiver = 5;
-	public final int minRiver = 3;
-	public int riverRound = 0;
 
 	Deck() {
 		buildDeck();
+		shuffleDeck();
 	}
 	
 	public static void buildDeck() {
@@ -63,31 +61,10 @@ public class Deck {
 		}
 		return deal;
 	}
-	
-	public static ArrayList<Card> riverCreate() {
-		ArrayList<Card> river = new ArrayList<>();
-		Card[] temp = deal(3);
-		Collections.addAll(river, temp);		
-		return river;
-	}
-	
-	public static ArrayList<Card> riverAdd(ArrayList<Card> river) {
-		Card[] temp = deal(1);
-		Collections.addAll(river, temp);		
-		return river;
-	}
-	
-	public static void printRiver(ArrayList<Card> river) {
-		for (int i=0; i<river.size(); i++) {
-			if (i==river.size()-1) {
-				System.out.print(river.get(i));
-			} else {
-				System.out.printf(river.get(i).toString()+", ");
-			}
-		}
-	}
-	
 }
+	
+	
+	
 	
 	
 	
