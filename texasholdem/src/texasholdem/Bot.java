@@ -16,13 +16,32 @@ public class Bot {
 		this.botHand=botHand;
 	}
 
-	private int analzyeHand1() {
+	private int analzyeHand1(Hand botHand) {
+		
+		
 		
 		return 0;
 	}
 	
-	private int analyzeBets(ArrayList<Card> river) {
-		return 0;
+	//adds confidence to the bot based on what other players bet (CHANGE CONFIDENCE AMOUNT IF NEEDED)
+	
+	private int analyzeBets(ArrayList<Integer> bet) {
+		
+		for(int i = 0; i < bet.size();) {
+			if(bet.get(i) < 25) {
+				Confidence = 20 + Confidence;
+			}else if(bet.get(i) < 50){
+				Confidence = 15 + Confidence;
+			}else if(bet.get(i) < 75) {
+				Confidence = 10 + Confidence;
+			}else if(bet.get(i) < 100) {
+				Confidence = 5 + Confidence;
+			}else {
+				return Confidence;
+			}
+		}
+		
+		return Confidence;
 	}
 	
 	/*
