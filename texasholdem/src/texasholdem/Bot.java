@@ -1,12 +1,14 @@
 package texasholdem;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 public class Bot {
 	
 	private int Balance=1000;
 	private int Confidence=0;
-	public  Hand botHand;
+	public Hand botHand;
+	public boolean Stand = true;
 	
 	Bot() {
 	}
@@ -16,13 +18,100 @@ public class Bot {
 		this.botHand=botHand;
 	}
 
-	private int analzyeHand1() {
+	//uses checkCardValueStart to find card's values than add Confidence
+	
+	private int analzyeStartingHand(Card[] hand) {
 		
-		return 0;
+		int value= checkCardValueStart(hand);
+		
+		for(int i = 0; i < 2; i++) {
+			if(value == 20) {
+				Confidence += 100;
+			}else if(value > 15) {
+				Confidence += 50;
+			}else if(value > 10) {
+				Confidence += 30;
+			}else if(value > 5) {
+				Confidence += 10;
+			}else {
+				Confidence += 1;
+			}
+		}
+		return Confidence;
 	}
 	
-	private int analyzeBets(ArrayList<Card> river) {
-		return 0;
+	//looks at card values and use of Chen formula to figure out hand value (CHANGE CONFIDENCE VALUES IF NEEDED)
+	
+	private static int checkCardValueStart(Card[] hand) {
+	
+	int allConfidence = 0;
+	
+	for(int i = 0; i < 2; i++) {
+		if(hand[i].getValue() == 12) {
+			allConfidence += 10;
+		}else if(hand[i].getValue() >= 9) {
+			allConfidence += 8;
+		}else if(hand[i].getValue() >= 5) {
+			allConfidence += 6;
+		}else if(hand[i].getValue() >= 2) {
+			allConfidence += 4;
+		}else {
+			allConfidence += 2;
+		}
+	}
+		return allConfidence;
+	}
+	
+	//adds confidence to the bot based on what other players bet (CHANGE CONFIDENCE AMOUNT IF NEEDED)
+	
+	private int analyzeBets(ArrayList<Integer> bet) {
+		
+		for(int i = 0; i < bet.size(); i++) {
+			if(bet.get(i) < 25) {
+				Confidence += 20;
+			}else if(bet.get(i) < 50){
+				Confidence += 15;
+			}else if(bet.get(i) < 75) {
+				Confidence += 10;
+			}else if(bet.get(i) < 100) {
+				Confidence += 5;
+			}else {
+				return Confidence;
+			}
+		}
+		
+		return Confidence;
+	}
+	
+	//decides amount to bet based on confidence (if we decide that the person that starts always changes)
+	
+	private int betAmount() {
+		
+	Random random = new Random();
+	int bet;
+		
+	if(Confidence >= 1000) return random.nextInt(Balance);
+	if(Confidence >= 900)  return random.nextInt(Balance/2);
+	if(Confidence >= 800) return random.nextInt(Balance/3);
+	if(Confidence >= 700) return random.nextInt(Balance/4);
+	if(Confidence >= 600) return random.nextInt(Balance/5);
+	if(Confidence >= 500) return random.nextInt(Balance/6);
+	if(Confidence >= 400) return random.nextInt(Balance/7);
+	if(Confidence >= 300) return random.nextInt(Balance/8);
+	if(Confidence >= 200) return random.nextInt(Balance/9);
+	if(Confidence >= 100) return random.nextInt(Balance/10);
+	return 0;
+	}
+	
+	private void buyin() {
+		
+		if(Confidence >= 10) {
+			Balance -= 20;
+			Pot.addBet(20);
+		}else {
+			Stand = false;
+		}
+			
 	}
 	
 	/*
@@ -303,5 +392,10 @@ public class Bot {
 		}
 		return 0;
 	}
+	
+	public static void main(String[] args) {
+		
+	}
+	
 }
 					
