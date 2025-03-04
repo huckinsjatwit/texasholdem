@@ -1,12 +1,14 @@
 package texasholdem;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Player {
 	
-	static boolean fold = false;
-	static Pot balls = new Pot();
-	private static int Bal = 1000;
-	private Hand playerHand;
+	public static boolean fold = false;
+	static Pot Money = new Pot();
+	public static int Bal = 1000;
+	public static Hand playerHand;
+	
 	
 	Player(){
 	}
@@ -38,5 +40,13 @@ public class Player {
 		this.playerHand=playerHand;
 	}
 	
-
+	public int call(ArrayList<Integer> bet) {
+		
+		return 0;
+	}
+		
+	public static void main(String[] args) {
+		
+	}
 }
+

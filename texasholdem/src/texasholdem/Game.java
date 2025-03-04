@@ -30,7 +30,21 @@ public static int round = 1;
 		}
 		
 	}
+	
+	//just something to print after every round to remind the player what is happening
+	
+		public static void display() {
+			
+			System.out.println("Your current balance is: " + Player.Bal);
+			System.out.println("The current pot is: " + Pot.currentPot);
+			System.out.println("Your hand is: " + Player.playerHand);
+		}
 	public static void main(String[] args) {
+		Deck deck = new Deck();
+		Player player = new Player();
+		player.makeHand();
 		
+		display();
 	}
+
 }
