@@ -2,7 +2,7 @@ package texasholdem;
 import java.util.ArrayList;
 
 public class Pot {
-	static int currentPot = 0;
+	public static int currentPot = 0;
 	static Balance bet = new Balance();
 	public static ArrayList<Integer> bets = new ArrayList<>();
 	

@@ -1,7 +1,7 @@
 package texasholdem;
 
 public class Hand {
-	public Card[] hand;
+	public static Card[] hand;
 	public static final String[] hands= {"Royal Flush","Straight Flush", "Four of A Kind","Full House","Flush","Straight","Three of a Kind"
 ,"Two Pair","Pair","High Card"};
 	
@@ -11,7 +11,7 @@ public class Hand {
 		makeHand();
 	}
 	
-	public Card[] makeHand() {
+	public static Card[] makeHand() {
 	hand = Deck.deal(2);
 	return hand;
 	}
@@ -44,11 +44,7 @@ public class Hand {
 	}
 	
 	public static void main (String[] args) {
-		Deck deck= new Deck();
-		deck.shuffleDeck();
-		Card[] randomHand=deck.deal(5);
-		System.out.println(toString(randomHand));
-		String handString=Bot.findHandToString(randomHand);
-		System.out.print(handString);
+	
+		
 	}
 }
