@@ -12,7 +12,8 @@ public class Bot {
 	public Hand botHand;
 	public boolean Stand = true;
 	public String name;
-	public static List<String> possibleNames= Arrays.asList("Jeremy", "Thomas", "Jack", "Kristian", "Jayvon", "Haley", "Sam", "Ava"); //Add any names you like
+	public static List<String> possibleNames= Arrays.asList("Jeremy", "Thomas", "Jack", "Kristian", "Jayvon", "Haley", "Sam", "Ava", "Todd", "Nicole",
+			"Rick"); //Add any names you like
 	
 	Bot(int n) {
 		setName(n);
@@ -28,30 +29,54 @@ public class Bot {
 	}
 	
 	//Will run all methods required for the bot to play the round
-	public static void play() {
-		
+	public void play(int subRound) {
+		int bet=0;
+		if (subRound==0) {
+			Confidence=analyzeStartingHand();
+			Confidence+=analyzeBets();
+			buyIn();
+		}
+		if (subRound==1) {
+			Confidence=analyzeHand2(Game.river);
+			Confidence+=analyzeBets();
+			bet=betAmount();
+			bet(bet);
+		}
+		if (subRound==2) {
+			Confidence=analyzeHand3(Game.river);
+			Confidence+=analyzeBets();
+			bet=betAmount();
+			bet(bet);
+		}
+		if (subRound==3) {
+			Confidence=analyzeHand4(Game.river);
+			Confidence+=analyzeBets();
+			bet=betAmount();
+			bet(bet);
+		}
 	}
 
 	//uses checkCardValueStart to find card's values than add Confidence
 	
-	private int analzyeStartingHand(Card[] hand) {
+	private int analyzeStartingHand() {
 		
-		int value= checkCardValueStart(hand);
+		int value= checkCardValueStart(botHand.hand);
+		int confidence=0;
 		
 		for(int i = 0; i < 2; i++) {
 			if(value == 20) {
-				Confidence += 100;
+				confidence += 100;
 			}else if(value > 15) {
-				Confidence += 50;
+				confidence += 50;
 			}else if(value > 10) {
-				Confidence += 30;
+				confidence += 30;
 			}else if(value > 5) {
-				Confidence += 10;
+				confidence += 10;
 			}else {
-				Confidence += 1;
+				confidence += 1;
 			}
 		}
-		return Confidence;
+		return confidence;
 	}
 	
 	//looks at card values and use of Chen formula to figure out hand value (CHANGE CONFIDENCE VALUES IF NEEDED)
@@ -78,16 +103,16 @@ public class Bot {
 		
 		//adds confidence to the bot based on what other players bet (CHANGE CONFIDENCE AMOUNT IF NEEDED)
 	
-	private int analyzeBets(ArrayList<Integer> bet) {
+	private int analyzeBets() {
 		
-		for(int i = 0; i < bet.size(); i++) {
-			if(bet.get(i) < 25) {
+		for(int i = 0; i < Pot.bets.size(); i++) {
+			if(Pot.bets.get(i) < 25) {
 				Confidence += 20;
-			}else if(bet.get(i) < 50){
+			}else if(Pot.bets.get(i) < 50){
 				Confidence += 15;
-			}else if(bet.get(i) < 75) {
+			}else if(Pot.bets.get(i) < 75) {
 				Confidence += 10;
-			}else if(bet.get(i) < 100) {
+			}else if(Pot.bets.get(i) < 100) {
 				Confidence += 5;
 			}else {
 				return Confidence;
@@ -117,15 +142,21 @@ public class Bot {
 		return 0;
 	}
 	
-	private void buyin() {
+	private void buyIn() {
 		
 		if(Confidence >= 10) {
-			Balance -= 20;
-			Pot.addBet(20);
+			bet(20);
 		}else {
 			Stand = false;
 		}
 			
+	}
+	
+	private String bet(int betAmount) {
+		Game.pot.addBet(betAmount);
+		Balance=Balance-betAmount;
+		String bet=this.name+" bets "+betAmount+"chips.";
+		return bet;
 	}
 	
 	/*

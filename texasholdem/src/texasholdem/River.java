@@ -7,7 +7,7 @@ public class River {
 	public ArrayList<Card> river;
 	
 	River() {
-		riverCreate();
+		
 	}
 	
 	public void riverCreate() {

@@ -10,6 +10,7 @@ public class Game {
 	public static ArrayList<Bot> bots;
 	public static Deck deck;
 	public static Pot pot;
+	public static River river;
 
 	
 	Game(){
@@ -47,6 +48,8 @@ public class Game {
 		System.out.println("Your current balance is: " + Player.Bal);
 		System.out.println(pot.toString());
 		System.out.println("Your hand is: " + Player.playerHand);
+		if (river==null) System.out.println("River is empty.");
+		else System.out.println("The river is: "+river.toString());
 		System.out.println("");
 	}
 		/*
@@ -60,15 +63,15 @@ public class Game {
 		boolean success= false;
 		while (!success) {
 			try {
-				System.out.printf("How many bots (1-3)?: ");
+				System.out.printf("How many bots (1-7)?: ");
 				botCount=input.nextInt();
 				success=true;
-				if (botCount>=1 && botCount<=3) {
+				if (botCount>=1 && botCount<=7) {
 					success=true;
 				} else {
-					System.out.println("Error! Number of bots needs to be between 1-3. Try again.");
+					System.out.println("Error! Number of bots needs to be between 1-7. Try again.");
 					success= false;
-					System.out.printf("How many bots (1-3)?: ");
+					System.out.printf("How many bots (1-7)?: ");
 					botCount=input.nextInt();
 				}
 			} catch (InputMismatchException ex) {
@@ -130,11 +133,17 @@ public class Game {
 		
 		
 			//When it hits bot named player, it will trigger the players play method. Otherwise bot's
-			for (int i=0; i<botsCopy.size(); i++) {
-				if (botsCopy.get(i).name=="Player") {
-					player.play();
-				} else botsCopy.get(i).play();
-			
+			for (int i=0; i<4; i++) {
+				if (i==1) river.riverCreate();
+				if (i>1) river.riverAdd();
+				
+				for (int j=0; j<botsCopy.size(); j++) {
+					display();
+					if (botsCopy.get(j).name=="Player") {
+						player.play();
+					} else botsCopy.get(j).play(i);
+				
+				}
 			}
 			
 			
