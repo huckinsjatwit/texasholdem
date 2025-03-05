@@ -188,7 +188,13 @@ public class Bot {
 		bigHand[3]=River.river.get(1);
 		bigHand[4]=River.river.get(2);
 		bigHand[5]=River.river.get(3);
+		
+		int[] bestHand= findBest(bigHand);
+		System.out.println(bestHand[0]);
+		System.out.println(bestHand[1]);
+		return getConfidence(bestHand);
 	}
+		
 	
 	/*
 	 * Cards in bot hand + 5 cards in river, will test all card combo possibilities (NEEDS ALGORITHM TO FIND ALL POSSIBILITIES)
@@ -202,7 +208,30 @@ public class Bot {
 		bigHand[4]=River.river.get(2);
 		bigHand[5]=River.river.get(3);
 		bigHand[6]=River.river.get(4);
+		
+		int[] bestHand= findBest(bigHand);
+		return getConfidence(bestHand);
 	}
+	
+	private int[] findBest(Card[] bigHand) {
+		List<Card[]> possibleHands=findHandCombos(bigHand);
+		ArrayList<int[]> readHands = new ArrayList<>();
+		
+		int lowest=10;
+		int indexOfBest=0;
+		for (int i=0; i<possibleHands.size(); i++) {
+			readHands.add(findHand(possibleHands.get(i)));
+			if (readHands.get(i)[0]<lowest) {
+				lowest=readHands.get(i)[0];
+				indexOfBest=i;
+			}
+			if (readHands.get(i)[0]==lowest) {
+				if (readHands.get(i)[1]>readHands.get(indexOfBest)[1]) indexOfBest=i;
+			}
+		}
+		return readHands.get(indexOfBest);
+	}
+	
 	
 	/*
 	 * Takes array from findHand and returns a confidence value
@@ -318,9 +347,42 @@ public class Bot {
 	/*
 	 * Will find and return a matrix of all possible combinations of 5 from any amount of cards
 	 */
-	private Card[][] findHandCombos(Card[] allCards) {
-		
+	private List<Card[]> findHandCombos(Card[] allCards) {
+		int k = 5;                             // sequence length   
+
+		List<Card[]> subsets = new ArrayList<>();
+		int[] s = new int[k];                  
+
+		if (k <= allCards.length) {
+		    for (int i = 0; (s[i] = i) < k - 1; i++) {
+		    	subsets.add(getSubset(allCards, s));
+		    }
+		    for(;;) {
+		        int i;
+		 
+		        for (i = k - 1; i >= 0 && s[i] == allCards.length - k + i; i--); 
+		        if (i < 0) {
+		            break;
+		        }
+		        s[i]++;                   
+		        for (++i; i < k; i++) {    
+		            s[i] = s[i - 1] + 1; 
+		        }
+		        subsets.add(getSubset(allCards, s));
+		    }
+		}
+		return subsets;
 	}
+
+		
+	Card[] getSubset(Card[] input, int[] subset) {
+		Card[] result = new Card[subset.length]; 
+		for (int i = 0; i < subset.length; i++) {
+		    result[i] = input[subset[i]];
+		}
+	    return result;
+	}
+	
 	
 	/*
 	 * Counts how many of each value

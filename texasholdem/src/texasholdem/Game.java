@@ -141,7 +141,7 @@ public class Game {
 					player.makeHand();
 				} else botsCopy.get(i).makeHand();
 			}
-		
+			
 		
 			//When it hits bot named player, it will trigger the players play method. Otherwise bot's
 			for (int i=0; i<4; i++) {
@@ -161,6 +161,7 @@ public class Game {
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
+						System.out.println(botsCopy.get(j).botHand.toString());
 						System.out.println(botsCopy.get(j).play(i));
 						
 						
