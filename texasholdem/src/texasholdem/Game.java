@@ -163,6 +163,7 @@ public class Game {
 						}
 						System.out.println(botsCopy.get(j).play(i));
 						
+						
 					}
 				
 				}
