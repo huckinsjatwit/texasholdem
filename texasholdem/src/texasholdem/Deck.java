@@ -15,7 +15,7 @@ public class Deck {
 		shuffleDeck();
 	}
 	
-	public static void buildDeck() {
+	public void buildDeck() {
 		int c=0;
 		for (int i=0; i<4; i++) {
 			for (int j=0; j<13;j++) {
@@ -25,7 +25,7 @@ public class Deck {
 		}
 	}
 	
-	public static void shuffleDeck() {
+	public void shuffleDeck() {
 		Random random= new Random();
 		int n=52;
 		for (int i = n - 1; i > 0; i--) {
@@ -36,7 +36,7 @@ public class Deck {
             deck[j] = temp;
         }
     }
-	public static void printDeck() {
+	public void printDeck() {
 		for (int i=0; i<52;i++) {
 			if (i==51) {
 				System.out.printf(deck[i].toString());
@@ -48,7 +48,7 @@ public class Deck {
 	}
 	
 	
-	public static Card[] deal(int numCards) {
+	public Card[] deal(int numCards) {
 		int c=0;
 		while (deck[c].equals(dealedCard)) {
 			c++;

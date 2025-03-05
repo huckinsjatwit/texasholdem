@@ -11,6 +11,7 @@ public class Player {
 	
 	
 	Player(){
+		
 	}
 	public static void standHand(boolean stand) {
 		fold = true;
@@ -19,6 +20,11 @@ public class Player {
 		if(fold == false) {
 			//skip over player and let bots play code
 		}
+	}
+	
+	//Will run all methods required for the player to play the round
+	public static void play() {
+		
 	}
 	
 	public static void makeBet() {

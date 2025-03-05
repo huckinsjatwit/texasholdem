@@ -12,20 +12,29 @@ public class Bot {
 	public Hand botHand;
 	public boolean Stand = true;
 	public String name;
-	public List<String> possibleNames= Arrays.asList("Jeremy", "Thomas", "Jack", "Kristian", "Jayvon", "Haley", "Sam", "Ava"); //Add any names you like, just change the bound in the constructor
+	public static List<String> possibleNames= Arrays.asList("Jeremy", "Thomas", "Jack", "Kristian", "Jayvon", "Haley", "Sam", "Ava"); //Add any names you like, just change the bound in the constructor
 	
 	Bot(int n) {
+
 		setName(n);
 	}
 	
 	public void setName(int n) {
-		Collections.shuffle(possibleNames);
 		name= possibleNames.get(n);
+	}
+	
+	public void setName(String name) {
+		this.name=name;
 	}
 	
 	public void makeHand() {
 		Hand botHand= new Hand();
 		this.botHand=botHand;
+	}
+	
+	//Will run all methods required for the bot to play the round
+	public static void play() {
+		
 	}
 
 	//uses checkCardValueStart to find card's values than add Confidence

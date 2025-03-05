@@ -12,7 +12,7 @@ public class Hand {
 	}
 	
 	public static Card[] makeHand() {
-	hand = Deck.deal(2);
+	hand = Game.deck.deal(2);
 	return hand;
 	}
 	

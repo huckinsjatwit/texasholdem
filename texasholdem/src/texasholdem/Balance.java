@@ -11,5 +11,10 @@ public class Balance {
 		int balance = setBal;
 		return balance;
 	}
+	
+	public String toString() {
+		String s="Your current balance is: " + balance;
+		return s;
+	}
 
 }
