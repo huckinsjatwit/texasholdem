@@ -9,6 +9,7 @@ public class Game {
 	public static int round = 1;
 	public static ArrayList<Bot> bots;
 	public static Deck deck;
+	public static Pot pot;
 
 	
 	Game(){
@@ -25,14 +26,15 @@ public class Game {
 		
 		String sure;
 		Scanner input = new Scanner(System.in);
-		System.out.println("Are you sure you want to exit? (Y/N): ");
-		sure = input.toString();
+		System.out.printf("Are you sure you want to exit? (Y/N): ");
+		sure = input.nextLine();
 		
 		if(sure == "Y" || sure == "y") {
 			System.out.println("Goodbye!");
 			System.exit(0);
 		}else if(sure == "N" || sure == "n") {
-			System.out.print("ok");																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																						
+			System.out.print("ok");
+			return;
 		}else {
 			System.out.println("Please enter 'Y' for yes or 'N' for no");
 		}
@@ -43,8 +45,9 @@ public class Game {
 	
 	public static void display() {
 		System.out.println("Your current balance is: " + Player.Bal);
-		System.out.println("The current pot is: " + Pot.currentPot);
+		System.out.println(pot.toString());
 		System.out.println("Your hand is: " + Player.playerHand);
+		System.out.println("");
 	}
 		/*
 		 * Allows user to pick number of bots, also creates a bot with the name player, this bot will be detected and start the players turn.
@@ -104,24 +107,47 @@ public class Game {
     }
 		
 	public static void main(String[] args) {
-		deck = new Deck();
+		Scanner input = new Scanner(System.in);
 		Player player = new Player();
 	
 		setBots();
 		Collections.shuffle(bots); //Shuffles order for first round
+		ArrayList<Bot> botsCopy= new ArrayList<>(bots); //Allows us to remove players without affecting the original list.
 		
-		player.makeHand();
+		int c=1; //allows to loop infinitely until player quits.
+		while (c==1) {
+			
+			//Makes deck and pot reset after every round
+			deck = new Deck();
+			pot = new Pot();
+			
+			//Deals to bots and players in their order.
+			for (int i=0; i<botsCopy.size(); i++) {
+				if (botsCopy.get(i).name=="Player") {
+					player.makeHand();
+				} else botsCopy.get(i).makeHand();
+			}
 		
-		//When it hits bot named player, it will trigger the players play method. Otherwise bot's
-		for (int i=0; i<bots.size(); i++) {
-			if (bots.get(i).name=="Player") {
-				player.play();
-			} else bots.get(i).play();
 		
+			//When it hits bot named player, it will trigger the players play method. Otherwise bot's
+			for (int i=0; i<botsCopy.size(); i++) {
+				if (botsCopy.get(i).name=="Player") {
+					player.play();
+				} else botsCopy.get(i).play();
+			
+			}
+			
+			
+			display();
+			System.out.printf("Type 1 to continue to next round, 0 to quit. ");
+			if (input.nextInt()==0) {
+				exitGame();
+			} else {
+				System.out.println("");
+				continue;
+			}
+			
 		}
-		
-		display();
-		
 	}
 
 }

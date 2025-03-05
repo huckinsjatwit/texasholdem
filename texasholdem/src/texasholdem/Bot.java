@@ -12,19 +12,14 @@ public class Bot {
 	public Hand botHand;
 	public boolean Stand = true;
 	public String name;
-	public static List<String> possibleNames= Arrays.asList("Jeremy", "Thomas", "Jack", "Kristian", "Jayvon", "Haley", "Sam", "Ava"); //Add any names you like, just change the bound in the constructor
+	public static List<String> possibleNames= Arrays.asList("Jeremy", "Thomas", "Jack", "Kristian", "Jayvon", "Haley", "Sam", "Ava"); //Add any names you like
 	
 	Bot(int n) {
-
 		setName(n);
 	}
 	
 	public void setName(int n) {
 		name= possibleNames.get(n);
-	}
-	
-	public void setName(String name) {
-		this.name=name;
 	}
 	
 	public void makeHand() {
