@@ -45,12 +45,22 @@ public class Game {
 	//just something to print after every round to remind the player what is happening
 	
 	public static void display() {
-		System.out.println("Your current balance is: " + Player.Bal);
-		System.out.println(pot.toString());
-		System.out.println("Your hand is: " + Player.playerHand);
-		if (river==null) System.out.println("River is empty.");
-		else System.out.println("The river is: "+river.toString());
 		System.out.println("");
+		System.out.println("Your current balance is: " + Player.Bal);
+		try {
+			Thread.sleep(1000);
+			System.out.println(pot.toString());
+			Thread.sleep(1000);
+			System.out.println("Your hand is: " + Player.playerHand);
+			Thread.sleep(1000);
+			if (river.river==null) System.out.println("River is empty.");
+			else System.out.println("The river is: "+river.toString());
+			//Thread.sleep(1000);
+			System.out.println("");
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
 	}
 		/*
 		 * Allows user to pick number of bots, also creates a bot with the name player, this bot will be detected and start the players turn.
@@ -90,7 +100,7 @@ public class Game {
 		else System.out.printf("Created bots: ");
 		for (int i=0; i<bots.size()-1; i++) {
 			if (i==bots.size()-2) {
-				System.out.printf(bots.get(i).name+".%n");
+				System.out.printf(bots.get(i).name+".");
 			} else System.out.printf(bots.get(i).name+", ");
 		}
 		System.out.println();
@@ -120,9 +130,10 @@ public class Game {
 		int c=1; //allows to loop infinitely until player quits.
 		while (c==1) {
 			
-			//Makes deck and pot reset after every round
+			//Makes deck, pot, and river reset after every round
 			deck = new Deck();
 			pot = new Pot();
+			river=new River();
 			
 			//Deals to bots and players in their order.
 			for (int i=0; i<botsCopy.size(); i++) {
@@ -137,13 +148,25 @@ public class Game {
 				if (i==1) river.riverCreate();
 				if (i>1) river.riverAdd();
 				
+				display();
+				
 				for (int j=0; j<botsCopy.size(); j++) {
-					display();
 					if (botsCopy.get(j).name=="Player") {
+						System.out.println();
+						System.out.println(pot.toString());
 						player.play();
-					} else botsCopy.get(j).play(i);
+					} else {
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						System.out.println(botsCopy.get(j).play(i));
+						
+					}
 				
 				}
+				shiftLeft(botsCopy);
 			}
 			
 			
