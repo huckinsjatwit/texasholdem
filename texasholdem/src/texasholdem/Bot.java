@@ -130,16 +130,16 @@ public class Bot {
 		Random random = new Random();
 		int bet;
 			
-		if (Confidence >= 1000) return random.nextInt((int)(Balance - (Balance * 0.9))) + (int)(Balance * 0.1);
-		if (Confidence >= 900) return random.nextInt((int)(Balance / 2 - (Balance / 2 * 0.9))) + (int)(Balance / 2 * 0.9);
-		if (Confidence >= 800) return random.nextInt((int)(Balance / 3 - (Balance / 3 * 0.9))) + (int)(Balance / 3 * 0.9);
-		if (Confidence >= 700) return random.nextInt((int)(Balance / 4 - (Balance / 4 * 0.9))) + (int)(Balance / 4 * 0.9);
-		if (Confidence >= 600) return random.nextInt((int)(Balance / 5 - (Balance / 5 * 0.9))) + (int)(Balance / 5 * 0.9);
-		if (Confidence >= 500) return random.nextInt((int)(Balance / 6 - (Balance / 6 * 0.9))) + (int)(Balance / 6 * 0.9);
-		if (Confidence >= 400) return random.nextInt((int)(Balance / 7 - (Balance / 7 * 0.9))) + (int)(Balance / 7 * 0.9);
-		if (Confidence >= 300) return random.nextInt((int)(Balance / 8 - (Balance / 8 * 0.9))) + (int)(Balance / 8 * 0.9);
-		if (Confidence >= 200) return random.nextInt((int)(Balance / 9 - (Balance / 9 * 0.9))) + (int)(Balance / 9 * 0.9);
-		if (Confidence >= 100) return random.nextInt((int)(Balance / 10 - (Balance / 10 * 0.9))) + (int)(Balance / 10 * 0.9);
+		if (Confidence >= 1000) return random.nextInt((int)(Balance - (Balance * 0.9))) + (int)(Balance * 0.9);
+		if (Confidence >= 900) return random.nextInt((int)(Balance * .9 - (Balance* 0.8))) + (int)(Balance / 2 * 0.8);
+		if (Confidence >= 800) return random.nextInt((int)(Balance * .8 - (Balance * 0.7))) + (int)(Balance / 3 * 0.7);
+		if (Confidence >= 700) return random.nextInt((int)(Balance * .7 - (Balance * 0.6))) + (int)(Balance / 4 * 0.6);
+		if (Confidence >= 600) return random.nextInt((int)(Balance * .6 - (Balance * 0.5))) + (int)(Balance / 5 * 0.5);
+		if (Confidence >= 500) return random.nextInt((int)(Balance * .5 - (Balance * 0.4))) + (int)(Balance / 6 * 0.4);
+		if (Confidence >= 400) return random.nextInt((int)(Balance * .4 - (Balance * 0.3))) + (int)(Balance / 7 * 0.3);
+		if (Confidence >= 300) return random.nextInt((int)(Balance * .3 - (Balance * 0.2))) + (int)(Balance / 8 * 0.2);
+		if (Confidence >= 200) return random.nextInt((int)(Balance * .2 - (Balance * 0.1))) + (int)(Balance / 9 * 0.1);
+		if (Confidence >= 100) return random.nextInt((int)(Balance * .1 - (Balance * 0.0))) + (int)(Balance / 10 * 0.0);
 		return 0;
 	}
 	
@@ -175,6 +175,7 @@ public class Bot {
 		int[] readHand=findHand(bigHand);
 		return getConfidence(readHand);
 	}
+	
 	
 	/*
 	 * Cards in bot hand + 4 cards in river, will test all card combo possibilities (NEEDS ALGORITHM TO FIND ALL POSSIBILITIES)
