@@ -162,6 +162,7 @@ public class Game {
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
+						System.out.println(botsCopy.get(j).botHand.toString());
 						System.out.println(botsCopy.get(j).play(i));
 						
 					}

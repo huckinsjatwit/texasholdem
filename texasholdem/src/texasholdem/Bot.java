@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 public class Bot {
 	
@@ -188,7 +190,12 @@ public class Bot {
 		bigHand[3]=River.river.get(1);
 		bigHand[4]=River.river.get(2);
 		bigHand[5]=River.river.get(3);
+		
+		int[] bestHand= findBest(bigHand);
+
+		return getConfidence(bestHand);
 	}
+		
 	
 	/*
 	 * Cards in bot hand + 5 cards in river, will test all card combo possibilities (NEEDS ALGORITHM TO FIND ALL POSSIBILITIES)
@@ -202,7 +209,33 @@ public class Bot {
 		bigHand[4]=River.river.get(2);
 		bigHand[5]=River.river.get(3);
 		bigHand[6]=River.river.get(4);
+		
+		int[] bestHand= findBest(bigHand);
+		return getConfidence(bestHand);
 	}
+	
+
+	private static int[] findBest(Card[] bigHand) {
+
+		List<Card[]> possibleHands=findHandCombos(bigHand);
+		ArrayList<int[]> readHands = new ArrayList<>();
+		
+		int lowest=10;
+		int indexOfBest=0;
+		for (int i=0; i<possibleHands.size(); i++) {
+			readHands.add(findHand(possibleHands.get(i)));
+			if (readHands.get(i)[0]<lowest) {
+				lowest=readHands.get(i)[0];
+				indexOfBest=i;
+			}
+			if (readHands.get(i)[0]==lowest) {
+				if (readHands.get(i)[1]>readHands.get(indexOfBest)[1]) indexOfBest=i;
+			}
+		}
+
+		return readHands.get(indexOfBest);
+	}
+	
 	
 	/*
 	 * Takes array from findHand and returns a confidence value
@@ -318,9 +351,61 @@ public class Bot {
 	/*
 	 * Will find and return a matrix of all possible combinations of 5 from any amount of cards
 	 */
-	private Card[][] findHandCombos(Card[] allCards) {
-		
+
+	private static List<Card[]> findHandCombos(Card[] allCards) {
+
+		int k = 5;                             // sequence length   
+
+		List<Card[]> subsets = new ArrayList<>();
+		int[] s = new int[k];                  
+
+		if (k <= allCards.length) {
+		    for (int i = 0; (s[i] = i) < k - 1; i++) {
+
+		    	addIfUnique(allCards, s, subsets);
+
+
+		    }
+		    for(;;) {
+		        int i;
+		 
+		        for (i = k - 1; i >= 0 && s[i] == allCards.length - k + i; i--); 
+		        if (i < 0) {
+		            break;
+		        }
+		        s[i]++;                   
+		        for (++i; i < k; i++) {    
+		            s[i] = s[i - 1] + 1; 
+		        }
+
+		        addIfUnique(allCards, s,subsets);
+
+		    }
+		}
+		return subsets;
 	}
+
+	
+	private static void addIfUnique(Card[] allCards, int[] subset, List<Card[]> subsets) {
+	    Set<Card> cardSet = new HashSet<>();
+	    for (int i : subset) {
+	        if (!cardSet.add(allCards[i])) {  // check if adding the card is a duplicate
+	            return;  // if duplicate found, do not add this combination
+	        }
+	    }
+	    subsets.add(getSubset(allCards, subset));  // Add only if unique
+	}
+
+		
+	static Card[] getSubset(Card[] input, int[] subset) {
+
+		Card[] result = new Card[subset.length]; 
+		for (int i = 0; i < subset.length; i++) {
+		    result[i] = input[subset[i]];
+		}
+	    return result;
+	}
+	
 	
 	/*
 	 * Counts how many of each value
@@ -348,21 +433,25 @@ public class Bot {
 	}
 	
 	public static int checkStraightFlush(int[] suitCount, int[] valueCount) {
-		for (int i=0; i<4; i++) {
-			if (suitCount[i]!=0 && suitCount[i]!=5) return 0;
-		}
-		int c=0;
-		int value=0;
-		while (valueCount[c]!=1) {
-			c++;
-		}
-		for (int i=c; i<c+5; i++) {
-			if (valueCount[c]!=1) return 0;
-			if (valueCount[i]==1) value+=Deck.values[i];
-		}
-		return value;
+		for (int i = 0; i < 4; i++) {
+	        if (suitCount[i] != 0 && suitCount[i] != 5) return 0;
+	    }
+	    
+	    int c = 0;
+	    int value = 0;
+	    while (c < 13 && valueCount[c] != 1) {
+	        c++;
+	    }
+	    
+	    // Ensure we don't exceed the array bounds (i < 13)
+	    for (int i = c; i < c + 5 && i < 13; i++) {
+	        if (valueCount[i] != 1) return 0;
+	        value += Deck.values[i];
+	    }
+	    return value;
 	}
 	
+
 	public static int checkFlush(int[] suitCount, int[] valueCount) {
 		int value=0;
 		for (int i=0; i<4; i++) {
