@@ -192,6 +192,7 @@ public class Bot {
 		bigHand[5]=River.river.get(3);
 		
 		int[] bestHand= findBest(bigHand);
+
 		return getConfidence(bestHand);
 	}
 		
@@ -213,7 +214,9 @@ public class Bot {
 		return getConfidence(bestHand);
 	}
 	
+
 	private static int[] findBest(Card[] bigHand) {
+
 		List<Card[]> possibleHands=findHandCombos(bigHand);
 		ArrayList<int[]> readHands = new ArrayList<>();
 		
@@ -229,7 +232,7 @@ public class Bot {
 				if (readHands.get(i)[1]>readHands.get(indexOfBest)[1]) indexOfBest=i;
 			}
 		}
-		System.out.print(Hand.toString(possibleHands.get(indexOfBest)));
+
 		return readHands.get(indexOfBest);
 	}
 	
@@ -348,7 +351,9 @@ public class Bot {
 	/*
 	 * Will find and return a matrix of all possible combinations of 5 from any amount of cards
 	 */
+
 	private static List<Card[]> findHandCombos(Card[] allCards) {
+
 		int k = 5;                             // sequence length   
 
 		List<Card[]> subsets = new ArrayList<>();
@@ -356,7 +361,10 @@ public class Bot {
 
 		if (k <= allCards.length) {
 		    for (int i = 0; (s[i] = i) < k - 1; i++) {
+
 		    	addIfUnique(allCards, s, subsets);
+
+
 		    }
 		    for(;;) {
 		        int i;
@@ -369,11 +377,14 @@ public class Bot {
 		        for (++i; i < k; i++) {    
 		            s[i] = s[i - 1] + 1; 
 		        }
+
 		        addIfUnique(allCards, s,subsets);
+
 		    }
 		}
 		return subsets;
 	}
+
 	
 	private static void addIfUnique(Card[] allCards, int[] subset, List<Card[]> subsets) {
 	    Set<Card> cardSet = new HashSet<>();
@@ -387,6 +398,7 @@ public class Bot {
 
 		
 	static Card[] getSubset(Card[] input, int[] subset) {
+
 		Card[] result = new Card[subset.length]; 
 		for (int i = 0; i < subset.length; i++) {
 		    result[i] = input[subset[i]];
