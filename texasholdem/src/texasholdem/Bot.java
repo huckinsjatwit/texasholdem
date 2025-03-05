@@ -29,31 +29,32 @@ public class Bot {
 	}
 	
 	//Will run all methods required for the bot to play the round
-	public void play(int subRound) {
+	public String play(int subRound) {
 		int bet=0;
 		if (subRound==0) {
 			Confidence=analyzeStartingHand();
 			Confidence+=analyzeBets();
-			buyIn();
+			return buyIn();
 		}
 		if (subRound==1) {
 			Confidence=analyzeHand2(Game.river);
 			Confidence+=analyzeBets();
 			bet=betAmount();
-			bet(bet);
+			return bet(bet);
 		}
 		if (subRound==2) {
 			Confidence=analyzeHand3(Game.river);
 			Confidence+=analyzeBets();
 			bet=betAmount();
-			bet(bet);
+			return bet(bet);
 		}
 		if (subRound==3) {
 			Confidence=analyzeHand4(Game.river);
 			Confidence+=analyzeBets();
 			bet=betAmount();
-			bet(bet);
+			return bet(bet);
 		}
+		return "";
 	}
 
 	//uses checkCardValueStart to find card's values than add Confidence
@@ -142,20 +143,21 @@ public class Bot {
 		return 0;
 	}
 	
-	private void buyIn() {
+	private String buyIn() {
+		String noBuy=this.name+" doesn't buy in.";
 		
 		if(Confidence >= 10) {
-			bet(20);
+			return bet(20);
 		}else {
 			Stand = false;
 		}
-			
+		return noBuy;
 	}
 	
 	private String bet(int betAmount) {
 		Game.pot.addBet(betAmount);
 		Balance=Balance-betAmount;
-		String bet=this.name+" bets "+betAmount+"chips.";
+		String bet=this.name+" bets "+betAmount+" chips.";
 		return bet;
 	}
 	

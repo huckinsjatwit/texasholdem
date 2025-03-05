@@ -57,6 +57,7 @@ public class Deck {
 		Card[] deal = new Card[numCards];
 		for (int i=0; i<numCards; i++) {
 			deal[i]=new Card(deck[c].getSuit(), deck[c].getValue());
+			deck[c]=dealedCard;
 			c++;
 		}
 		return deal;

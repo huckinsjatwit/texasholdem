@@ -24,7 +24,7 @@ public class Player {
 	
 	//Will run all methods required for the player to play the round
 	public static void play() {
-		
+		makeBet();
 	}
 	
 	public static void makeBet() {
@@ -32,13 +32,13 @@ public class Player {
 		int betAmount;
 		
 		do {
-		System.out.print("Enter amount to bet: ");
-		betAmount = input.nextInt();
-		}while(betAmount > Bal); {
-			System.out.println("Bet amount cannot exceed balance.");
-		}
-			Bal = Bal - betAmount;
-			Pot.addBet(betAmount);
+			System.out.print("Enter amount to bet: ");
+			betAmount = input.nextInt();
+			if (betAmount>Bal) System.out.println("Bet amount cannot exceed balance.");
+		} while(betAmount > Bal);
+			
+		Bal = Bal - betAmount;
+		Pot.addBet(betAmount);
 		}
 	
 	public void makeHand() {

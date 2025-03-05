@@ -26,9 +26,9 @@ public class River {
 		String river="";
 		for (int i=0; i<this.river.size(); i++) {
 			if (i==this.river.size()-1) {
-				river=river+this.river.get(i);
+				river=river+this.river.get(i).toString();
 			} else {
-				river=this.river.get(i).toString()+", ";
+				river=river+this.river.get(i).toString()+", ";
 			}
 		}
 		return river;
