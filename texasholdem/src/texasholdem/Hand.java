@@ -1,7 +1,7 @@
 package texasholdem;
 
 public class Hand {
-	public static Card[] hand;
+	public Card[] hand;
 	public static final String[] hands= {"Royal Flush","Straight Flush", "Four of A Kind","Full House","Flush","Straight","Three of a Kind"
 ,"Two Pair","Pair","High Card"};
 	
@@ -11,9 +11,9 @@ public class Hand {
 		makeHand();
 	}
 	
-	public static Card[] makeHand() {
-	hand = Game.deck.deal(2);
-	return hand;
+	public Card[] makeHand() {
+		this.hand = Game.deck.deal(2);
+		return hand;
 	}
 	
 	public Card getCard(int index) {
