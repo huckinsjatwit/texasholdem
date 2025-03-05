@@ -3,7 +3,6 @@ import java.util.ArrayList;
 
 public class Pot {
 	public static int currentPot = 0;
-	static Balance bet = new Balance();
 	public static ArrayList<Integer> bets = new ArrayList<>();
 	
 	Pot() {
@@ -17,7 +16,7 @@ public class Pot {
 		
 	}
 	
-	//Pays out from currentPot then resets the bets Arratlist
+	//Pays out from currentPot then resets the bets Arraylist
 	
 	public static int payOut() {
 		int pay = currentPot;
@@ -26,8 +25,9 @@ public class Pot {
 		
 		return pay;
 	}
+	
 	public String toString() {
-		String s="Your current balance is: " + currentPot;
+		String s="The current pot is: " + currentPot;
 		return s;
 	}
 
