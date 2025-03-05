@@ -12,13 +12,13 @@ public class River {
 	
 	public void riverCreate() {
 		ArrayList<Card> river = new ArrayList<>();
-		Card[] temp = Deck.deal(3);
+		Card[] temp = Game.deck.deal(3);
 		Collections.addAll(river, temp);		
 		this.river=river;
 	}
 	
 	public void riverAdd() {
-		Card[] temp = Deck.deal(1);
+		Card[] temp = Game.deck.deal(1);
 		Collections.addAll(this.river, temp);		
 	}
 	
