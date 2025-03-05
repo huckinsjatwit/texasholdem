@@ -17,27 +17,26 @@ public class Game {
 		
 	}		
 	
-	public static void currentRound() {
-			System.out.println("Round " + round + "!");
-	}
 	public static void setRound() {
 		round++;
 	}
 	public static void exitGame() {
 		
-		String sure;
+		int sure;
 		Scanner input = new Scanner(System.in);
-		System.out.printf("Are you sure you want to exit? (Y/N): ");
-		sure = input.nextLine();
+		do {
+		System.out.printf("Are you sure you want to exit? (1 for YES, 0 for NO): ");
+		sure = input.nextInt();
 		
-		if(sure == "Y" || sure == "y") {
+		if(sure > 1 || sure < 0) System.out.println("Please enter '1' for YES or '0' for NO");
+		}
+		while(sure > 1 || sure < 0);
+		
+		if(sure == 1) {
 			System.out.println("Goodbye!");
 			System.exit(0);
-		}else if(sure == "N" || sure == "n") {
-			System.out.print("ok");
-			return;
-		}else {
-			System.out.println("Please enter 'Y' for yes or 'N' for no");
+		}else if(sure == 0) {
+			System.out.print("ok :D");
 		}
 		input.close();
 	}
@@ -52,6 +51,8 @@ public class Game {
 			System.out.println(pot.toString());
 			Thread.sleep(1000);
 			System.out.println("Your hand is: " + Player.playerHand);
+			Thread.sleep(1000);
+			System.out.println("Current Round: " + round);
 			Thread.sleep(1000);
 			if (river.river==null) System.out.println("River is empty.");
 			else System.out.println("The river is: "+river.toString());
@@ -141,7 +142,7 @@ public class Game {
 					player.makeHand();
 				} else botsCopy.get(i).makeHand();
 			}
-		
+			
 		
 			//When it hits bot named player, it will trigger the players play method. Otherwise bot's
 			for (int i=0; i<4; i++) {
@@ -162,7 +163,6 @@ public class Game {
 							e.printStackTrace();
 						}
 						System.out.println(botsCopy.get(j).play(i));
-						
 						
 					}
 				
