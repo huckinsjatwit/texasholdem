@@ -1,7 +1,9 @@
 package texasholdem;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
+import java.util.List;
 
 public class Bot {
 	
@@ -9,13 +11,30 @@ public class Bot {
 	private int Confidence=0;
 	public Hand botHand;
 	public boolean Stand = true;
+	public String name;
+	public static List<String> possibleNames= Arrays.asList("Jeremy", "Thomas", "Jack", "Kristian", "Jayvon", "Haley", "Sam", "Ava"); //Add any names you like, just change the bound in the constructor
 	
-	Bot() {
+	Bot(int n) {
+
+		setName(n);
+	}
+	
+	public void setName(int n) {
+		name= possibleNames.get(n);
+	}
+	
+	public void setName(String name) {
+		this.name=name;
 	}
 	
 	public void makeHand() {
 		Hand botHand= new Hand();
 		this.botHand=botHand;
+	}
+	
+	//Will run all methods required for the bot to play the round
+	public static void play() {
+		
 	}
 
 	//uses checkCardValueStart to find card's values than add Confidence
@@ -44,25 +63,25 @@ public class Bot {
 	
 	private static int checkCardValueStart(Card[] hand) {
 	
-	int allConfidence = 0;
-	
-	for(int i = 0; i < 2; i++) {
-		if(hand[i].getValue() == 12) {
-			allConfidence += 10;
-		}else if(hand[i].getValue() >= 9) {
-			allConfidence += 8;
-		}else if(hand[i].getValue() >= 5) {
-			allConfidence += 6;
-		}else if(hand[i].getValue() >= 2) {
-			allConfidence += 4;
-		}else {
-			allConfidence += 2;
+		int allConfidence = 0;
+		
+		for(int i = 0; i < 2; i++) {
+			if(hand[i].getValue() == 12) {
+				allConfidence += 10;
+			}else if(hand[i].getValue() >= 9) {
+				allConfidence += 8;
+			}else if(hand[i].getValue() >= 5) {
+				allConfidence += 6;
+			}else if(hand[i].getValue() >= 2) {
+				allConfidence += 4;
+			}else {
+				allConfidence += 2;
+			}
 		}
+			return allConfidence;
 	}
-		return allConfidence;
-	}
-	
-	//adds confidence to the bot based on what other players bet (CHANGE CONFIDENCE AMOUNT IF NEEDED)
+		
+		//adds confidence to the bot based on what other players bet (CHANGE CONFIDENCE AMOUNT IF NEEDED)
 	
 	private int analyzeBets(ArrayList<Integer> bet) {
 		
@@ -87,20 +106,20 @@ public class Bot {
 	
 	private int betAmount() {
 		
-	Random random = new Random();
-	int bet;
-		
-	if(Confidence >= 1000) return random.nextInt(Balance);
-	if(Confidence >= 900)  return random.nextInt(Balance/2);
-	if(Confidence >= 800) return random.nextInt(Balance/3);
-	if(Confidence >= 700) return random.nextInt(Balance/4);
-	if(Confidence >= 600) return random.nextInt(Balance/5);
-	if(Confidence >= 500) return random.nextInt(Balance/6);
-	if(Confidence >= 400) return random.nextInt(Balance/7);
-	if(Confidence >= 300) return random.nextInt(Balance/8);
-	if(Confidence >= 200) return random.nextInt(Balance/9);
-	if(Confidence >= 100) return random.nextInt(Balance/10);
-	return 0;
+		Random random = new Random();
+		int bet;
+			
+		if (Confidence >= 1000) return random.nextInt((int)(Balance - (Balance * 0.9))) + (int)(Balance * 0.1);
+		if (Confidence >= 900) return random.nextInt((int)(Balance / 2 - (Balance / 2 * 0.9))) + (int)(Balance / 2 * 0.9);
+		if (Confidence >= 800) return random.nextInt((int)(Balance / 3 - (Balance / 3 * 0.9))) + (int)(Balance / 3 * 0.9);
+		if (Confidence >= 700) return random.nextInt((int)(Balance / 4 - (Balance / 4 * 0.9))) + (int)(Balance / 4 * 0.9);
+		if (Confidence >= 600) return random.nextInt((int)(Balance / 5 - (Balance / 5 * 0.9))) + (int)(Balance / 5 * 0.9);
+		if (Confidence >= 500) return random.nextInt((int)(Balance / 6 - (Balance / 6 * 0.9))) + (int)(Balance / 6 * 0.9);
+		if (Confidence >= 400) return random.nextInt((int)(Balance / 7 - (Balance / 7 * 0.9))) + (int)(Balance / 7 * 0.9);
+		if (Confidence >= 300) return random.nextInt((int)(Balance / 8 - (Balance / 8 * 0.9))) + (int)(Balance / 8 * 0.9);
+		if (Confidence >= 200) return random.nextInt((int)(Balance / 9 - (Balance / 9 * 0.9))) + (int)(Balance / 9 * 0.9);
+		if (Confidence >= 100) return random.nextInt((int)(Balance / 10 - (Balance / 10 * 0.9))) + (int)(Balance / 10 * 0.9);
+		return 0;
 	}
 	
 	private void buyin() {
@@ -133,7 +152,7 @@ public class Bot {
 	 * Cards in bot hand + 4 cards in river, will test all card combo possibilities (NEEDS ALGORITHM TO FIND ALL POSSIBILITIES)
 	 */
 	private int analyzeHand3(River River) {
-		Card[] bigHand= new Card[5];
+		Card[] bigHand= new Card[6];
 		bigHand[0]=botHand.getCard(0);
 		bigHand[1]=botHand.getCard(1);
 		bigHand[2]=River.river.get(0);
@@ -146,7 +165,7 @@ public class Bot {
 	 * Cards in bot hand + 5 cards in river, will test all card combo possibilities (NEEDS ALGORITHM TO FIND ALL POSSIBILITIES)
 	 */
 	private int analyzeHand4(River River) {
-		Card[] bigHand= new Card[5];
+		Card[] bigHand= new Card[7];
 		bigHand[0]=botHand.getCard(0);
 		bigHand[1]=botHand.getCard(1);
 		bigHand[2]=River.river.get(0);

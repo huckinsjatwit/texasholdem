@@ -26,5 +26,11 @@ public class Pot {
 		
 		return pay;
 	}
-	
+	public String toString() {
+		String s="Your current balance is: " + currentPot;
+		return s;
+	}
+
 }
+	
+
