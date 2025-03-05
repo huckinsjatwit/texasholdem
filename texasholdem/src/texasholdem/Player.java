@@ -24,6 +24,8 @@ public class Player {
 	
 	//Will run all methods required for the player to play the round
 	public static void play() {
+		//Add code so that everytime a round starts, the player just checks
+		//also nice for code that could count and display rounds
 		makeBet();
 	}
 	
@@ -46,9 +48,39 @@ public class Player {
 		this.playerHand=playerHand;
 	}
 	
-	public int call(ArrayList<Integer> bet) {
+	public static int buyIn() {
+
+		Scanner input = new Scanner(System.in);
+		int ans;
+		do {
+		System.out.print("Would you like to buy in?(1 for yes 0 for no): ");
 		
+		ans = input.nextInt();
+		
+		if(ans > 1 || ans < 0) System.out.println("Please enter a valid input");
+		}
+		while(ans > 1 || ans < 0);
+		
+		if(ans == 1) return 20;
+		if(ans == 0) return 0; 
 		return 0;
+	}
+	
+	
+	public static boolean check() {
+		
+		Scanner input = new Scanner(System.in);
+		int checker;
+		do {
+		System.out.print("Do you check?(1 for YES/0 for NO): ");
+		checker = input.nextInt();
+		
+		if(checker > 1 || checker < 0) System.out.println("Please enter '1' for YES or '0' for NO");
+		}while(checker > 1 || checker < 0);
+		
+		if(checker == 1) return true;
+		if(checker == 0) return false;
+		return false;
 	}
 		
 	public static void main(String[] args) {

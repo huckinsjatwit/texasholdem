@@ -8,7 +8,7 @@ import java.util.List;
 public class Bot {
 	
 	private int Balance=1000;
-	private int Confidence=0;
+	public int Confidence=0;
 	public Hand botHand;
 	public boolean Stand = true;
 	public String name;
