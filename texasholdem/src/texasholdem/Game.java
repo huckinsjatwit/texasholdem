@@ -11,6 +11,8 @@ public class Game {
 	public static Deck deck;
 	public static Pot pot;
 	public static River river;
+	public static int miniRound = 1;
+	public static boolean remove = false;
 
 	
 	Game(){
@@ -82,8 +84,7 @@ public class Game {
 				} else {
 					System.out.println("Error! Number of bots needs to be between 1-7. Try again.");
 					success= false;
-					System.out.printf("How many bots (1-7)?: ");
-					botCount=input.nextInt();
+					
 				}
 			} catch (InputMismatchException ex) {
 				System.out.println("Error! Number has to be an integer. Try again.");
@@ -156,6 +157,7 @@ public class Game {
 						System.out.println();
 						System.out.println(pot.toString());
 						player.play();
+						if(remove = true) botsCopy.remove(j);
 					} else {
 						try {
 							Thread.sleep(1000);
@@ -168,6 +170,8 @@ public class Game {
 					}
 				
 				}
+				miniRound++;
+				Pot.resetBets();
 				shiftLeft(botsCopy);
 			}
 			
