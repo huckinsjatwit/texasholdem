@@ -157,8 +157,8 @@ public class Game {
 						System.out.println();
 						System.out.println(pot.toString());
 						player.play();
-						if(remove = true) botsCopy.remove(j);
-					} else {
+						//if(remove == true) botsCopy.remove(j);
+					}else {
 						try {
 							Thread.sleep(1000);
 						} catch (InterruptedException e) {
@@ -171,6 +171,7 @@ public class Game {
 				
 				}
 				miniRound++;
+				System.out.println(miniRound);
 				Pot.resetBets();
 				shiftLeft(botsCopy);
 			}

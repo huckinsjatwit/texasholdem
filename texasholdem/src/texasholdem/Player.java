@@ -26,17 +26,22 @@ public class Player {
 	
 	public static void play() {
 		//Add code so that everytime a round starts, other than the start of the round, the player has an option to just checks
-		if(Game.miniRound == 1) {
+		/*if(Game.miniRound == 1) {
 			if(buyIn() == 0) {
 				Game.remove = true;
 			}
-		}else if(wantToContinue() == true) {
-			Game.remove = true;
 		}else {
-		makeBet();
+			if(wantToContinue() == true) {
+			Game.remove = true;
+			
+			code is able to have it so buyIn only occurs in first mini round and every other round will ask if the player wants to fold
+			
+			ABOVE CODE WORKS BUT CONFLICTS WITH CURRENT GAME
+			WILL MAKE IT BOTS AFTER CANNOT BET/PLAY THE GAME
+			*/
 		
-		}
-	}
+				makeBet();
+			}
 	
 	public static void makeBet() {
 		Scanner input = new Scanner(System.in);
