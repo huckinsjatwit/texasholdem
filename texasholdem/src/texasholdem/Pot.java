@@ -30,6 +30,12 @@ public class Pot {
 		String s="The current pot is: " + currentPot;
 		return s;
 	}
+	
+	//We'll need to reset the bets ArrayList after each mini-round since we don't want to carry over the lost mini-round's bets
+	
+	public static void resetBets() {
+		bets.clear();
+	}
 
 }
 	
