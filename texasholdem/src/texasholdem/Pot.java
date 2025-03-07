@@ -25,7 +25,34 @@ public class Pot {
 		
 		return pay;
 	}
-	
+	public static int highestBet(ArrayList numberOfBots) {
+		//create an array that refreshes every round with size of players
+		int index=0;
+		int highest = 0;
+		if(numberOfBots.size()<bets.size()){
+			index = bets.size()-(numberOfBots.size()); 
+		}else {
+			index = 0;
+			}
+		int [] currentBets = new int [numberOfBots.size()];
+		for(int i = 0; i<currentBets.length;i++) {
+			currentBets[i] = bets.get(index);		
+			index++;
+		}
+	/* 
+		System.out.println("CurrentBets: ");
+		for(int j = 0; j<currentBets.length; j++) {
+		System.out.print(currentBets[j]+" ");
+		}
+	*/
+		for(int k =0; k < currentBets.length; k++) {
+			if(highest<currentBets[k]) {
+				highest = currentBets[k];
+			}
+		}
+		//System.out.println("Highest: " + highest);
+		return highest;
+	}
 	public String toString() {
 		String s="The current pot is: " + currentPot;
 		return s;

@@ -63,7 +63,6 @@ public class Game {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		
 	}
 		/*
 		 * Allows user to pick number of bots, also creates a bot with the name player, this bot will be detected and start the players turn.
@@ -84,7 +83,6 @@ public class Game {
 				} else {
 					System.out.println("Error! Number of bots needs to be between 1-7. Try again.");
 					success= false;
-					
 				}
 			} catch (InputMismatchException ex) {
 				System.out.println("Error! Number has to be an integer. Try again.");
@@ -120,7 +118,22 @@ public class Game {
         
         array.set(array.size()-1, firstElement);
     }
+	/*
+	 * 	
+	 */
+	public boolean allBetsSame() {
 		
+		 //Call highestBet method to know the highest bet of the round
+		//returns true if all the bets in the array are true
+		
+		return true;
+	}
+	
+	/*
+	 * tracks the highest bet in order to be used in other methods like call() or allBetsSame()
+	 */
+	
+	
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
 		Player player = new Player();
@@ -174,6 +187,7 @@ public class Game {
 				System.out.println(miniRound);
 				Pot.resetBets();
 				shiftLeft(botsCopy);
+				Pot.highestBet(botsCopy);
 			}
 			
 			
