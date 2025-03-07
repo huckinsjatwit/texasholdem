@@ -118,21 +118,6 @@ public class Game {
         
         array.set(array.size()-1, firstElement);
     }
-	/*
-	 * 	
-	 */
-	public boolean allBetsSame() {
-		
-		 //Call highestBet method to know the highest bet of the round
-		//returns true if all the bets in the array are true
-		
-		return true;
-	}
-	
-	/*
-	 * tracks the highest bet in order to be used in other methods like call() or allBetsSame()
-	 */
-	
 	
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
@@ -187,7 +172,7 @@ public class Game {
 				System.out.println(miniRound);
 				Pot.resetBets();
 				shiftLeft(botsCopy);
-				Pot.highestBet(botsCopy);
+
 			}
 			
 			

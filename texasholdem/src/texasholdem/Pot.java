@@ -25,16 +25,17 @@ public class Pot {
 		
 		return pay;
 	}
-	public static int highestBet(ArrayList numberOfBots) {
+	public static boolean allBetsSame(ArrayList numberOfBots) {
 		//create an array that refreshes every round with size of players
 		int index=0;
 		int highest = 0;
+		boolean isSame = true;
 		if(numberOfBots.size()<bets.size()){
 			index = bets.size()-(numberOfBots.size()); 
 		}else {
 			index = 0;
 			}
-		int [] currentBets = new int [numberOfBots.size()];
+		int [] currentBets = new int [numberOfBots.size()];		//uses the bets array to grab the least x amount of bets where x is the number of players still in the round.
 		for(int i = 0; i<currentBets.length;i++) {
 			currentBets[i] = bets.get(index);		
 			index++;
@@ -51,7 +52,12 @@ public class Pot {
 			}
 		}
 		//System.out.println("Highest: " + highest);
-		return highest;
+		for(int l = 0; l<currentBets.length;l++) {
+			if(currentBets[l]!=highest) {
+				isSame = false;
+			}
+		}
+		return isSame;
 	}
 	public String toString() {
 		String s="The current pot is: " + currentPot;
