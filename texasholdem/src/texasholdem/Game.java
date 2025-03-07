@@ -11,6 +11,8 @@ public class Game {
 	public static Deck deck;
 	public static Pot pot;
 	public static River river;
+	public static int miniRound = 1;
+	public static boolean remove = false;
 
 	
 	Game(){
@@ -168,7 +170,8 @@ public class Game {
 						System.out.println();
 						System.out.println(pot.toString());
 						player.play();
-					} else {
+						//if(remove == true) botsCopy.remove(j);
+					}else {
 						try {
 							Thread.sleep(1000);
 						} catch (InterruptedException e) {
@@ -180,6 +183,9 @@ public class Game {
 					}
 				
 				}
+				miniRound++;
+				System.out.println(miniRound);
+				Pot.resetBets();
 				shiftLeft(botsCopy);
 				Pot.highestBet(botsCopy);
 			}
