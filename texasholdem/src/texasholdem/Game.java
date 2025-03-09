@@ -22,6 +22,7 @@ public class Game {
 	public static void setRound() {
 		round++;
 	}
+	
 	public static void exitGame() {
 		
 		int sure;
@@ -152,7 +153,7 @@ public class Game {
 			
 			//Deals to bots and players in their order.
 			for (int i=0; i<botsCopy.size(); i++) {
-				if (botsCopy.get(i).name=="Player") {
+				if (botsCopy.get(i).name == "Player") {
 					player.makeHand();
 				} else botsCopy.get(i).makeHand();
 			}
@@ -185,9 +186,9 @@ public class Game {
 				}
 				miniRound++;
 				System.out.println(miniRound);
-				Pot.resetBets();
+				//Pot.resetBets();
 				shiftLeft(botsCopy);
-				Pot.highestBet(botsCopy);
+				System.out.println(Pot.highestBet(botsCopy));
 			}
 			
 			

@@ -26,7 +26,9 @@ public class Pot {
 		return pay;
 	}
 	public static int highestBet(ArrayList numberOfBots) {
+		
 		//create an array that refreshes every round with size of players
+		
 		int index=0;
 		int highest = 0;
 		if(numberOfBots.size()<bets.size()){

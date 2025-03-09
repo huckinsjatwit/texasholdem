@@ -8,6 +8,7 @@ public class Player {
 	static Pot Money = new Pot();
 	public static int Bal = 1000;
 	public static Hand playerHand;
+	public static int prevBet;
 	
 	
 	Player(){
@@ -52,9 +53,11 @@ public class Player {
 			betAmount = input.nextInt();
 			if (betAmount>Bal) System.out.println("Bet amount cannot exceed balance.");
 		} while(betAmount > Bal);
-			
+		
+		betAmount = prevBet;
 		Bal = Bal - betAmount;
 		Pot.addBet(betAmount);
+		prevBet = betAmount;
 		}
 	
 	public void makeHand() {
@@ -77,6 +80,7 @@ public class Player {
 		if(ans == 1) {
 			Bal = Bal - 20;
 			Pot.addBet(20);
+			prevBet = 20;
 			System.out.println("Player buys in for 20 chips.");
 			return 1;
 		}
@@ -118,6 +122,46 @@ public class Player {
 		if(con == 1) return true;
 		if(con == 0) return false;
 		return true;
+	}
+	
+	//
+	
+	public static int call() {
+		int high = Pot.highestBet(Game.bots);
+		
+		if(prevBet == high) {
+			return 0;
+		}else {
+			int ans = askCall();
+			
+			if(ans == 0) return -1;
+			if(ans == 1) {
+				int diff = high - prevBet;
+				Pot.currentPot += diff;
+				System.out.println("Player calls!");
+				return diff;
+			}
+		}
+		return 0;
+		
+	}
+	
+	//Asks player if they want to call
+	
+	public static int askCall() {
+		Scanner input = new Scanner(System.in);
+		int ans;
+		
+		do {
+		System.out.print("Would you like to call? (1 for YES/0 for NO): ");
+		ans = input.nextInt();
+		
+		if(ans > 1 || ans < 0) System.out.println("Please enter '1' for YES and '0' for NO");
+		}while(ans > 1 || ans < 0);
+		
+		if(ans == 1) return 1;
+		if(ans == 0) return 0;
+		return 0;
 	}
 		
 	public static void main(String[] args) {
