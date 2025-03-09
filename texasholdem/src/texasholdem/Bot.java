@@ -16,6 +16,7 @@ public class Bot {
 	public String name;
 	public static List<String> possibleNames= Arrays.asList("Jeremy", "Thomas", "Jack", "Kristian", "Jayvon", "Haley", "Sam", "Ava", "Todd", "Nicole",
 			"Rick"); //Add any names you like
+	public static int prevBet;
 	
 	Bot(int n) {
 		setName(n);
@@ -126,7 +127,7 @@ public class Bot {
 	}
 	
 	//decides amount to bet based on confidence (if we decide that the person that starts always changes)
-	
+	//Might have to change based on raising rather than saying how much 
 	private int betAmount() {
 		
 		Random random = new Random();
@@ -159,8 +160,36 @@ public class Bot {
 	private String bet(int betAmount) {
 		Game.pot.addBet(betAmount);
 		Balance=Balance-betAmount;
-		String bet=this.name+" bets "+betAmount+" chips.";
+		String bet=this.name + " bets " + betAmount + " chips.";
 		return bet;
+	}
+	
+	private int call() {
+		int high = Pot.highestBet(Game.bots);
+		int minConfidence = 0;
+		
+		if(prevBet == high) {
+			return 0;
+		}else {
+			if(Game.miniRound == 2) minConfidence += 100;
+			if(Game.miniRound == 3) minConfidence += 200;
+			if(Game.miniRound == 4) minConfidence += 300;
+			if(Confidence > minConfidence) {
+				int diff = high - prevBet;
+				Pot.currentPot += diff;
+				System.out.println(name + "calls!");
+				return diff;
+			}else {
+				return -1;
+			}
+		}
+	}
+	
+	private boolean check(ArrayList bets) {
+		
+		
+		
+		return false;
 	}
 	
 	/*
@@ -363,7 +392,6 @@ public class Bot {
 		    for (int i = 0; (s[i] = i) < k - 1; i++) {
 
 		    	addIfUnique(allCards, s, subsets);
-
 
 		    }
 		    for(;;) {
