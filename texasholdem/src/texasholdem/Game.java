@@ -11,6 +11,8 @@ public class Game {
 	public static Deck deck;
 	public static Pot pot;
 	public static River river;
+	public static int miniRound = 1;
+	public static boolean remove = false;
 
 	
 	Game(){
@@ -20,6 +22,7 @@ public class Game {
 	public static void setRound() {
 		round++;
 	}
+	
 	public static void exitGame() {
 		
 		int sure;
@@ -61,7 +64,6 @@ public class Game {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		
 	}
 		/*
 		 * Allows user to pick number of bots, also creates a bot with the name player, this bot will be detected and start the players turn.
@@ -82,8 +84,6 @@ public class Game {
 				} else {
 					System.out.println("Error! Number of bots needs to be between 1-7. Try again.");
 					success= false;
-					System.out.printf("How many bots (1-7)?: ");
-					botCount=input.nextInt();
 				}
 			} catch (InputMismatchException ex) {
 				System.out.println("Error! Number has to be an integer. Try again.");
@@ -119,7 +119,22 @@ public class Game {
         
         array.set(array.size()-1, firstElement);
     }
+	/*
+	 * 	
+	 */
+	public boolean allBetsSame() {
 		
+		 //Call highestBet method to know the highest bet of the round
+		//returns true if all the bets in the array are true
+		
+		return true;
+	}
+	
+	/*
+	 * tracks the highest bet in order to be used in other methods like call() or allBetsSame()
+	 */
+	
+	
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
 		Player player = new Player();
@@ -138,7 +153,7 @@ public class Game {
 			
 			//Deals to bots and players in their order.
 			for (int i=0; i<botsCopy.size(); i++) {
-				if (botsCopy.get(i).name=="Player") {
+				if (botsCopy.get(i).name == "Player") {
 					player.makeHand();
 				} else botsCopy.get(i).makeHand();
 			}
@@ -156,7 +171,8 @@ public class Game {
 						System.out.println();
 						System.out.println(pot.toString());
 						player.play();
-					} else {
+						//if(remove == true) botsCopy.remove(j);
+					}else {
 						try {
 							Thread.sleep(1000);
 						} catch (InterruptedException e) {
@@ -168,7 +184,11 @@ public class Game {
 					}
 				
 				}
+				miniRound++;
+				System.out.println(miniRound);
+				//Pot.resetBets();
 				shiftLeft(botsCopy);
+				System.out.println(Pot.highestBet(botsCopy));
 			}
 			
 			
