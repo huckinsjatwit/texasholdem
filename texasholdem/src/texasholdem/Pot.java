@@ -25,6 +25,7 @@ public class Pot {
 		
 		return pay;
 	}
+
 	public static boolean allBetsSame(ArrayList currentPlayers) {
 		//create an array that refreshes every round with size of players
 		boolean isSame=true;
@@ -46,6 +47,12 @@ public class Pot {
 	 * creates an array of the current round bets using the arraylist of currentPlayers(botCopy) to get the number of current players. 
 	 */
 	public static int[] currentBets(ArrayList currentPlayers) {
+
+  
+	public static int highestBet(ArrayList numberOfBots) {
+		
+		//create an array that refreshes every round with size of players
+
 		int index=0;
 		
 		if(currentPlayers.size()<bets.size()){ 			//uses the bets array to grab the least x amount of bets where x is the number of players still in the round.
