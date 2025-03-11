@@ -123,6 +123,45 @@ public class Game {
         array.set(array.size()-1, firstElement);
     }
 	
+	public static Bot findWinner(ArrayList<Bot> array) {
+		int[] maxHand= {10,0}; 
+		Bot currentWinner=array.get(0);
+		
+		for (int i=0; i<array.size(); i++) {
+			if (array.get(i).name=="Player") { //Checks if the bot is a player to check the players hand rather than placeholder bot
+				if (Bot.findHand(Player.playerHand.hand)[0]<maxHand[0]) {
+					maxHand=Bot.findHand(Player.playerHand.hand);
+					currentWinner=array.get(i);
+				} else if (Bot.findHand(Player.playerHand.hand)[0]==maxHand[0]) {
+					if (Bot.findHand(Player.playerHand.hand)[1]>maxHand[1]) {
+						maxHand=Bot.findHand(Player.playerHand.hand);
+						currentWinner=array.get(i);
+					}
+				}
+				
+			} else if (Bot.findHand(array.get(i).botHand.hand)[0]<maxHand[0]) {
+				maxHand=Bot.findHand(array.get(i).botHand.hand);
+				currentWinner=array.get(i);
+			} else if (Bot.findHand(array.get(i).botHand.hand)[0]==maxHand[0]) {
+				if (Bot.findHand(array.get(i).botHand.hand)[1]>maxHand[1]) {
+					maxHand=Bot.findHand(array.get(i).botHand.hand);
+					currentWinner=array.get(i);
+				}
+			}
+		}
+		return currentWinner;
+	}
+	
+	public void endOfRoundDisplay(ArrayList<Bot> bots) {
+		Bot winner=findWinner(bots);
+		
+		if (winner.name=="Player") {
+			System.out.println("You won!");
+			System.out.println("Your hand was !" );
+		}
+		System.out.println("Bot ");
+	}
+	
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
 		Player player = new Player();
@@ -170,7 +209,7 @@ public class Game {
 						System.out.println(botsCopy.get(j).play(i));
 						
 					}
-				
+;				
 				}
 				miniRound++;
 				System.out.println(miniRound);

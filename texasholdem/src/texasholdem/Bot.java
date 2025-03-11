@@ -9,7 +9,7 @@ import java.util.HashSet;
 
 public class Bot {
 	
-	private int Balance=1000;
+	public int Balance=1000;
 	public int Confidence=0;
 	public Hand botHand;
 	public boolean Stand = true;
@@ -448,6 +448,24 @@ public class Bot {
 		return valueCount;
 	}
 	
+	public static int totalValue(Card[] bigHand) {
+		int total=0;
+		for (int i=0; i<5; i++) {
+			total+=bigHand[i].getValue();
+		}
+		return total;
+	}
+	
+	public static int totalValue(int[] vals) {
+		int total=0;
+		for (int i=0; i<13; i++) {
+			if (vals[i]>0) {
+				total+=Deck.values[i]*vals[i];
+			}
+		}
+		return total;
+	}
+	
 	
 	
 	public static boolean checkRoyalFlush(int[] suitCount, int[] valueCount) {
@@ -466,7 +484,6 @@ public class Bot {
 	    }
 	    
 	    int c = 0;
-	    int value = 0;
 	    while (c < 13 && valueCount[c] != 1) {
 	        c++;
 	    }
@@ -474,9 +491,9 @@ public class Bot {
 	    // Ensure we don't exceed the array bounds (i < 13)
 	    for (int i = c; i < c + 5 && i < 13; i++) {
 	        if (valueCount[i] != 1) return 0;
-	        value += Deck.values[i];
+	        
 	    }
-	    return value;
+	    return totalValue(valueCount);
 	}
 	
 
@@ -485,25 +502,21 @@ public class Bot {
 		for (int i=0; i<4; i++) {
 			if (suitCount[i]!=0 && suitCount[i]!=5) return 0;
 		}
-		for (int i=0; i<13; i++) {
-			if (valueCount[i]==1) value+= Deck.values[i];
-		}
-		return value;
+		
+		return totalValue(valueCount);
 	}
 	
 	public static int checkFullHouse(int[] suitCount, int[] valueCount) {
 		int value=0;
 		for (int i=0; i<13; i++) {
 			if (valueCount[i]!=3 && valueCount[i]!=2 && valueCount[i]!=0) return 0;
-			if (valueCount[i]==3) value+=Deck.values[i]*3;
-			if (valueCount[i]==2) value+=Deck.values[i]*2;
 		}
-		return value;
+		return totalValue(valueCount);
 	}
 	
 	public static int  checkFourOfAKind(int[] suitCount, int[] valueCount) {
 		for (int i=0; i<13; i++) {
-			if (valueCount[i]==4) return Deck.values[i]*4;
+			if (valueCount[i]==4) return totalValue(valueCount);
 		}
 		return 0;
 	}
@@ -519,41 +532,39 @@ public class Bot {
 		}
 		for (int i=c; i<c+5; i++) {
 			if (valueCount[i]!=1) return 0;
-			if (valueCount[i]==1) value+=Deck.values[i];
 		}
-		return value;
+		return totalValue(valueCount);
 	}
 	
 	public static int checkThreeOfAKind(int[] suitCount, int[] valueCount) {
 		for (int i=0; i<13; i++) {
-			if (valueCount[i]==3) return Deck.values[i]*3;
+			if (valueCount[i]==3) return totalValue(valueCount);
 		}
 		return 0;
 	}
 	
 	public static int checkTwoPair(int[] suitCount, int[] valueCount) {
 		int pairCount=0;
-		int value=0;
 		for (int i=0; i<13; i++) {
 			if (valueCount[i]==2) { 
 				pairCount++;
-				value+=Deck.values[i]*2;
+				
 			}
 		}
-		if (pairCount==2) return value;
+		if (pairCount==2) return totalValue(valueCount);
 		return 0;
 	}
 	
 	public static int checkPair(int[] suitCount, int[] valueCount) {
 		for (int i=0; i<13; i++) {
-			if (valueCount[i]==2) return Deck.values[i]*2;
+			if (valueCount[i]==2) return totalValue(valueCount);
 		}
 		return 0;
 	}
 	
 	public static int checkHighCard(int[] suitCount, int[] valueCount) {
 		for (int i=12; i>-1; i--) {
-			if (valueCount[i]>0) return Deck.values[i];
+			if (valueCount[i]>0) return totalValue(valueCount);
 		}
 		return 0;
 	}
