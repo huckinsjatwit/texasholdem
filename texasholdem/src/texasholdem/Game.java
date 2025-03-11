@@ -176,7 +176,7 @@ public class Game {
 				System.out.println(miniRound);
 				//Pot.resetBets();
 				shiftLeft(botsCopy);
-				System.out.println(Pot.highestBet(currentPlayerCount)); //have to pass on an array of the currentBets not the playerCount
+				System.out.println(Pot.highestBet(Pot.currentBets())); //have to pass on an array of the currentBets not the playerCount
 
 			}
 			
