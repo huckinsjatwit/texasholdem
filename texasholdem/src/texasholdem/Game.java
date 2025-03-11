@@ -175,8 +175,10 @@ public class Game {
 				miniRound++;
 				System.out.println(miniRound);
 				//Pot.resetBets();
+				setCurrentPlayerCount(botsCopy);
+				System.out.println(Pot.allBetsSame()); //have to pass on an array of the currentBets not the playerCount
 				shiftLeft(botsCopy);
-				System.out.println(Pot.highestBet(Pot.currentBets())); //have to pass on an array of the currentBets not the playerCount
+				
 
 			}
 			
