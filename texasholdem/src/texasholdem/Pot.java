@@ -26,12 +26,12 @@ public class Pot {
 		return pay;
 	}
 
-	public static boolean allBetsSame(ArrayList currentPlayers) {
+	public static boolean allBetsSame() {
 		//create an array that refreshes every round with size of players
 		boolean isSame=true;
 		
 		//System.out.println("Highest: " + highest);
-		int [] currentBets = currentBets(currentPlayers);				
+		int [] currentBets = currentBets();				
 		int highest = highestBet(currentBets);
 		
 		for(int l = 0; l<currentBets.length;l++) {
@@ -46,21 +46,18 @@ public class Pot {
 	/*
 	 * creates an array of the current round bets using the arraylist of currentPlayers(botCopy) to get the number of current players. 
 	 */
-	public static int[] currentBets(ArrayList currentPlayers) {
-
-  
-	public static int highestBet(ArrayList numberOfBots) {
+	public static int[] currentBets() {
 		
 		//create an array that refreshes every round with size of players
 
 		int index=0;
-		
-		if(currentPlayers.size()<bets.size()){ 			//uses the bets array to grab the least x amount of bets where x is the number of players still in the round.
-			index = bets.size()-(currentPlayers.size()); 		//if the number of current players is greater than or equal to the number of bets in the round, the index would be zero. 
+		int count = Game.currentPlayerCount;
+		if(count<bets.size()){ 			//uses the bets array to grab the least x amount of bets where x is the number of players still in the round.
+			index = bets.size()-(count); 		//if the number of current players is greater than or equal to the number of bets in the round, the index would be zero. 
 		}else {													// As long as the botCopy arraylist updates immediately whenever a player or bot folds, it should work fine
 			index = 0;
 			}
-		int [] currentBets = new int [currentPlayers.size()];  
+		int [] currentBets = new int [count];  
 		for(int i = 0; i<currentBets.length;i++) {
 			currentBets[i] = bets.get(index);		
 			index++;

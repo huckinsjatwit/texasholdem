@@ -13,7 +13,7 @@ public class Game {
 	public static River river;
 	public static int miniRound = 1;
 	public static boolean remove = false;
-
+	public static int currentPlayerCount;
 	
 	Game(){
 		
@@ -21,6 +21,9 @@ public class Game {
 	
 	public static void setRound() {
 		round++;
+	}
+	public static void setCurrentPlayerCount(ArrayList currentPlayers) {
+		currentPlayerCount=currentPlayers.size();
 	}
 	
 	public static void exitGame() {
@@ -173,7 +176,7 @@ public class Game {
 				System.out.println(miniRound);
 				//Pot.resetBets();
 				shiftLeft(botsCopy);
-				System.out.println(Pot.highestBet(botsCopy));
+				System.out.println(Pot.highestBet(Pot.currentBets())); //have to pass on an array of the currentBets not the playerCount
 
 			}
 			

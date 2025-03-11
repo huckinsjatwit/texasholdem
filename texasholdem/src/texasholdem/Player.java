@@ -127,7 +127,7 @@ public class Player {
 	//
 	
 	public static int call() {
-		int high = Pot.highestBet(Game.bots);
+		int high = Pot.highestBet((Pot.currentBets())); //idk why this doesnt work
 		
 		if(prevBet == high) {
 			return 0;

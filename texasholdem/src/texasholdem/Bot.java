@@ -165,7 +165,7 @@ public class Bot {
 	}
 	
 	private int call() {
-		int high = Pot.highestBet(Game.bots);
+		int high = Pot.highestBet(Pot.currentBets());
 		int minConfidence = 0;
 		
 		if(prevBet == high) {
