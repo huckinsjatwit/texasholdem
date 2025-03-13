@@ -17,6 +17,8 @@ public class Bot {
 	public static List<String> possibleNames= Arrays.asList("Jeremy", "Thomas", "Jack", "Kristian", "Jayvon", "Haley", "Sam", "Ava", "Todd", "Nicole",
 			"Rick"); //Add any names you like
 	public static int prevBet;
+	public Card[] currentBest;
+
 	
 	
 	//Good
@@ -29,15 +31,18 @@ public class Bot {
 		name="Player";
 	}
 	
+	//Good
 	public void setName(int n) {
 		name= possibleNames.get(n);
 	}
 	
+	//Good
 	public void makeHand() {
 		Hand botHand= new Hand();
 		this.botHand=botHand;
 	}
 	
+	//Good
 	//Will run all methods required for the bot to play the round
 	public String play(int subRound) {
 		int bet=0;
@@ -47,7 +52,8 @@ public class Bot {
 			return buyIn();
 		}
 		if (subRound>0) {
-			Confidence=analyzeHand(Game.river);
+			this.botHand.combineHand();
+			Confidence=analyzeHand();
 			Confidence+=analyzeBets();
 			bet=betAmount();
 			return bet(bet);
@@ -57,6 +63,7 @@ public class Bot {
 
 	//uses checkCardValueStart to find card's values than add Confidence
 	
+	//Good
 	private int analyzeStartingHand() {
 		
 		int value= checkCardValueStart(botHand.hand);
@@ -82,6 +89,7 @@ public class Bot {
 	
 	//looks at card values and use of Chen formula to figure out hand value (CHANGE CONFIDENCE VALUES IF NEEDED)
 	
+	//Good
 	private static int checkCardValueStart(Card[] hand) {
 	
 		int allConfidence = 0;
@@ -104,8 +112,8 @@ public class Bot {
 		
 		//adds confidence to the bot based on what other players bet (CHANGE CONFIDENCE AMOUNT IF NEEDED)
 	
+	//Good
 	private int analyzeBets() {
-		
 		for(int i = 0; i < Pot.bets.size(); i++) {
 			if(Pot.bets.get(i) < 25) {
 				Confidence += 20;
@@ -123,10 +131,11 @@ public class Bot {
 		return Confidence;
 	}
 	
+	//Good
 	//decides amount to bet based on confidence (if we decide that the person that starts always changes)
 	//Might have to change based on raising rather than saying how much 
 	private int betAmount() {
-		
+
 		Random random = new Random();
 		int bet;
 			
@@ -139,10 +148,11 @@ public class Bot {
 		if (Confidence >= 400) return random.nextInt((int)(Balance * .4 - (Balance * 0.3))) + (int)(Balance / 7 * 0.3);
 		if (Confidence >= 300) return random.nextInt((int)(Balance * .3 - (Balance * 0.2))) + (int)(Balance / 8 * 0.2);
 		if (Confidence >= 200) return random.nextInt((int)(Balance * .2 - (Balance * 0.1))) + (int)(Balance / 9 * 0.1);
-		if (Confidence >= 100) return random.nextInt((int)(Balance * .1 - (Balance * 0.0))) + (int)(Balance / 10 * 0.0);
+		if (Confidence >= 100) return random.nextInt((int)(Balance * .1 - (Balance * 0.0)));
 		return 0;
 	}
 	
+	//Good
 	private String buyIn() {
 		String noBuy=this.name+" doesn't buy in.";
 		
@@ -154,6 +164,7 @@ public class Bot {
 		return noBuy;
 	}
 	
+	//Good
 	private String bet(int betAmount) {
 		Game.pot.addBet(betAmount);
 		Balance=Balance-betAmount;
@@ -161,6 +172,7 @@ public class Bot {
 		return bet;
 	}
 	
+	//Good
 	private int call() {
 		int high = Pot.highestBet(Pot.currentBets());
 		int minConfidence = 0;
@@ -182,6 +194,7 @@ public class Bot {
 		}
 	}
 	
+	//Good
 	private boolean check(ArrayList bets) {
 		
 		
@@ -189,30 +202,22 @@ public class Bot {
 		return false;
 	}
 	
-	public static Card[] combineHand(Hand hand, River River) {
-		int riverSize= River.river.size();
-		Card[] allCards= new Card[2+riverSize];
-		allCards[0]=hand.getCard(0);
-		allCards[1]=hand.getCard(1);
-		for (int i=2; i<riverSize+2; i++) {
-			allCards[i]=River.river.get(i-2);
-		}
-		return allCards;
-	}
-	
+	//Good
 	/*
 	 * Cards in bot hand + the 3 cards in river
 	 */
-	private int analyzeHand(River River) {
-		Card[] bigHand= combineHand(botHand, River);
-		
-		int[] readHand=findHand(bigHand);
+	private int analyzeHand() {
+		int[] readHand= {10,0};
+		if (this.botHand.combinedHand.length>5) {
+			readHand=findHand(findBest(this.botHand.combinedHand));
+		} else if (this.botHand.combinedHand.length==5) {
+			readHand=findHand(this.botHand.combinedHand);
+		}
 		return getConfidence(readHand);
 	}
 	
-
-	public static int[] findBest(Card[] bigHand) {
-
+	//Good
+	public static Card[] findBest(Card[] bigHand) {
 		List<Card[]> possibleHands=findHandCombos(bigHand);
 		ArrayList<int[]> readHands = new ArrayList<>();
 		
@@ -228,11 +233,10 @@ public class Bot {
 				if (readHands.get(i)[1]>readHands.get(indexOfBest)[1]) indexOfBest=i;
 			}
 		}
-
-		return readHands.get(indexOfBest);
+		return possibleHands.get(indexOfBest);
 	}
 	
-	
+	//Good
 	/*
 	 * Takes array from findHand and returns a confidence value
 	 */
@@ -250,6 +254,7 @@ public class Bot {
 		return 0;
 	}
 	
+	//Good
 	/*
 	 * Finds the hand from 5 card array, returns array where first element is representation of what hand (indexes in hands variable in Hand class)
 	 * Second variable is how much the cards are worth
@@ -323,14 +328,7 @@ public class Bot {
 	/*
 	 * Prints what hand it is, and "+ CARD_VALUE", for example "Pair, +18")
 	 */
-	public static String findHandToString(Card[] hand) {
-		int[] readHand=findHand(hand);
-		int handNum=readHand[0];
-		String handAdd=String.valueOf(readHand[1]);
-		String bestHand=(Hand.hands[handNum]+", +"+handAdd);
-		return bestHand;
-	}
-	
+
 	public static String findHandToString(int[] readHand) {
 		int handNum=readHand[0];
 		String handAdd=String.valueOf(readHand[1]);
@@ -390,11 +388,11 @@ public class Bot {
 	private static void addIfUnique(Card[] allCards, int[] subset, List<Card[]> subsets) {
 	    Set<Card> cardSet = new HashSet<>();
 	    for (int i : subset) {
-	        if (!cardSet.add(allCards[i])) {  // check if adding the card is a duplicate
-	            return;  // if duplicate found, do not add this combination
+	        if (!cardSet.add(allCards[i])) {  
+	            return;  
 	        }
 	    }
-	    subsets.add(getSubset(allCards, subset));  // Add only if unique
+	    subsets.add(getSubset(allCards, subset));  
 	}
 
 		
