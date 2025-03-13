@@ -2,7 +2,7 @@ package texasholdem;
 import java.util.Scanner;
 import java.util.ArrayList;
 
-public class Player {
+public class Player  {
 	
 	public static boolean fold = false;
 	static Pot Money = new Pot();
@@ -14,6 +14,7 @@ public class Player {
 	Player(){
 		
 	}
+	
 	public static void standHand(boolean stand) {
 		fold = true;
 	}

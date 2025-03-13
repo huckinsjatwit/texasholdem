@@ -22,6 +22,10 @@ public class Bot {
 		setName(n);
 	}
 	
+	Bot(String n) {
+		name="Player";
+	}
+	
 	public void setName(int n) {
 		name= possibleNames.get(n);
 	}
@@ -39,20 +43,8 @@ public class Bot {
 			Confidence+=analyzeBets();
 			return buyIn();
 		}
-		if (subRound==1) {
-			Confidence=analyzeHand2(Game.river);
-			Confidence+=analyzeBets();
-			bet=betAmount();
-			return bet(bet);
-		}
-		if (subRound==2) {
-			Confidence=analyzeHand3(Game.river);
-			Confidence+=analyzeBets();
-			bet=betAmount();
-			return bet(bet);
-		}
-		if (subRound==3) {
-			Confidence=analyzeHand4(Game.river);
+		if (subRound>0) {
+			Confidence=analyzeHand(Game.river);
 			Confidence+=analyzeBets();
 			bet=betAmount();
 			return bet(bet);
@@ -82,6 +74,8 @@ public class Bot {
 		}
 		return confidence;
 	}
+	
+	
 	
 	//looks at card values and use of Chen formula to figure out hand value (CHANGE CONFIDENCE VALUES IF NEEDED)
 	
@@ -192,55 +186,25 @@ public class Bot {
 		return false;
 	}
 	
+	public static Card[] combineHand(Hand hand, River River) {
+		int riverSize= River.river.size();
+		Card[] allCards= new Card[2+riverSize];
+		allCards[0]=hand.getCard(0);
+		allCards[1]=hand.getCard(1);
+		for (int i=2; i<riverSize+2; i++) {
+			allCards[i]=River.river.get(i-2);
+		}
+		return allCards;
+	}
+	
 	/*
 	 * Cards in bot hand + the 3 cards in river
 	 */
-	private int analyzeHand2(River River) {
-		Card[] bigHand= new Card[5];
-		bigHand[0]=botHand.getCard(0);
-		bigHand[1]=botHand.getCard(1);
-		bigHand[2]=River.river.get(0);
-		bigHand[3]=River.river.get(1);
-		bigHand[4]=River.river.get(2);
+	private int analyzeHand(River River) {
+		Card[] bigHand= combineHand(botHand, River);
 		
 		int[] readHand=findHand(bigHand);
 		return getConfidence(readHand);
-	}
-	
-	
-	/*
-	 * Cards in bot hand + 4 cards in river, will test all card combo possibilities (NEEDS ALGORITHM TO FIND ALL POSSIBILITIES)
-	 */
-	private int analyzeHand3(River River) {
-		Card[] bigHand= new Card[6];
-		bigHand[0]=botHand.getCard(0);
-		bigHand[1]=botHand.getCard(1);
-		bigHand[2]=River.river.get(0);
-		bigHand[3]=River.river.get(1);
-		bigHand[4]=River.river.get(2);
-		bigHand[5]=River.river.get(3);
-		
-		int[] bestHand= findBest(bigHand);
-
-		return getConfidence(bestHand);
-	}
-		
-	
-	/*
-	 * Cards in bot hand + 5 cards in river, will test all card combo possibilities (NEEDS ALGORITHM TO FIND ALL POSSIBILITIES)
-	 */
-	private int analyzeHand4(River River) {
-		Card[] bigHand= new Card[7];
-		bigHand[0]=botHand.getCard(0);
-		bigHand[1]=botHand.getCard(1);
-		bigHand[2]=River.river.get(0);
-		bigHand[3]=River.river.get(1);
-		bigHand[4]=River.river.get(2);
-		bigHand[5]=River.river.get(3);
-		bigHand[6]=River.river.get(4);
-		
-		int[] bestHand= findBest(bigHand);
-		return getConfidence(bestHand);
 	}
 	
 
@@ -390,7 +354,6 @@ public class Bot {
 
 		if (k <= allCards.length) {
 		    for (int i = 0; (s[i] = i) < k - 1; i++) {
-
 		    	addIfUnique(allCards, s, subsets);
 
 		    }
