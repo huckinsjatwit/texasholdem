@@ -9,6 +9,7 @@ public class Player  {
 	public static int Bal = 1000;
 	public static Hand playerHand;
 	public static int prevBet;
+	public Card[] currentBest;
 	
 	
 	Player(){
@@ -163,11 +164,6 @@ public class Player  {
 		if(ans == 1) return 1;
 		if(ans == 0) return 0;
 		return 0;
-	}
-	
-	public static int[] bestHand(Hand hand, River river) {
-		Card[] bigHand=Bot.combineHand(hand, river);
-		return Bot.findBest(bigHand);
 	}
 		
 	public static void main(String[] args) {
