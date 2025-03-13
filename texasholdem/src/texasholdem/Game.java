@@ -129,17 +129,17 @@ public class Game {
 		
 		for (int i=0; i<array.size(); i++) {
 			if (array.get(i).name=="Player") { //Checks if the bot is a player to check the players hand rather than placeholder bot
-				if (Bot.findHand(Player.playerHand.hand)[0]<maxHand[0]) {
-					maxHand=Bot.findHand(Player.playerHand.hand);
+				if (Player.bestHand(Player.playerHand, Game.river)[0]<maxHand[0]) {
+					maxHand=Player.bestHand(Player.playerHand, Game.river);
 					currentWinner=array.get(i);
-				} else if (Bot.findHand(Player.playerHand.hand)[0]==maxHand[0]) {
-					if (Bot.findHand(Player.playerHand.hand)[1]>maxHand[1]) {
-						maxHand=Bot.findHand(Player.playerHand.hand);
+				} else if (Player.bestHand(Player.playerHand, Game.river)[0]==maxHand[0]) {
+					if (Player.bestHand(Player.playerHand, Game.river)[1]>maxHand[1]) {
+						maxHand=Player.bestHand(Player.playerHand, Game.river);
 						currentWinner=array.get(i);
 					}
 				}
 				
-			} else if (Bot.findHand(array.get(i).botHand.hand)[0]<maxHand[0]) {
+			} else if (Bot.findBest(Bot.combineHand(array.get(i).botHand, Game.river))[0]<maxHand[0]) {
 				maxHand=Bot.findHand(array.get(i).botHand.hand);
 				currentWinner=array.get(i);
 			} else if (Bot.findHand(array.get(i).botHand.hand)[0]==maxHand[0]) {
@@ -149,17 +149,27 @@ public class Game {
 				}
 			}
 		}
+		if (currentWinner.name=="Player") {
+			Player.Bal+=Pot.payOut();
+		} else currentWinner.Balance+=Pot.payOut();
 		return currentWinner;
 	}
 	
-	public void endOfRoundDisplay(ArrayList<Bot> bots) {
+	public static void endOfRoundDisplay(ArrayList<Bot> bots) {
 		Bot winner=findWinner(bots);
 		
 		if (winner.name=="Player") {
-			System.out.println("You won!");
-			System.out.println("Your hand was !" );
+			String hand=Bot.findHandToString(Player.bestHand(Player.playerHand, Game.river));
+			System.out.println("You won this round!");
+			System.out.printf("Your hand was %s!%n",hand);
+			System.out.printf("You win the pot of %d!%n",Pot.currentPot);
+			System.out.printf("Your new balance is %d!%n",Player.Bal);
+		} else {
+			String hand=Bot.findHandToString(Player.bestHand(winner.botHand,Game.river));
+			System.out.printf("Bot %s won this round!%n",winner.name);
+			System.out.printf("Their hand was %s!%n", hand);
+			System.out.printf("They win the pot of %d!%n",Pot.currentPot);
 		}
-		System.out.println("Bot ");
 	}
 	
 	public static void main(String[] args) {
@@ -220,7 +230,7 @@ public class Game {
 			}
 			
 			
-			display();
+			endOfRoundDisplay(bots);
 			System.out.printf("Type 1 to continue to next round, 0 to quit. ");
 			if (input.nextInt()==0) {
 				exitGame();

@@ -164,6 +164,11 @@ public class Player  {
 		if(ans == 0) return 0;
 		return 0;
 	}
+	
+	public static int[] bestHand(Hand hand, River river) {
+		Card[] bigHand=Bot.combineHand(hand, river);
+		return Bot.findBest(bigHand);
+	}
 		
 	public static void main(String[] args) {
 		

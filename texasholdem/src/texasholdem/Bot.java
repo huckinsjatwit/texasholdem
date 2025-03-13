@@ -18,10 +18,13 @@ public class Bot {
 			"Rick"); //Add any names you like
 	public static int prevBet;
 	
+	
+	//Good
 	Bot(int n) {
 		setName(n);
 	}
 	
+	//Not used
 	Bot(String n) {
 		name="Player";
 	}
@@ -208,7 +211,7 @@ public class Bot {
 	}
 	
 
-	private static int[] findBest(Card[] bigHand) {
+	public static int[] findBest(Card[] bigHand) {
 
 		List<Card[]> possibleHands=findHandCombos(bigHand);
 		ArrayList<int[]> readHands = new ArrayList<>();
@@ -322,6 +325,13 @@ public class Bot {
 	 */
 	public static String findHandToString(Card[] hand) {
 		int[] readHand=findHand(hand);
+		int handNum=readHand[0];
+		String handAdd=String.valueOf(readHand[1]);
+		String bestHand=(Hand.hands[handNum]+", +"+handAdd);
+		return bestHand;
+	}
+	
+	public static String findHandToString(int[] readHand) {
 		int handNum=readHand[0];
 		String handAdd=String.valueOf(readHand[1]);
 		String bestHand=(Hand.hands[handNum]+", +"+handAdd);
