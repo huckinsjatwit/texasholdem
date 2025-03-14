@@ -14,6 +14,7 @@ public class Game {
 	public static int miniRound = 1;
 	public static boolean remove = false;
 	public static int currentPlayerCount;
+	public static Player player;
 	
 	Game(){
 		
@@ -56,7 +57,7 @@ public class Game {
 			Thread.sleep(1000);
 			System.out.println(pot.toString());
 			Thread.sleep(1000);
-			System.out.println("Your hand is: " + Player.playerHand);
+			System.out.println("Your hand is: " + player.playerHand);
 			Thread.sleep(1000);
 			System.out.println("Current Round: " + round);
 			Thread.sleep(1000);
@@ -129,22 +130,22 @@ public class Game {
 		
 		for (int i=0; i<array.size(); i++) {
 			if (array.get(i).name=="Player") { //Checks if the bot is a player to check the players hand rather than placeholder bot
-				if (Player.bestHand(Player.playerHand, Game.river)[0]<maxHand[0]) {
-					maxHand=Player.bestHand(Player.playerHand, Game.river);
+				if (player.currentBest[0]<maxHand[0]) {
+					maxHand=player.currentBest;
 					currentWinner=array.get(i);
-				} else if (Player.bestHand(Player.playerHand, Game.river)[0]==maxHand[0]) {
-					if (Player.bestHand(Player.playerHand, Game.river)[1]>maxHand[1]) {
-						maxHand=Player.bestHand(Player.playerHand, Game.river);
+				} else if (player.currentBest[0]==maxHand[0]) {
+					if (player.currentBest[1]>maxHand[1]) {
+						maxHand=player.currentBest;
 						currentWinner=array.get(i);
 					}
 				}
 				
-			} else if (Bot.findBest(Bot.combineHand(array.get(i).botHand, Game.river))[0]<maxHand[0]) {
-				maxHand=Bot.findHand(array.get(i).botHand.hand);
+			} else if (Bot.findHand(array.get(i).currentBest)[0]<maxHand[0]) {
+				maxHand=Bot.findHand(array.get(i).currentBest);
 				currentWinner=array.get(i);
-			} else if (Bot.findHand(array.get(i).botHand.hand)[0]==maxHand[0]) {
-				if (Bot.findHand(array.get(i).botHand.hand)[1]>maxHand[1]) {
-					maxHand=Bot.findHand(array.get(i).botHand.hand);
+			} else if (Bot.findHand(array.get(i).currentBest)[0]==maxHand[0]) {
+				if (Bot.findHand(array.get(i).currentBest)[1]>maxHand[1]) {
+					maxHand=Bot.findHand(array.get(i).currentBest);
 					currentWinner=array.get(i);
 				}
 			}
@@ -159,13 +160,13 @@ public class Game {
 		Bot winner=findWinner(bots);
 		
 		if (winner.name=="Player") {
-			String hand=Bot.findHandToString(Player.bestHand(Player.playerHand, Game.river));
+			String hand=Bot.findHandToString(player.currentBest);
 			System.out.println("You won this round!");
 			System.out.printf("Your hand was %s!%n",hand);
 			System.out.printf("You win the pot of %d!%n",Pot.currentPot);
-			System.out.printf("Your new balance is %d!%n",Player.Bal);
+			System.out.printf("Your new balance is %d!%n",player.Bal);
 		} else {
-			String hand=Bot.findHandToString(Player.bestHand(winner.botHand,Game.river));
+			String hand=Bot.findHandToString(Bot.findHand(winner.currentBest));
 			System.out.printf("Bot %s won this round!%n",winner.name);
 			System.out.printf("Their hand was %s!%n", hand);
 			System.out.printf("They win the pot of %d!%n",Pot.currentPot);
@@ -174,7 +175,7 @@ public class Game {
 	
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
-		Player player = new Player();
+		player = new Player();
 	
 		setBots();
 		Collections.shuffle(bots); //Shuffles order for first round

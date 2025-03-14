@@ -38,8 +38,7 @@ public class Bot {
 	
 	//Good
 	public void makeHand() {
-		Hand botHand= new Hand();
-		this.botHand=botHand;
+		this.botHand=new Hand();
 	}
 	
 	//Good
@@ -53,6 +52,7 @@ public class Bot {
 		}
 		if (subRound>0) {
 			this.botHand.combineHand();
+			setCurrentBest();
 			Confidence=analyzeHand();
 			Confidence+=analyzeBets();
 			bet=betAmount();
@@ -208,19 +208,19 @@ public class Bot {
 	 */
 	private int analyzeHand() {
 		int[] readHand= {10,0};
-		if (this.botHand.combinedHand.length>5) {
-			readHand=findHand(findBest(this.botHand.combinedHand));
-		} else if (this.botHand.combinedHand.length==5) {
-			readHand=findHand(this.botHand.combinedHand);
-		}
+		readHand=findHand(currentBest);
 		return getConfidence(readHand);
 	}
 	
 	//Good
 	public static Card[] findBest(Card[] bigHand) {
+		if (bigHand.length==5) return bigHand;
 		List<Card[]> possibleHands=findHandCombos(bigHand);
 		ArrayList<int[]> readHands = new ArrayList<>();
 		
+		 if (possibleHands.isEmpty()) {
+		        throw new IllegalStateException("No valid 5-card combinations found. Check the input array.");
+		    }
 		int lowest=10;
 		int indexOfBest=0;
 		for (int i=0; i<possibleHands.size(); i++) {
@@ -234,6 +234,10 @@ public class Bot {
 			}
 		}
 		return possibleHands.get(indexOfBest);
+	}
+	
+	private void setCurrentBest() {
+		this.currentBest=findBest(this.botHand.combinedHand);
 	}
 	
 	//Good
@@ -354,8 +358,9 @@ public class Bot {
 	 */
 
 	private static List<Card[]> findHandCombos(Card[] allCards) {
-
-		int k = 5;                             // sequence length   
+		
+		
+		int k = 5;                             
 
 		List<Card[]> subsets = new ArrayList<>();
 		int[] s = new int[k];                  

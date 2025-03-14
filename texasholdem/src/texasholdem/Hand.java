@@ -22,6 +22,11 @@ public class Hand {
 	}
 	
 	public void combineHand() {
+		
+		if (this.hand==null || this.hand.length<2) throw new IllegalStateException("Bot's hand is not properly intialized");
+		if (Game.river==null || Game.river.river==null) throw new IllegalStateException("River is not properly intialized");
+		if (Game.river.river.size()<3) throw new IllegalStateException("River <3 cards.");
+		
 		int riverSize= Game.river.river.size();
 		Card[] allCards= new Card[2+riverSize];
 		allCards[0]=this.hand[0];

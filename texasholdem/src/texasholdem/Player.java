@@ -1,15 +1,16 @@
 package texasholdem;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Player  {
 	
 	public static boolean fold = false;
 	static Pot Money = new Pot();
 	public static int Bal = 1000;
-	public static Hand playerHand;
+	public Hand playerHand;
 	public static int prevBet;
-	public Card[] currentBest;
+	public int[] currentBest;
 	
 	
 	Player(){
@@ -27,7 +28,7 @@ public class Player  {
 	
 	//Will run all methods required for the player to play the round
 	
-	public static void play() {
+	public void play() {
 		//Add code so that everytime a round starts, other than the start of the round, the player has an option to just checks
 		/*if(Game.miniRound == 1) {
 			if(buyIn() == 0) {
@@ -42,9 +43,17 @@ public class Player  {
 			ABOVE CODE WORKS BUT CONFLICTS WITH CURRENT GAME
 			WILL MAKE IT BOTS AFTER CANNOT BET/PLAY THE GAME
 			*/
-		
+				if (Game.miniRound>1) { 
+					playerHand.combineHand();
+					setCurrentBest();
+				}
 				makeBet();
 			}
+	
+	private void setCurrentBest() {
+		this.currentBest=Bot.findHand(Bot.findBest(playerHand.combinedHand));
+
+	}
 	
 	public static void makeBet() {
 		Scanner input = new Scanner(System.in);
