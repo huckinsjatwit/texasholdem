@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Random;
 import java.util.InputMismatchException;
 
+
+
 public class Game {
 	public static int round = 1;
 	public static ArrayList<Bot> bots;
@@ -16,9 +18,11 @@ public class Game {
 	public static int currentPlayerCount;
 	public static Player player;
 	
-	Game(){
-		
-	}		
+	private runGame runGame;
+	
+	public Game(runGame runGame){
+		this.runGame=runGame;
+	}
 	
 	public static void setRound() {
 		round++;
@@ -124,6 +128,7 @@ public class Game {
         array.set(array.size()-1, firstElement);
     }
 	
+
 	public static Bot findWinner(ArrayList<Bot> array) {
 		int[] maxHand= {10,0}; 
 		Bot currentWinner=array.get(0);
@@ -174,6 +179,9 @@ public class Game {
 	}
 	
 	public static void main(String[] args) {
+
+	public static void startGameLogic() {
+
 		Scanner input = new Scanner(System.in);
 		player = new Player();
 	
