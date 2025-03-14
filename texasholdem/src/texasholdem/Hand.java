@@ -4,6 +4,7 @@ public class Hand {
 	public Card[] hand;
 	public static final String[] hands= {"Royal Flush","Straight Flush", "Four of A Kind","Full House","Flush","Straight","Three of a Kind"
 ,"Two Pair","Pair","High Card"};
+	public Card[] combinedHand;
 	
 	
 	
@@ -19,7 +20,22 @@ public class Hand {
 	public Card getCard(int index) {
 		return hand[index];
 	}
-
+	
+	public void combineHand() {
+		
+		if (this.hand==null || this.hand.length<2) throw new IllegalStateException("Bot's hand is not properly intialized");
+		if (Game.river==null || Game.river.river==null) throw new IllegalStateException("River is not properly intialized");
+		if (Game.river.river.size()<3) throw new IllegalStateException("River <3 cards.");
+		
+		int riverSize= Game.river.river.size();
+		Card[] allCards= new Card[2+riverSize];
+		allCards[0]=this.hand[0];
+		allCards[1]=hand[1];
+		for (int i=2; i<riverSize+2; i++) {
+			allCards[i]=Game.river.river.get(i-2);
+		}
+		this.combinedHand=allCards;
+	}
 	/*
 	 * Prints object of hand (2 card, what each player holds)
 	 */
@@ -42,6 +58,7 @@ public class Hand {
 		}
 		return handString;
 	}
+	
 	
 	public static void main (String[] args) {
 	

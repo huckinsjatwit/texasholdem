@@ -16,6 +16,7 @@ public class Game {
 	public static int miniRound = 1;
 	public static boolean remove = false;
 	public static int currentPlayerCount;
+	public static Player player;
 	
 	private runGame runGame;
 	
@@ -60,7 +61,7 @@ public class Game {
 			Thread.sleep(1000);
 			System.out.println(pot.toString());
 			Thread.sleep(1000);
-			System.out.println("Your hand is: " + Player.playerHand);
+			System.out.println("Your hand is: " + player.playerHand);
 			Thread.sleep(1000);
 			System.out.println("Current Round: " + round);
 			Thread.sleep(1000);
@@ -127,10 +128,62 @@ public class Game {
         array.set(array.size()-1, firstElement);
     }
 	
-	public static void startGameLogic() {
+
+	public static Bot findWinner(ArrayList<Bot> array) {
+		int[] maxHand= {10,0}; 
+		Bot currentWinner=array.get(0);
 		
+		for (int i=0; i<array.size(); i++) {
+			if (array.get(i).name=="Player") { //Checks if the bot is a player to check the players hand rather than placeholder bot
+				if (player.currentBest[0]<maxHand[0]) {
+					maxHand=player.currentBest;
+					currentWinner=array.get(i);
+				} else if (player.currentBest[0]==maxHand[0]) {
+					if (player.currentBest[1]>maxHand[1]) {
+						maxHand=player.currentBest;
+						currentWinner=array.get(i);
+					}
+				}
+				
+			} else if (Bot.findHand(array.get(i).currentBest)[0]<maxHand[0]) {
+				maxHand=Bot.findHand(array.get(i).currentBest);
+				currentWinner=array.get(i);
+			} else if (Bot.findHand(array.get(i).currentBest)[0]==maxHand[0]) {
+				if (Bot.findHand(array.get(i).currentBest)[1]>maxHand[1]) {
+					maxHand=Bot.findHand(array.get(i).currentBest);
+					currentWinner=array.get(i);
+				}
+			}
+		}
+		if (currentWinner.name=="Player") {
+			Player.Bal+=Pot.payOut();
+		} else currentWinner.Balance+=Pot.payOut();
+		return currentWinner;
+	}
+	
+	public static void endOfRoundDisplay(ArrayList<Bot> bots) {
+		Bot winner=findWinner(bots);
+		
+		if (winner.name=="Player") {
+			String hand=Bot.findHandToString(player.currentBest);
+			System.out.println("You won this round!");
+			System.out.printf("Your hand was %s!%n",hand);
+			System.out.printf("You win the pot of %d!%n",Pot.currentPot);
+			System.out.printf("Your new balance is %d!%n",player.Bal);
+		} else {
+			String hand=Bot.findHandToString(Bot.findHand(winner.currentBest));
+			System.out.printf("Bot %s won this round!%n",winner.name);
+			System.out.printf("Their hand was %s!%n", hand);
+			System.out.printf("They win the pot of %d!%n",Pot.currentPot);
+		}
+	}
+	
+	public static void main(String[] args) {
+
+	public static void startGameLogic() {
+
 		Scanner input = new Scanner(System.in);
-		Player player = new Player();
+		player = new Player();
 	
 		setBots();
 		Collections.shuffle(bots); //Shuffles order for first round
@@ -175,7 +228,7 @@ public class Game {
 						System.out.println(botsCopy.get(j).play(i));
 						
 					}
-				
+;				
 				}
 				miniRound++;
 				System.out.println(miniRound);
@@ -186,7 +239,7 @@ public class Game {
 			}
 			
 			
-			display();
+			endOfRoundDisplay(bots);
 			System.out.printf("Type 1 to continue to next round, 0 to quit. ");
 			if (input.nextInt()==0) {
 				exitGame();

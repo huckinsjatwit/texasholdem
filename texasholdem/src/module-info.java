@@ -9,4 +9,5 @@ module texasholdem {
 	requires javafx.fxml;
 	
 	exports texasholdem;
+
 }
