@@ -5,20 +5,21 @@ import java.util.Collections;
 
 public class River {
 	public ArrayList<Card> river;
+	private Game game;
 	
-	River() {
-		
+	River(Game game) {
+		this.game=game;
 	}
 	
 	public void riverCreate() {
 		ArrayList<Card> river = new ArrayList<>();
-		Card[] temp = Game.deck.deal(3);
+		Card[] temp = game.deck.deal(3);
 		Collections.addAll(river, temp);		
 		this.river=river;
 	}
 	
 	public void riverAdd() {
-		Card[] temp = Game.deck.deal(1);
+		Card[] temp = game.deck.deal(1);
 		Collections.addAll(this.river, temp);		
 	}
 	

@@ -1,17 +1,18 @@
 package texasholdem;
 
-import javafx.scene.image.Image;
+//import javafx.scene.image.Image;
+//import java.io.InputStream;
 
 public class Card {
 	private final String suit;
 	private int value;
-	private Image image;
+	//private Image image;
 	
 	
 	Card(String suit, int value) {
 		this.suit=suit;
 		this.value=value;
-		this.image=createImage();
+		//this.image=createImage();
 	}
 	
 	public int getValue() {
@@ -22,9 +23,9 @@ public class Card {
 		return suit;
 	}
 	
-	public Image getImage() {
-		return image;
-	}
+	//public Image getImage() {
+	//	return image;
+	//}
 	
 	public String toString() {
 		if (this.value<11) return (this.value+" of "+this.suit);
@@ -35,22 +36,39 @@ public class Card {
 		else return "";
 	}
 	
-	public Image createImage() {
-		String path= "/sources/cards/"+imageName();
-		return new Image(getClass().getResourceAsStream(path));
-	}
+	//public Image createImage() {
+		//String path= "/"+imageName();
+//		try {
+	//		InputStream stream= getClass().getResourceAsStream(path);
+		//	if (stream == null) {
+			//	System.err.print("Couldn't find image");
+				//return new Image("/card_placeholder.png");
+//			}
+	//		return new Image(stream);
+		//} catch (Exception e){
+		//	return new Image("/card_placeholder.png");
+	//	}
+	//}
 	
-	public String imageName() {
-		String valueName;
+	//public String imageName() {
+		//String valueName;
 		
-		switch(this.value) {
+	//	switch(this.value) {
 		
-		case (11): valueName="Jack";
-		case (12): valueName="Queen";
-		case (13): valueName="King";
-		case (14): valueName="Ace";
-		default: valueName= String.valueOf(this.value);
-		}
-		return (valueName+"_of_"+this.suit);
-	}
+	//	case (11): 
+		//	valueName="jack";
+			//break;
+	//	case (12): 
+	//		valueName="queen";
+	//		break;
+		//case (13): 
+		//	valueName="king";
+	//		break;
+		//case (14): 
+	//		valueName="ace";
+	//		break;
+	//	default: valueName= String.valueOf(this.value);
+		//}
+		//return (valueName+"_of_"+this.suit+".png");
+	//}
 }

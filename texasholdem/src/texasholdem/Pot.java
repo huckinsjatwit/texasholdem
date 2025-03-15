@@ -2,15 +2,17 @@ package texasholdem;
 import java.util.ArrayList;
 
 public class Pot {
-	public static int currentPot = 0;
-	public static ArrayList<Integer> bets = new ArrayList<>();
+	public int currentPot = 0;
+	public ArrayList<Integer> bets = new ArrayList<>();
+	private Game game;
 	
-	Pot() {
+	Pot(Game game) {
+		this.game=game;
 	}
 	
 	// adds bets to ArrayList and currentPot
 	
-	public static void addBet(int bet) {
+	public void addBet(int bet) {
 		bets.add(bet);
 		currentPot += bet;
 		
@@ -18,7 +20,7 @@ public class Pot {
 	
 	//Pays out from currentPot then resets the bets Arraylist
 	
-	public static int payOut() {
+	public int payOut() {
 		int pay = currentPot;
 		currentPot = 0;
 		bets.clear();
@@ -26,7 +28,7 @@ public class Pot {
 		return pay;
 	}
 
-	public static boolean allBetsSame() {
+	public boolean allBetsSame() {
 		//create an array that refreshes every round with size of players
 		boolean isSame=true;
 		
@@ -46,12 +48,12 @@ public class Pot {
 	/*
 	 * creates an array of the current round bets using the arraylist of currentPlayers(botCopy) to get the number of current players. 
 	 */
-	public static int[] currentBets() {
+	public int[] currentBets() {
 		
 		//create an array that refreshes every round with size of players
 
 		int index=0;
-		int count = Game.currentPlayerCount;
+		int count = game.currentPlayerCount;
 		if(count<bets.size()){ 			//uses the bets array to grab the least x amount of bets where x is the number of players still in the round.
 			index = bets.size()-(count); 		//if the number of current players is greater than or equal to the number of bets in the round, the index would be zero. 
 		}else {													// As long as the botCopy arraylist updates immediately whenever a player or bot folds, it should work fine
@@ -93,7 +95,7 @@ public class Pot {
 	
 	//We'll need to reset the bets ArrayList after each mini-round since we don't want to carry over the lost mini-round's bets
 	
-	public static void resetBets() {
+	public void resetBets() {
 		bets.clear();
 	}
 

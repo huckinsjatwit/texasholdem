@@ -6,15 +6,16 @@ import java.util.Arrays;
 public class Player  {
 	
 	public static boolean fold = false;
-	static Pot Money = new Pot();
+	//static Pot Money = new Pot();
 	public static int Bal = 1000;
 	public Hand playerHand;
 	public static int prevBet;
 	public int[] currentBest;
+	private Game game;
 	
 	
-	Player(){
-		
+	Player(Game game){
+		this.game=game;
 	}
 	
 	public static void standHand(boolean stand) {
@@ -43,7 +44,7 @@ public class Player  {
 			ABOVE CODE WORKS BUT CONFLICTS WITH CURRENT GAME
 			WILL MAKE IT BOTS AFTER CANNOT BET/PLAY THE GAME
 			*/
-				if (Game.miniRound>1) { 
+				if (game.miniRound>1) { 
 					playerHand.combineHand();
 					setCurrentBest();
 				}
@@ -55,7 +56,7 @@ public class Player  {
 
 	}
 	
-	public static void makeBet() {
+	public void makeBet() {
 		Scanner input = new Scanner(System.in);
 		int betAmount;
 		
@@ -67,16 +68,16 @@ public class Player  {
 		
 		betAmount = prevBet;
 		Bal = Bal - betAmount;
-		Pot.addBet(betAmount);
+		game.pot.addBet(betAmount);
 		prevBet = betAmount;
 		}
 	
 	public void makeHand() {
-		Hand playerHand= new Hand();
+		Hand playerHand= new Hand(game);
 		this.playerHand=playerHand;
 	}
 	
-	public static int buyIn() {
+	public int buyIn() {
 
 		Scanner input = new Scanner(System.in);
 		int ans;
@@ -90,7 +91,7 @@ public class Player  {
 		
 		if(ans == 1) {
 			Bal = Bal - 20;
-			Pot.addBet(20);
+			game.pot.addBet(20);
 			prevBet = 20;
 			System.out.println("Player buys in for 20 chips.");
 			return 1;
@@ -137,8 +138,8 @@ public class Player  {
 	
 	//
 	
-	public static int call() {
-		int high = Pot.highestBet((Pot.currentBets())); //idk why this doesnt work
+	public int call() {
+		int high = Pot.highestBet((game.pot.currentBets())); //idk why this doesnt work
 		
 		if(prevBet == high) {
 			return 0;
@@ -148,7 +149,7 @@ public class Player  {
 			if(ans == 0) return -1;
 			if(ans == 1) {
 				int diff = high - prevBet;
-				Pot.currentPot += diff;
+				game.pot.currentPot += diff;
 				System.out.println("Player calls!");
 				return diff;
 			}
@@ -156,6 +157,7 @@ public class Player  {
 		return 0;
 		
 	}
+	
 	
 	//Asks player if they want to call
 	

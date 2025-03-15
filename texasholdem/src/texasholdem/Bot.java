@@ -18,12 +18,14 @@ public class Bot {
 			"Rick"); //Add any names you like
 	public static int prevBet;
 	public Card[] currentBest;
+	private Game game;
 
 	
 	
 	//Good
-	Bot(int n) {
+	Bot(int n, Game game) {
 		setName(n);
+		this.game=game;
 	}
 	
 	//Not used
@@ -38,7 +40,7 @@ public class Bot {
 	
 	//Good
 	public void makeHand() {
-		this.botHand=new Hand();
+		this.botHand=new Hand(game);
 	}
 	
 	//Good
@@ -114,14 +116,14 @@ public class Bot {
 	
 	//Good
 	private int analyzeBets() {
-		for(int i = 0; i < Pot.bets.size(); i++) {
-			if(Pot.bets.get(i) < 25) {
+		for(int i = 0; i < game.pot.bets.size(); i++) {
+			if(game.pot.bets.get(i) < 25) {
 				Confidence += 20;
-			}else if(Pot.bets.get(i) < 50){
+			}else if(game.pot.bets.get(i) < 50){
 				Confidence += 15;
-			}else if(Pot.bets.get(i) < 75) {
+			}else if(game.pot.bets.get(i) < 75) {
 				Confidence += 10;
-			}else if(Pot.bets.get(i) < 100) {
+			}else if(game.pot.bets.get(i) < 100) {
 				Confidence += 5;
 			}else {
 				return Confidence;
@@ -166,7 +168,7 @@ public class Bot {
 	
 	//Good
 	private String bet(int betAmount) {
-		Game.pot.addBet(betAmount);
+		game.pot.addBet(betAmount);
 		Balance=Balance-betAmount;
 		String bet=this.name + " bets " + betAmount + " chips.";
 		return bet;
@@ -174,18 +176,18 @@ public class Bot {
 	
 	//Good
 	private int call() {
-		int high = Pot.highestBet(Pot.currentBets());
+		int high = Pot.highestBet(game.pot.currentBets());
 		int minConfidence = 0;
 		
 		if(prevBet == high) {
 			return 0;
 		}else {
-			if(Game.miniRound == 2) minConfidence += 100;
-			if(Game.miniRound == 3) minConfidence += 200;
-			if(Game.miniRound == 4) minConfidence += 300;
+			if(game.miniRound == 2) minConfidence += 100;
+			if(game.miniRound == 3) minConfidence += 200;
+			if(game.miniRound == 4) minConfidence += 300;
 			if(Confidence > minConfidence) {
 				int diff = high - prevBet;
-				Pot.currentPot += diff;
+				game.pot.currentPot += diff;
 				System.out.println(name + "calls!");
 				return diff;
 			}else {

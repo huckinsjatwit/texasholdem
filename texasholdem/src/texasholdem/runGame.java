@@ -19,14 +19,17 @@ import javafx.scene.image.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Optional;
+import java.io.InputStream;
 
 public class runGame extends Application {
 	
 	private TextArea outputArea;
-	private Game game;
+	public Game game;
+	private Stage mainStage;
 	
 	
 	public void start(Stage stage) {
+		this.mainStage=stage;
 		game = new Game(this);
 		stage.setTitle("Texas Hold'em: Main Menu");
 	
@@ -34,15 +37,15 @@ public class runGame extends Application {
 		root.setStyle("-fx-background-color: green");
 		
 		Button startButton = new Button("Start");
-		startButton.setPrefSize(425,50);
-		startButton.setOnAction(event -> startGame(stage));
+		startButton.setPrefSize(435,50);
+		startButton.setOnAction(event -> startGame());
 		
 		Alert exitAlert= new Alert(AlertType.CONFIRMATION, "Are you sure you want to quit?", ButtonType.YES, ButtonType.NO);
 		exitAlert.setTitle("Confirmation");
 		exitAlert.setHeaderText(null);
 		
 		Button exitButton= new Button("Quit");
-		exitButton.setPrefSize(425,50);
+		exitButton.setPrefSize(435,50);
 		exitButton.setOnAction(event-> {
 			Optional<ButtonType> result= exitAlert.showAndWait();
 			if (result.get()==ButtonType.YES) Platform.exit();
@@ -53,9 +56,10 @@ public class runGame extends Application {
 		Image logo;
 		
 		try {
-			FileInputStream inputStream = new FileInputStream("C:\\Users\\Jackd\\git\\replace\\texasholdem\\texasholdem\\sources\\105751.png");
+			InputStream inputStream = getClass().getResourceAsStream("/logo.png");
 			logo = new Image(inputStream);
-		} catch (FileNotFoundException ex) {
+		} catch (Exception ex) {
+			ex.printStackTrace();
 			return;
 		}
 		
@@ -81,8 +85,8 @@ public class runGame extends Application {
 	}
 	
 	
-	public void startGame(Stage stage) {
-		new Thread(()-> game.startGameLogic());
+	public void startGame() {
+		new Thread(()-> game.startGameLogic()).start();
 		
 		outputArea= new TextArea();
 		outputArea.setEditable(false);
@@ -90,9 +94,32 @@ public class runGame extends Application {
 		
 		BorderPane root = new BorderPane();
 		root.setStyle("-fx-background-color: green");
-		stage.setTitle("Texas Hold'em: Game");
-		stage.setScene(new Scene(root,900,600));
+		root.setLeft(outputArea);
+		mainStage.setTitle("Texas Hold'em: Game");
 		
+		mainStage.setScene(new Scene(root,900,600));
+		
+		
+		//root.setBottom(yourHand());
+		
+	}
+	
+	//public HBox yourHand() {
+		//HBox hand= new HBox();
+		//hand.setSpacing(20);
+		//hand.setPadding(new Insets(10));
+//		
+	//	ImageView card1 = new ImageView(game.player.playerHand.getCard(0).getImage());
+//		ImageView card2 = new ImageView(game.player.playerHand.getCard(1).getImage());
+		
+//		hand.getChildren().add(card1);
+	//	hand.getChildren().add(card2);
+		
+		//return hand;
+//	}
+	
+	public void updateOutput(String text) {
+		Platform.runLater(()-> outputArea.appendText(text));
 	}
 	
 	public static void main(String[] args) {

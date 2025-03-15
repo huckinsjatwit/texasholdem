@@ -1,33 +1,41 @@
 package texasholdem;
 import java.util.Scanner;
+
+import javafx.application.Platform;
+import javafx.scene.control.TextInputDialog;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 import java.util.InputMismatchException;
+import java.util.Optional;
 
 
 
 public class Game {
-	public static int round = 1;
-	public static ArrayList<Bot> bots;
-	public static Deck deck;
-	public static Pot pot;
-	public static River river;
-	public static int miniRound = 1;
-	public static boolean remove = false;
-	public static int currentPlayerCount;
-	public static Player player;
+	public int round = 1;
+	public ArrayList<Bot> bots;
+	public Deck deck;
+	public Pot pot;
+	public River river;
+	public int miniRound = 1;
+	public boolean remove = false;
+	public int currentPlayerCount;
+	public Player player;
 	
 	private runGame runGame;
 	
 	public Game(runGame runGame){
 		this.runGame=runGame;
+		this.deck = new Deck();
+		this.pot= new Pot(this);
+		this.river = new River(this);
+		this.player= new Player(this);
 	}
 	
-	public static void setRound() {
+	public void setRound() {
 		round++;
 	}
-	public static void setCurrentPlayerCount(ArrayList currentPlayers) {
+	public void setCurrentPlayerCount(ArrayList currentPlayers) {
 		currentPlayerCount=currentPlayers.size();
 	}
 	
@@ -54,7 +62,7 @@ public class Game {
 	
 	//just something to print after every round to remind the player what is happening
 	
-	public static void display() {
+	public void display() {
 		System.out.println("");
 		System.out.println("Your current balance is: " + Player.Bal);
 		try {
@@ -76,43 +84,49 @@ public class Game {
 		/*
 		 * Allows user to pick number of bots, also creates a bot with the name player, this bot will be detected and start the players turn.
 		 */
-	public static void setBots() {
+	public void setBots() {
 		bots=new ArrayList<>();
 		Collections.shuffle(Bot.possibleNames);
-		int botCount=0;
-		Scanner input= new Scanner(System.in);
-		boolean success= false;
-		while (!success) {
-			try {
-				System.out.printf("How many bots (1-7)?: ");
-				botCount=input.nextInt();
-				success=true;
-				if (botCount>=1 && botCount<=7) {
-					success=true;
-				} else {
-					System.out.println("Error! Number of bots needs to be between 1-7. Try again.");
-					success= false;
+		int botCount[]= {2};
+	
+		Platform.runLater(() -> {
+			
+			TextInputDialog ask = new TextInputDialog("1");
+			ask.setTitle("Bot amount");
+			ask.setHeaderText("How many bots (1-7)?");
+			ask.setContentText("Enter number of bots: ");
+			
+			Optional<String> result = ask.showAndWait();
+			
+	
+			if (result.isPresent()) {
+				try {
+					botCount[0] = Integer.parseInt(result.get());
+					if (botCount[0]<1 && botCount[0]>7) {
+						runGame.updateOutput("Error! Number of bots needs to be between 1-7. Creating 2 bots.");
+						botCount[0]=2;
+					}
+				} catch (InputMismatchException ex) {
+					System.out.println("Error! Number has to be an integer. Creating 2 bots.");
+					botCount[0]=2;
 				}
-			} catch (InputMismatchException ex) {
-				System.out.println("Error! Number has to be an integer. Try again.");
-				input.nextLine();
 			}
-		}
+		});
 	
 			
-		for (int i=0; i<botCount+1; i++) {
-			bots.add(new Bot(i));
+		for (int i=0; i<botCount[0]+1; i++) {
+			bots.add(new Bot(i,runGame.game));
 		}
-		bots.get(botCount).name="Player";
+		bots.get(botCount[0]).name="Player";
 			
-		if (botCount==1) System.out.printf("Created bot ");
-		else System.out.printf("Created bots: ");
+		if (botCount[0]==1) runGame.updateOutput("Created bot ");
+		else runGame.updateOutput("Created bots: ");
 		for (int i=0; i<bots.size()-1; i++) {
 			if (i==bots.size()-2) {
-				System.out.printf(bots.get(i).name+".");
-			} else System.out.printf(bots.get(i).name+", ");
+				runGame.updateOutput(bots.get(i).name+".");
+			} else runGame.updateOutput(bots.get(i).name+", ");
 		}
-		System.out.println();
+		runGame.updateOutput("\n");
 	}
 	
 	
@@ -129,7 +143,7 @@ public class Game {
     }
 	
 
-	public static Bot findWinner(ArrayList<Bot> array) {
+	public Bot findWinner(ArrayList<Bot> array) {
 		int[] maxHand= {10,0}; 
 		Bot currentWinner=array.get(0);
 		
@@ -156,34 +170,35 @@ public class Game {
 			}
 		}
 		if (currentWinner.name=="Player") {
-			Player.Bal+=Pot.payOut();
-		} else currentWinner.Balance+=Pot.payOut();
+			Player.Bal+=pot.payOut();
+		} else currentWinner.Balance+=pot.payOut();
 		return currentWinner;
 	}
 	
-	public static void endOfRoundDisplay(ArrayList<Bot> bots) {
+	public void endOfRoundDisplay(ArrayList<Bot> bots) {
 		Bot winner=findWinner(bots);
 		
 		if (winner.name=="Player") {
 			String hand=Bot.findHandToString(player.currentBest);
 			System.out.println("You won this round!");
 			System.out.printf("Your hand was %s!%n",hand);
-			System.out.printf("You win the pot of %d!%n",Pot.currentPot);
+			System.out.printf("You win the pot of %d!%n",pot.currentPot);
 			System.out.printf("Your new balance is %d!%n",player.Bal);
 		} else {
 			String hand=Bot.findHandToString(Bot.findHand(winner.currentBest));
 			System.out.printf("Bot %s won this round!%n",winner.name);
 			System.out.printf("Their hand was %s!%n", hand);
-			System.out.printf("They win the pot of %d!%n",Pot.currentPot);
+			System.out.printf("They win the pot of %d!%n",pot.currentPot);
 		}
 	}
 	
 	//public static void main(String[] args) {
 
-	public static void startGameLogic() {
+	public void startGameLogic() {
+		
+		runGame.updateOutput("Game started");
 
 		Scanner input = new Scanner(System.in);
-		player = new Player();
 	
 		setBots();
 		Collections.shuffle(bots); //Shuffles order for first round
@@ -193,9 +208,6 @@ public class Game {
 		while (c==1) {
 			
 			//Makes deck, pot, and river reset after every round
-			deck = new Deck();
-			pot = new Pot();
-			river=new River();
 			
 			//Deals to bots and players in their order.
 			for (int i=0; i<botsCopy.size(); i++) {
@@ -234,7 +246,7 @@ public class Game {
 				System.out.println(miniRound);
 				//Pot.resetBets();
 				shiftLeft(botsCopy);
-				System.out.println(Pot.highestBet(Pot.currentBets())); //have to pass on an array of the currentBets not the playerCount
+				System.out.println(Pot.highestBet(pot.currentBets())); //have to pass on an array of the currentBets not the playerCount
 
 			}
 			
