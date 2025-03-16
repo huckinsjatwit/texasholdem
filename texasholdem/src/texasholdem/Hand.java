@@ -8,8 +8,9 @@ public class Hand {
 	private Game game;
 	
 	Hand(Game game) {
-		makeHand();
 		this.game=game;
+		makeHand();
+		
 	}
 	
 	public Card[] makeHand() {

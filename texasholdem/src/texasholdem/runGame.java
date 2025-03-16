@@ -86,7 +86,6 @@ public class runGame extends Application {
 	
 	
 	public void startGame() {
-		new Thread(()-> game.startGameLogic()).start();
 		
 		outputArea= new TextArea();
 		outputArea.setEditable(false);

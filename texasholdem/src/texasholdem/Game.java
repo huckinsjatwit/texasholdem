@@ -87,46 +87,38 @@ public class Game {
 	public void setBots() {
 		bots=new ArrayList<>();
 		Collections.shuffle(Bot.possibleNames);
-		int botCount[]= {2};
+			
+		TextInputDialog ask = new TextInputDialog("1");
+		ask.setTitle("Bot amount");
+		ask.setHeaderText("How many bots (1-7)?");
+		ask.setContentText("Enter number of bots: ");
+
 	
-		Platform.runLater(() -> {
-			
-			TextInputDialog ask = new TextInputDialog("1");
-			ask.setTitle("Bot amount");
-			ask.setHeaderText("How many bots (1-7)?");
-			ask.setContentText("Enter number of bots: ");
-			
-			Optional<String> result = ask.showAndWait();
-			
-	
-			if (result.isPresent()) {
-				try {
-					botCount[0] = Integer.parseInt(result.get());
-					if (botCount[0]<1 && botCount[0]>7) {
-						runGame.updateOutput("Error! Number of bots needs to be between 1-7. Creating 2 bots.");
-						botCount[0]=2;
-					}
-				} catch (InputMismatchException ex) {
-					System.out.println("Error! Number has to be an integer. Creating 2 bots.");
-					botCount[0]=2;
+		ask.showAndWait().ifPresent(result -> {
+			try {
+				int botCount = Integer.parseInt(result);
+				if (botCount<1 && botCount>7) {
+					runGame.updateOutput("Error! Number of bots needs to be between 1-7. Creating 2 bots.");
+					botCount=2;
 				}
+			
+				for (int i=0; i<botCount+1; i++) {
+					bots.add(new Bot(i,runGame.game));
+				}
+				bots.get(botCount).name="Player";
+						
+				if (botCount==1) runGame.updateOutput("Created bot ");
+				else runGame.updateOutput("Created bots: ");
+				for (int i=0; i<bots.size()-1; i++) {
+					if (i==bots.size()-2) {
+						runGame.updateOutput(bots.get(i).name+".");
+					} else runGame.updateOutput(bots.get(i).name+", ");
+				}
+				runGame.updateOutput("\n");
+			} catch (InputMismatchException x) {
+				runGame.updateOutput("Error!");
 			}
 		});
-	
-			
-		for (int i=0; i<botCount[0]+1; i++) {
-			bots.add(new Bot(i,runGame.game));
-		}
-		bots.get(botCount[0]).name="Player";
-			
-		if (botCount[0]==1) runGame.updateOutput("Created bot ");
-		else runGame.updateOutput("Created bots: ");
-		for (int i=0; i<bots.size()-1; i++) {
-			if (i==bots.size()-2) {
-				runGame.updateOutput(bots.get(i).name+".");
-			} else runGame.updateOutput(bots.get(i).name+", ");
-		}
-		runGame.updateOutput("\n");
 	}
 	
 	
@@ -196,7 +188,7 @@ public class Game {
 
 	public void startGameLogic() {
 		
-		runGame.updateOutput("Game started");
+		runGame.updateOutput("Game started!\n");
 
 		Scanner input = new Scanner(System.in);
 	
