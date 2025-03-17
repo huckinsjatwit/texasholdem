@@ -10,8 +10,8 @@ public class Card {
 	
 	
 	Card(String suit, int value) {
-		this.suit=suit;
 		this.value=value;
+		this.suit=suit;
 		this.image=createImage();
 	}
 	
@@ -36,12 +36,20 @@ public class Card {
 		else return "";
 	}
 	
+	@Override
+	public boolean equals(Object o) {
+		if (this==o) return true;
+		if (o==null || o.getClass() != getClass()) return false;
+		Card card = (Card) o;
+		return value==card.value && suit==card.suit;
+	}
+	
 	public Image createImage() {
 		String path= "/"+imageName();
 		try {
 			InputStream stream= getClass().getResourceAsStream(path);
 			if (stream == null) {
-				System.err.print("Couldn't find image");
+				System.err.print("Couldn't find image"+path);
 				return new Image("/card_placeholder.png");
 			}
 			return new Image(stream);

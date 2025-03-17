@@ -62,63 +62,43 @@ public class Game {
 	
 	//just something to print after every round to remind the player what is happening
 	
-	public void display() {
-		System.out.println("");
-		System.out.println("Your current balance is: " + Player.Bal);
-		try {
-			Thread.sleep(1000);
-			System.out.println(pot.toString());
-			Thread.sleep(1000);
-			System.out.println("Your hand is: " + player.playerHand);
-			Thread.sleep(1000);
-			System.out.println("Current Round: " + round);
-			Thread.sleep(1000);
-			if (river.river==null) System.out.println("River is empty.");
-			else System.out.println("The river is: "+river.toString());
+	//public void display() {
+		//System.out.println("");
+		//System.out.println("Your current balance is: " + Player.Bal);
+		//try {
 			//Thread.sleep(1000);
-			System.out.println("");
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
+			//System.out.println(pot.toString());
+			//Thread.sleep(1000);
+			//System.out.println("Your hand is: " + player.playerHand);
+			//Thread.sleep(1000);
+			//System.out.println("Current Round: " + round);
+			//Thread.sleep(1000);
+			//if (river.river==null) System.out.println("River is empty.");
+			//else System.out.println("The river is: "+river.toString());
+			//Thread.sleep(1000);
+			//System.out.println("");
+		//} catch (InterruptedException e) {
+			//e.printStackTrace();
+		//}
+	//}
 		/*
 		 * Allows user to pick number of bots, also creates a bot with the name player, this bot will be detected and start the players turn.
 		 */
-	public void setBots() {
+	public String setBots(int n) {
+		String sendBack ="";
 		bots=new ArrayList<>();
 		Collections.shuffle(Bot.possibleNames);
-			
-		TextInputDialog ask = new TextInputDialog("1");
-		ask.setTitle("Bot amount");
-		ask.setHeaderText("How many bots (1-7)?");
-		ask.setContentText("Enter number of bots: ");
-
-	
-		ask.showAndWait().ifPresent(result -> {
-			try {
-				int botCount = Integer.parseInt(result);
-				if (botCount<1 && botCount>7) {
-					runGame.updateOutput("Error! Number of bots needs to be between 1-7. Creating 2 bots.");
-					botCount=2;
-				}
-			
-				for (int i=0; i<botCount+1; i++) {
-					bots.add(new Bot(i,runGame.game));
-				}
-				bots.get(botCount).name="Player";
-						
-				if (botCount==1) runGame.updateOutput("Created bot ");
-				else runGame.updateOutput("Created bots: ");
-				for (int i=0; i<bots.size()-1; i++) {
-					if (i==bots.size()-2) {
-						runGame.updateOutput(bots.get(i).name+".");
-					} else runGame.updateOutput(bots.get(i).name+", ");
-				}
-				runGame.updateOutput("\n");
-			} catch (InputMismatchException x) {
-				runGame.updateOutput("Error!");
+			for (int i=0; i<n+1; i++) {
+				bots.add(new Bot(i,runGame.game));
 			}
-		});
+			bots.get(n).name="Player";
+						
+			for (int i=0; i<bots.size()-1; i++) {
+				if (i==bots.size()-2) {
+					sendBack+=(bots.get(i).name+".");
+				} else sendBack+=(bots.get(i).name+", ");
+			}
+		return (sendBack+"\n");
 	}
 	
 	
@@ -183,76 +163,8 @@ public class Game {
 			System.out.printf("They win the pot of %d!%n",pot.currentPot);
 		}
 	}
+}
 	
 	//public static void main(String[] args) {
 
-	public void startGameLogic() {
-		
-		runGame.updateOutput("Game started!\n");
-
-		Scanner input = new Scanner(System.in);
 	
-		setBots();
-		Collections.shuffle(bots); //Shuffles order for first round
-		ArrayList<Bot> botsCopy= new ArrayList<>(bots); //Allows us to remove players without affecting the original list.
-		
-		int c=1; //allows to loop infinitely until player quits.
-		while (c==1) {
-			
-			//Makes deck, pot, and river reset after every round
-			
-			//Deals to bots and players in their order.
-			for (int i=0; i<botsCopy.size(); i++) {
-				if (botsCopy.get(i).name == "Player") {
-					player.makeHand();
-				} else botsCopy.get(i).makeHand();
-			}
-			
-		
-			//When it hits bot named player, it will trigger the players play method. Otherwise bot's
-			for (int i=0; i<4; i++) {
-				if (i==1) river.riverCreate();
-				if (i>1) river.riverAdd();
-				
-				display();
-				
-				for (int j=0; j<botsCopy.size(); j++) {
-					if (botsCopy.get(j).name=="Player") {
-						System.out.println();
-						System.out.println(pot.toString());
-						player.play();
-						//if(remove == true) botsCopy.remove(j);
-					}else {
-						try {
-							Thread.sleep(1000);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-						System.out.println(botsCopy.get(j).botHand.toString());
-						System.out.println(botsCopy.get(j).play(i));
-						
-					}
-;				
-				}
-				miniRound++;
-				System.out.println(miniRound);
-				//Pot.resetBets();
-				shiftLeft(botsCopy);
-				System.out.println(Pot.highestBet(pot.currentBets())); //have to pass on an array of the currentBets not the playerCount
-
-			}
-			
-			
-			endOfRoundDisplay(bots);
-			System.out.printf("Type 1 to continue to next round, 0 to quit. ");
-			if (input.nextInt()==0) {
-				exitGame();
-			} else {
-				System.out.println("");
-				continue;
-			}
-			
-		}
-	}
-
-}

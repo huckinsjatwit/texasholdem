@@ -19,6 +19,7 @@ public class Bot {
 	public static int prevBet;
 	public Card[] currentBest;
 	private Game game;
+	public boolean isOut=false;
 
 	
 	
