@@ -90,21 +90,9 @@ public class runGame extends Application {
 	}
 	
 	
-	public void startGame() {
-		outputArea= new TextArea();
-		outputArea.setEditable(false);
-		outputArea.setWrapText(true);
+	public void startGame(int botCount) {
 		
-		BorderPane root = new BorderPane();
-		root.setStyle("-fx-background-color: green");
-		root.setLeft(outputArea);
-		mainStage.setTitle("Texas Hold'em: Game");
-		
-		mainStage.setScene(new Scene(root,900,600));
-		
-		updateOutput("Game started!\n");
-		
-		updateOutput(game.setBots(3));
+		updateOutput(game.setBots(botCount));
 		Collections.shuffle(game.bots); //Shuffles order for first round
 		ArrayList<Bot> botsCopy= new ArrayList<>(game.bots); //Allows us to remove players without affecting the original list.
 		

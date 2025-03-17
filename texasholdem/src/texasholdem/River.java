@@ -7,6 +7,7 @@ public class River {
 	public ArrayList<Card> river;
 	private Game game;
 	
+	
 	River(Game game) {
 		this.game=game;
 	}
