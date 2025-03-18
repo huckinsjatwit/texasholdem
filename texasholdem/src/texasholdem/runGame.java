@@ -2,31 +2,20 @@ package texasholdem;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.geometry.Insets;
-import javafx.scene.image.*;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
-import java.io.InputStream;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import java.util.function.UnaryOperator;
 import javafx.scene.control.TextFormatter;
+import javafx.animation.PauseTransition;
+import javafx.animation.SequentialTransition;
+import javafx.util.Duration;
+
 
 public class runGame extends Application {
 	
@@ -48,9 +37,12 @@ public class runGame extends Application {
 	}
 	
 	public void startGame(int botCount) {
-		view.updateOutput("Game started!\n");
+		view.updateRightDisplay(game.player.Bal, game.pot.currentPot);
 		view.updateOutput(game.setBots(botCount));
 		Collections.shuffle(game.bots); //Shuffles order for first round
+		view.updateOutput("Game started!\n");
+		
+		
 		
 		int c=1; //allows to loop infinitely until player quits.
 		while (c==1) {
@@ -77,33 +69,40 @@ public class runGame extends Application {
 				for (Bot bot: game.bots) {
 					if (bot.name=="Player") {
 						view.updateOutput("");
-	
-						bet();
+						bet(mainStage);
 						view.updateRightDisplay(game.player.Bal, game.pot.currentPot);
-						//if(remove == true) botsCopy.remove(j);
+						
 					}else {
 						view.updateOutput(bot.play(i));
 						view.updateRightDisplay(game.player.Bal, game.pot.currentPot);
-					}			
+					}
+					
 				}
+				
+				view.updateOutput("\n");
 				game.miniRound++;
-				//System.out.println(miniRound);
-				//Pot.resetBets();
 				game.shiftLeft(game.bots);
-				System.out.println(Pot.highestBet(game.pot.currentBets())); //have to pass on an array of the currentBets not the playerCount
+				
 	
 			}
-	
+			view.updateOutput(game.endOfRoundDisplay(game.bots));
 		}
 	
 	}
 	
-	public void bet() {
+	public void bet(Stage stage) {
+		//can add buttons for check, call, etc
 		TextInputDialog amt= new TextInputDialog();
 		
 		amt.setTitle("Make a bet!");
 		amt.setHeaderText("How much would you like to bet?");
 		amt.setContentText("Bet");
+		
+		amt.initOwner(stage);
+		amt.setX(stage.getX()+300);
+		amt.setY(stage.getY()+425);
+		amt.setResizable(false);
+		
 		
 		UnaryOperator<TextFormatter.Change> filter = change -> {
             String newText = change.getControlNewText();
@@ -115,12 +114,44 @@ public class runGame extends Application {
         };
         
         TextFormatter form= new TextFormatter<>(filter);
-        
+      
         amt.getEditor().setTextFormatter(form);
         
-        Optional<String> result= amt.showAndWait();
+        Button okay= (Button) amt.getDialogPane().lookupButton(ButtonType.OK);
+        okay.setDisable(true);
         
+        
+        
+        amt.getDialogPane().getButtonTypes().remove(ButtonType.CANCEL);
+        amt.getDialogPane().getScene().getWindow().setOnCloseRequest(event -> {
+        	Platform.exit();
+        	System.exit(0);
+        });
+        
+        //Button close= (Button) amt.getDialogPane().lookupButton(ButtonType.CLOSE);
+        //close.setOnAction(event-> {
+			//Platform.exit();
+		//});
+        
+        amt.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
+        	okay.setDisable(newValue.trim().isEmpty());
+        	if (!newValue.trim().isEmpty()) {
+        		Long val= Long.parseLong(newValue.trim());
+            	if (val>game.player.Bal) {
+            		okay.setDisable(true);
+            	} else {
+            		okay.setDisable(false);
+            	}
+        	}
+        });
+        
+        Optional<String> result= amt.showAndWait();
+    
         result.ifPresent(value-> {
+        	if (Integer.valueOf(value)>game.player.Bal) {
+        		
+        	}
+        	amt.getDialogPane().lookupButton(ButtonType.OK).setDisable(true);
         	game.player.play(Integer.valueOf(value));
         });
         

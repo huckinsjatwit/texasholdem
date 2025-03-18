@@ -172,7 +172,7 @@ public class Bot {
 	private String bet(int betAmount) {
 		game.pot.addBet(betAmount);
 		Balance=Balance-betAmount;
-		String bet=this.name + " bets " + betAmount + " chips.";
+		String bet=this.name + " bets " + betAmount + " chips.\n";
 		return bet;
 	}
 	

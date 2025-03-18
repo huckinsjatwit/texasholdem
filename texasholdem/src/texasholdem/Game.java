@@ -59,7 +59,7 @@ public class Game {
 				} else sendBack+=(bots.get(i).name+", ");
 			}
 		if (n==1) return ("Created bot: "+sendBack+"\n");
-		else return ("Created bots "+sendBack+"\n");
+		else return ("Created bots: "+sendBack+"\n");
 	}
 	
 	
@@ -108,21 +108,23 @@ public class Game {
 		return currentWinner;
 	}
 	
-	public void endOfRoundDisplay(ArrayList<Bot> bots) {
+	public String endOfRoundDisplay(ArrayList<Bot> bots) {
 		Bot winner=findWinner(bots);
+		String win="";
 		
 		if (winner.name=="Player") {
 			String hand=Bot.findHandToString(player.currentBest);
-			System.out.println("You won this round!");
-			System.out.printf("Your hand was %s!%n",hand);
-			System.out.printf("You win the pot of %d!%n",pot.currentPot);
-			System.out.printf("Your new balance is %d!%n",player.Bal);
+			win+=("You won this round!\n");
+			win+=("Your hand was "+hand+"!\n");
+			win+=("You win the pot of "+pot.currentPot+"!\n");
+			win+=("Your new balance is "+player.Bal+"!\n");
 		} else {
 			String hand=Bot.findHandToString(Bot.findHand(winner.currentBest));
-			System.out.printf("Bot %s won this round!%n",winner.name);
-			System.out.printf("Their hand was %s!%n", hand);
-			System.out.printf("They win the pot of %d!%n",pot.currentPot);
+			win+=("Bot "+winner.name+"won this round!\n");
+			win+=("Their hand was "+hand+"!\n");
+			win+=("They win the pot of "+pot.currentPot+"!\n");
 		}
+		return win;
 	}
 }
 	
