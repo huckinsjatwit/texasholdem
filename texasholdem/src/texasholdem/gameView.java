@@ -1,16 +1,12 @@
 package texasholdem;
 
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.scene.control.TextArea;
@@ -18,10 +14,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Insets;
 import javafx.scene.image.*;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.Optional;
 import java.io.InputStream;
 import javafx.scene.control.Label;
@@ -34,19 +28,27 @@ public class gameView {
 	private HBox River;
 	private BorderPane root;
 	private HBox yourHand;
+	runGame gameRun;
 	
 	public gameView(Stage mainStage) {
 		this.mainStage=mainStage;
 		this.root= new BorderPane();
+		root.setStyle("-fx-background-color: green;");
 		
 		RList= new VBox();
 		River= new HBox(new Label("River is empty."));
 		yourHand= new HBox();
+		
 	}
 	
-	public void mainMenu() {
-		int[] choices = {1,2,3,4,5,6,7};
-		ChoiceDialog<Integer> oneThroughSeven = new ChoiceDialog(choices[0],choices);
+	public void mainMenu(runGame gameRun) {
+		this.gameRun=gameRun;
+		outputArea= new TextArea();
+		outputArea.setEditable(false);
+		outputArea.setWrapText(true);
+		
+		Integer[] choices = {1,2,3,4,5,6,7};
+		ChoiceDialog<Integer> oneThroughSeven = new ChoiceDialog(choices[0], Arrays.asList(choices));
 		oneThroughSeven.setHeaderText("Bot Selection");
 		oneThroughSeven.setContentText("How many bots would you like to play against?");
 		
@@ -70,7 +72,6 @@ public class gameView {
 		root.setBottom(createMenu(startButton, exitButton));
 		
 		Image logo;
-		
 		try {
 			InputStream inputStream = getClass().getResourceAsStream("/logo.png");
 			logo = new Image(inputStream);
@@ -83,17 +84,19 @@ public class gameView {
 		root.setCenter(logoView);
 		
 		mainStage.setScene(new Scene(root, 900, 600));
+		mainStage.setTitle("Texas Hold'em");
+		mainStage.show();
 	}
 	
 	public void gameMenu(int botCount) {
+		
+		gameRun.startGame(botCount);
 		root=new BorderPane();
 		root.setStyle("-fx-background-color: green");
 		
-		outputArea= new TextArea();
-		outputArea.setEditable(false);
-		outputArea.setWrapText(true);
-		
 		root.setLeft(outputArea);
+		outputArea.prefWidth(100);
+		outputArea.prefHeight(200);
 		root.setBottom(yourHand);
 		root.setRight(RList);
 		root.setCenter(River);
@@ -128,6 +131,10 @@ public class gameView {
 		Label currentPot= new Label("Pot: "+pot);
 		
 		RList.getChildren().addAll(currentBalance, currentPot);
+	}
+	
+	public void updateOutput(String text) {
+		outputArea.appendText(text);
 	}
 	
 	public void showYourHand(Image c1, Image c2) {

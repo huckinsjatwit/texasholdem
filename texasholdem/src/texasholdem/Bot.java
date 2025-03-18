@@ -19,7 +19,7 @@ public class Bot {
 	public static int prevBet;
 	public Card[] currentBest;
 	private Game game;
-	public boolean isOut=false;
+	public boolean isOut;
 
 	
 	
@@ -27,6 +27,7 @@ public class Bot {
 	Bot(int n, Game game) {
 		setName(n);
 		this.game=game;
+		isOut=false;
 	}
 	
 	//Not used

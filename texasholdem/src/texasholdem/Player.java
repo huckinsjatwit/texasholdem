@@ -29,7 +29,7 @@ public class Player  {
 	
 	//Will run all methods required for the player to play the round
 	
-	public void play() {
+	public void play(int n) {
 		//Add code so that everytime a round starts, other than the start of the round, the player has an option to just checks
 		/*if(Game.miniRound == 1) {
 			if(buyIn() == 0) {
@@ -48,7 +48,7 @@ public class Player  {
 					playerHand.combineHand();
 					setCurrentBest();
 				}
-				makeBet();
+				makeBet(n);
 			}
 	
 	private void setCurrentBest() {
@@ -56,21 +56,11 @@ public class Player  {
 
 	}
 	
-	public void makeBet() {
-		Scanner input = new Scanner(System.in);
-		int betAmount;
-		
-		do {
-			System.out.print("Enter amount to bet: ");
-			betAmount = input.nextInt();
-			if (betAmount>Bal) System.out.println("Bet amount cannot exceed balance.");
-		} while(betAmount > Bal);
-		
-		betAmount = prevBet;
+	public void makeBet(int betAmount) {
 		Bal = Bal - betAmount;
 		game.pot.addBet(betAmount);
 		prevBet = betAmount;
-		}
+	}
 	
 	public void makeHand() {
 		Hand playerHand= new Hand(game);

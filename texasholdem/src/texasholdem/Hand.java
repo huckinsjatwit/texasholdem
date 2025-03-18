@@ -15,6 +15,7 @@ public class Hand {
 	
 	public Card[] makeHand() {
 		this.hand = game.deck.deal(2);
+		if (hand[0]==null || hand[1]==null) System.err.println("Error: improper deal.");
 		return hand;
 	}
 	

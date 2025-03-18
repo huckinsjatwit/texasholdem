@@ -6,7 +6,6 @@ public class Pot {
 	public int currentPot = 0;
 	public ArrayList<Integer> bets = new ArrayList<>();
 	private Game game;
-	StringProperty potValue;
 	
 	Pot(Game game) {
 		this.game=game;
@@ -17,7 +16,6 @@ public class Pot {
 	public void addBet(int bet) {
 		bets.add(bet);
 		currentPot += bet;
-		potValue.
 	}
 	
 	//Pays out from currentPot then resets the bets Arraylist

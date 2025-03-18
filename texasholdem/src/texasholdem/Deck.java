@@ -49,14 +49,22 @@ public class Deck {
 	
 	
 	public Card[] deal(int numCards) {
+		System.out.print(numCards);
 		int c=0;
 	
 		Card[] deal = new Card[numCards];
 		
-		for (int i=0; i<numCards; i++) {
-			if (!dealtCards[i]) {
+		for (int i=0; i<52; i++) {
+			if (!dealtCards[i] && c<numCards) {
 				deal[c]= deck[i];
 				dealtCards[i]= true;
+				c++;
+			}
+		}
+		
+		for (int i=0; i<deal.length;i++) {
+			if (deal[i]==null) {
+				System.err.println("Error: Card at index"+i+"is null");
 			}
 		}
 		return deal;

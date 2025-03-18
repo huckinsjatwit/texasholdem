@@ -35,52 +35,12 @@ public class Game {
 	public void setRound() {
 		round++;
 	}
+	
 	public void setCurrentPlayerCount(ArrayList currentPlayers) {
 		currentPlayerCount=currentPlayers.size();
 	}
 	
-	public static void exitGame() {
-		
-		int sure;
-		Scanner input = new Scanner(System.in);
-		do {
-		System.out.printf("Are you sure you want to exit? (1 for YES, 0 for NO): ");
-		sure = input.nextInt();
-		
-		if(sure > 1 || sure < 0) System.out.println("Please enter '1' for YES or '0' for NO");
-		}
-		while(sure > 1 || sure < 0);
-		
-		if(sure == 1) {
-			System.out.println("Goodbye!");
-			System.exit(0);
-		}else if(sure == 0) {
-			System.out.print("ok :D");
-		}
-		input.close();
-	}
 	
-	//just something to print after every round to remind the player what is happening
-	
-	//public void display() {
-		//System.out.println("");
-		//System.out.println("Your current balance is: " + Player.Bal);
-		//try {
-			//Thread.sleep(1000);
-			//System.out.println(pot.toString());
-			//Thread.sleep(1000);
-			//System.out.println("Your hand is: " + player.playerHand);
-			//Thread.sleep(1000);
-			//System.out.println("Current Round: " + round);
-			//Thread.sleep(1000);
-			//if (river.river==null) System.out.println("River is empty.");
-			//else System.out.println("The river is: "+river.toString());
-			//Thread.sleep(1000);
-			//System.out.println("");
-		//} catch (InterruptedException e) {
-			//e.printStackTrace();
-		//}
-	//}
 		/*
 		 * Allows user to pick number of bots, also creates a bot with the name player, this bot will be detected and start the players turn.
 		 */
