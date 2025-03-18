@@ -54,7 +54,7 @@ public class Player {
 			if (betAmount>Bal) System.out.println("Bet amount cannot exceed balance.");
 		} while(betAmount > Bal);
 		
-		betAmount = prevBet;
+		
 		Bal = Bal - betAmount;
 		Pot.addBet(betAmount);
 		prevBet = betAmount;
