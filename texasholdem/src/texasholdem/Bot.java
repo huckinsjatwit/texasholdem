@@ -172,13 +172,18 @@ public class Bot {
 		return bet;
 	}
 	
+
 	//Good
+
+	//Use call method, check is imbeded into call
+	//-1 means that bot folds
+
 	private int call() {
 		int high = Pot.highestBet(Pot.currentBets());
 		int minConfidence = 0;
 		
 		if(prevBet == high) {
-			return 0;
+			return check();
 		}else {
 			if(Game.miniRound == 2) minConfidence += 100;
 			if(Game.miniRound == 3) minConfidence += 200;
@@ -187,6 +192,7 @@ public class Bot {
 				int diff = high - prevBet;
 				Pot.currentPot += diff;
 				System.out.println(name + "calls!");
+				prevBet += diff;
 				return diff;
 			}else {
 				return -1;
@@ -194,12 +200,17 @@ public class Bot {
 		}
 	}
 	
-	//Good
-	private boolean check(ArrayList bets) {
+	private int check() {
+		int minConfidence = 0;
 		
-		
-		
-		return false;
+		if(Game.miniRound == 2) minConfidence += 200;
+		if(Game.miniRound == 3) minConfidence += 300;
+		if(Game.miniRound == 4) minConfidence += 400;
+		if(Confidence < minConfidence) {
+			return 0;
+		}else {
+			return betAmount();
+		}
 	}
 	
 	//Good
