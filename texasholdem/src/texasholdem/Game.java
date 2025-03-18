@@ -58,7 +58,8 @@ public class Game {
 					sendBack+=(bots.get(i).name+".");
 				} else sendBack+=(bots.get(i).name+", ");
 			}
-		return (sendBack+"\n");
+		if (n==1) return ("Created bot: "+sendBack+"\n");
+		else return ("Created bots "+sendBack+"\n");
 	}
 	
 	

@@ -48,7 +48,7 @@ public class runGame extends Application {
 	}
 	
 	public void startGame(int botCount) {
-		view.updateOutput("Game started!");
+		view.updateOutput("Game started!\n");
 		view.updateOutput(game.setBots(botCount));
 		Collections.shuffle(game.bots); //Shuffles order for first round
 		

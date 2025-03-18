@@ -90,18 +90,25 @@ public class gameView {
 	
 	public void gameMenu(int botCount) {
 		
-		gameRun.startGame(botCount);
+		
 		root=new BorderPane();
 		root.setStyle("-fx-background-color: green");
 		
 		root.setLeft(outputArea);
-		outputArea.prefWidth(100);
-		outputArea.prefHeight(200);
+		outputArea.setMaxWidth(100);
+		outputArea.setMaxHeight(200);
 		root.setBottom(yourHand);
+		yourHand.setMaxHeight(200);
+		yourHand.setMaxWidth(400);
 		root.setRight(RList);
+		RList.setMaxHeight(200);
+		RList.setMaxWidth(100);
 		root.setCenter(River);
+		River.setMaxHeight(200);
+		River.setMaxWidth(700);
 		
 		mainStage.setScene(new Scene(root,900,600));
+		gameRun.startGame(botCount);
 	}
 	
 	public HBox createMenu(Button startButton, Button exitButton) {
