@@ -51,12 +51,14 @@ public class Player  {
 				makeBet(n);
 			}
 	
+
 	private void setCurrentBest() {
 		this.currentBest=Bot.findHand(Bot.findBest(playerHand.combinedHand));
 
 	}
 	
 	public void makeBet(int betAmount) {
+
 		Bal = Bal - betAmount;
 		game.pot.addBet(betAmount);
 		prevBet = betAmount;
