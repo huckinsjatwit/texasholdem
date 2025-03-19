@@ -58,7 +58,6 @@ public class Player  {
 	}
 	
 	public void makeBet(int betAmount) {
-
 		Bal = Bal - betAmount;
 		game.pot.addBet(betAmount);
 		prevBet = betAmount;
