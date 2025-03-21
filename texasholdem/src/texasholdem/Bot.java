@@ -15,15 +15,19 @@ public class Bot {
 	public boolean Stand = true;
 	public String name;
 	public static List<String> possibleNames= Arrays.asList("Jeremy", "Thomas", "Jack", "Kristian", "Jayvon", "Haley", "Sam", "Ava", "Todd", "Nicole",
-			"Rick"); //Add any names you like
+			"Rick", "Darerick"); //Add any names you like
 	public static int prevBet;
 	public Card[] currentBest;
+	private Game game;
+	public boolean isOut;
 
 	
 	
 	//Good
-	Bot(int n) {
+	Bot(int n, Game game) {
 		setName(n);
+		this.game=game;
+		isOut=false;
 	}
 	
 	//Not used
@@ -38,8 +42,7 @@ public class Bot {
 	
 	//Good
 	public void makeHand() {
-		Hand botHand= new Hand();
-		this.botHand=botHand;
+		this.botHand=new Hand(game);
 	}
 	
 	//Good
@@ -53,6 +56,7 @@ public class Bot {
 		}
 		if (subRound>0) {
 			this.botHand.combineHand();
+			setCurrentBest();
 			Confidence=analyzeHand();
 			Confidence+=analyzeBets();
 			bet=betAmount();
@@ -114,14 +118,14 @@ public class Bot {
 	
 	//Good
 	private int analyzeBets() {
-		for(int i = 0; i < Pot.bets.size(); i++) {
-			if(Pot.bets.get(i) < 25) {
+		for(int i = 0; i < game.pot.bets.size(); i++) {
+			if(game.pot.bets.get(i) < 25) {
 				Confidence += 20;
-			}else if(Pot.bets.get(i) < 50){
+			}else if(game.pot.bets.get(i) < 50){
 				Confidence += 15;
-			}else if(Pot.bets.get(i) < 75) {
+			}else if(game.pot.bets.get(i) < 75) {
 				Confidence += 10;
-			}else if(Pot.bets.get(i) < 100) {
+			}else if(game.pot.bets.get(i) < 100) {
 				Confidence += 5;
 			}else {
 				return Confidence;
@@ -166,9 +170,9 @@ public class Bot {
 	
 	//Good
 	private String bet(int betAmount) {
-		Game.pot.addBet(betAmount);
+		game.pot.addBet(betAmount);
 		Balance=Balance-betAmount;
-		String bet=this.name + " bets " + betAmount + " chips.";
+		String bet=this.name + " bets " + betAmount + " chips.\n";
 		return bet;
 	}
 	
@@ -179,18 +183,18 @@ public class Bot {
 	//-1 means that bot folds
 
 	private int call() {
-		int high = Pot.highestBet(Pot.currentBets());
+		int high = Pot.highestBet(game.pot.currentBets());
 		int minConfidence = 0;
 		
 		if(prevBet == high) {
 			return check();
 		}else {
-			if(Game.miniRound == 2) minConfidence += 100;
-			if(Game.miniRound == 3) minConfidence += 200;
-			if(Game.miniRound == 4) minConfidence += 300;
+			if(game.miniRound == 2) minConfidence += 100;
+			if(game.miniRound == 3) minConfidence += 200;
+			if(game.miniRound == 4) minConfidence += 300;
 			if(Confidence > minConfidence) {
 				int diff = high - prevBet;
-				Pot.currentPot += diff;
+				game.pot.currentPot += diff;
 				System.out.println(name + "calls!");
 				prevBet += diff;
 				return diff;
@@ -203,9 +207,9 @@ public class Bot {
 	private int check() {
 		int minConfidence = 0;
 		
-		if(Game.miniRound == 2) minConfidence += 200;
-		if(Game.miniRound == 3) minConfidence += 300;
-		if(Game.miniRound == 4) minConfidence += 400;
+		if(game.miniRound == 2) minConfidence += 200;
+		if(game.miniRound == 3) minConfidence += 300;
+		if(game.miniRound == 4) minConfidence += 400;
 		if(Confidence < minConfidence) {
 			return 0;
 		}else {
@@ -219,19 +223,19 @@ public class Bot {
 	 */
 	private int analyzeHand() {
 		int[] readHand= {10,0};
-		if (this.botHand.combinedHand.length>5) {
-			readHand=findHand(findBest(this.botHand.combinedHand));
-		} else if (this.botHand.combinedHand.length==5) {
-			readHand=findHand(this.botHand.combinedHand);
-		}
+		readHand=findHand(currentBest);
 		return getConfidence(readHand);
 	}
 	
 	//Good
 	public static Card[] findBest(Card[] bigHand) {
+		if (bigHand.length==5) return bigHand;
 		List<Card[]> possibleHands=findHandCombos(bigHand);
 		ArrayList<int[]> readHands = new ArrayList<>();
 		
+		 if (possibleHands.isEmpty()) {
+		        throw new IllegalStateException("No valid 5-card combinations found. Check the input array.");
+		    }
 		int lowest=10;
 		int indexOfBest=0;
 		for (int i=0; i<possibleHands.size(); i++) {
@@ -245,6 +249,10 @@ public class Bot {
 			}
 		}
 		return possibleHands.get(indexOfBest);
+	}
+	
+	private void setCurrentBest() {
+		this.currentBest=findBest(this.botHand.combinedHand);
 	}
 	
 	//Good
@@ -365,8 +373,9 @@ public class Bot {
 	 */
 
 	private static List<Card[]> findHandCombos(Card[] allCards) {
-
-		int k = 5;                             // sequence length   
+		
+		
+		int k = 5;                             
 
 		List<Card[]> subsets = new ArrayList<>();
 		int[] s = new int[k];                  

@@ -5,15 +5,17 @@ public class Hand {
 	public static final String[] hands= {"Royal Flush","Straight Flush", "Four of A Kind","Full House","Flush","Straight","Three of a Kind"
 ,"Two Pair","Pair","High Card"};
 	public Card[] combinedHand;
+	private Game game;
 	
-	
-	
-	Hand() {
+	Hand(Game game) {
+		this.game=game;
 		makeHand();
+		
 	}
 	
 	public Card[] makeHand() {
-		this.hand = Game.deck.deal(2);
+		this.hand = game.deck.deal(2);
+		if (hand[0]==null || hand[1]==null) System.err.println("Error: improper deal.");
 		return hand;
 	}
 	
@@ -22,12 +24,17 @@ public class Hand {
 	}
 	
 	public void combineHand() {
-		int riverSize= Game.river.river.size();
+		
+		if (this.hand==null || this.hand.length<2) throw new IllegalStateException("Bot's hand is not properly intialized");
+		if (game.river==null || game.river.river==null) throw new IllegalStateException("River is not properly intialized");
+		if (game.river.river.size()<3) throw new IllegalStateException("River <3 cards.");
+		
+		int riverSize= game.river.river.size();
 		Card[] allCards= new Card[2+riverSize];
 		allCards[0]=this.hand[0];
 		allCards[1]=hand[1];
 		for (int i=2; i<riverSize+2; i++) {
-			allCards[i]=Game.river.river.get(i-2);
+			allCards[i]=game.river.river.get(i-2);
 		}
 		this.combinedHand=allCards;
 	}

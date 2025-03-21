@@ -8,7 +8,7 @@ public class Deck {
 	public static String[] suits={"Hearts", "Clubs", "Spades", "Diamonds"};
 	public static int[] values={2,3,4,5,6,7,8,9,10,11,12,13,14};
 	public static Card[] deck= new Card[52];
-	private static final Card dealedCard = new Card("",0);
+	private boolean[] dealtCards = new boolean[52];
 
 	Deck() {
 		buildDeck();
@@ -49,16 +49,23 @@ public class Deck {
 	
 	
 	public Card[] deal(int numCards) {
+		System.out.print(numCards);
 		int c=0;
-		while (deck[c].equals(dealedCard)) {
-			c++;
+	
+		Card[] deal = new Card[numCards];
+		
+		for (int i=0; i<52; i++) {
+			if (!dealtCards[i] && c<numCards) {
+				deal[c]= deck[i];
+				dealtCards[i]= true;
+				c++;
+			}
 		}
 		
-		Card[] deal = new Card[numCards];
-		for (int i=0; i<numCards; i++) {
-			deal[i]=new Card(deck[c].getSuit(), deck[c].getValue());
-			deck[c]=dealedCard;
-			c++;
+		for (int i=0; i<deal.length;i++) {
+			if (deal[i]==null) {
+				System.err.println("Error: Card at index"+i+"is null");
+			}
 		}
 		return deal;
 	}
