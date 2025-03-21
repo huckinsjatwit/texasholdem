@@ -15,7 +15,7 @@ public class Bot {
 	public boolean Stand = true;
 	public String name;
 	public static List<String> possibleNames= Arrays.asList("Jeremy", "Thomas", "Jack", "Kristian", "Jayvon", "Haley", "Sam", "Ava", "Todd", "Nicole",
-			"Rick"); //Add any names you like
+			"Rick", "Darerick"); //Add any names you like
 	public static int prevBet;
 	public Card[] currentBest;
 	private Game game;
@@ -207,9 +207,9 @@ public class Bot {
 	private int check() {
 		int minConfidence = 0;
 		
-		if(Game.miniRound == 2) minConfidence += 200;
-		if(Game.miniRound == 3) minConfidence += 300;
-		if(Game.miniRound == 4) minConfidence += 400;
+		if(game.miniRound == 2) minConfidence += 200;
+		if(game.miniRound == 3) minConfidence += 300;
+		if(game.miniRound == 4) minConfidence += 400;
 		if(Confidence < minConfidence) {
 			return 0;
 		}else {

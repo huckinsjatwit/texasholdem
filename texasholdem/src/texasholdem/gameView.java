@@ -1,6 +1,7 @@
 package texasholdem;
 
 import javafx.application.Platform;
+import javafx.application.Application;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ChoiceDialog;
@@ -10,6 +11,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -19,11 +22,12 @@ import javafx.scene.image.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.function.UnaryOperator;
 import java.io.InputStream;
 import javafx.scene.control.Label;
 
 
-public class gameView {
+public class gameView extends Application {
 	
 	private TextArea outputArea;
 	private Stage mainStage;
@@ -31,11 +35,14 @@ public class gameView {
 	private HBox River;
 	private BorderPane root;
 	private HBox yourHand;
+	private betDialog betDialog;
 	
 	runGame gameRun;
 	
-	public gameView(Stage mainStage) {
-		this.mainStage=mainStage;
+	public void start(Stage mainStage) {
+		this.mainStage = mainStage;
+		this.gameRun=new runGame(this);
+		
 		mainStage.setResizable(false);
 		this.root= new BorderPane();
 		root.setStyle("-fx-background-color: #35654d;");
@@ -48,10 +55,17 @@ public class gameView {
 		RList.setPadding(new Insets(5,3,5,3));
 		RList.setSpacing(5);
 		RList.setStyle("-fx-background-color: #1e2e26;");
+		
 		River= new HBox(emptyRiver);
 		yourHand= new HBox();
+		this.betDialog= new betDialog();
+		mainMenu(gameRun);
+	}
+	
+	public gameView() {
 		
 	}
+
 	
 	public void mainMenu(runGame gameRun) {
 		this.gameRun=gameRun;
@@ -121,12 +135,16 @@ public class gameView {
 		
 		RList.setMaxHeight(50);
 		RList.setMaxWidth(200);
+		root.setRight(RList);
+		
+		initializeBetMenu();
+		betDialog.setMaxHeight(100);
+		betDialog.setMaxWidth(300);
+		root.setTop(betDialog);
 		
 		River.setMaxHeight(200);
-		River.setMaxWidth(400);
-		root.setRight(RList);
+		River.setMaxWidth(350);
 		root.setCenter(River);
-		
 		
 		mainStage.setScene(new Scene(root,900,600));
 		gameRun.startGame(botCount);
@@ -144,57 +162,180 @@ public class gameView {
 	}
 	
 	public void updateRiver(ArrayList<Card> river) {
-		River.setSpacing(20);
-		River.setPadding(new Insets(10));
-		
-		River.getChildren().clear();
-		ArrayList<ImageView> images = new ArrayList<>();
-		for (int i = 0; i < river.size(); i++) {
-	        ImageView imageView = new ImageView(river.get(i).getImage());
-	        imageView.setFitWidth(100); 
-	        imageView.setFitHeight(150);
-	        imageView.setPreserveRatio(true); 
-	        images.add(imageView);
-	    }
-		River.getChildren().addAll(images);
+		Platform.runLater(()-> {
+			if (river==null) {
+				return;
+			}
+			River.setSpacing(10);
+			River.setPadding(new Insets(10));
+			
+			River.getChildren().clear();
+			ArrayList<ImageView> images = new ArrayList<>();
+			for (int i = 0; i < river.size(); i++) {
+		        ImageView imageView = new ImageView(river.get(i).getImage());
+		        imageView.setFitWidth(84); 
+		        imageView.setFitHeight(126);
+		        imageView.setPreserveRatio(true); 
+		        images.add(imageView);
+		    }
+			River.getChildren().addAll(images);
+		});
 	}
 	
 	public void updateRightDisplay(int balance, int pot) {
-		RList.getChildren().clear();
-		
-		Label currentBalance = new Label("Balance: "+balance);
-		Label currentPot= new Label("Pot: "+pot);
-		
-		currentBalance.setFont(Font.font("verdana", FontWeight.BOLD, 15));
-		currentBalance.setStyle("-fx-text-fill: white;");
-		currentPot.setFont(Font.font("verdana", FontWeight.BOLD, 15));
-		currentPot.setStyle("-fx-text-fill: white;");
-		
-		RList.getChildren().addAll(currentBalance, currentPot);
+		System.out.println("Updating right display - Balance: " + balance + ", Pot: " + pot); // Debugging
+		Platform.runLater(()-> {
+			RList.getChildren().clear();
+			
+			Label currentBalance = new Label("Balance: "+balance);
+			Label currentPot= new Label("Pot: "+pot);
+			
+			currentBalance.setFont(Font.font("verdana", FontWeight.BOLD, 15));
+			currentBalance.setStyle("-fx-text-fill: white;");
+			currentPot.setFont(Font.font("verdana", FontWeight.BOLD, 15));
+			currentPot.setStyle("-fx-text-fill: white;");
+			
+			RList.getChildren().addAll(currentBalance, currentPot);
+		});
 	}
 	
 	public void updateOutput(String text) {
-		outputArea.appendText(text);
+		Platform.runLater(()-> outputArea.appendText(text));
 	}
 	
 	public void showYourHand(Image c1, Image c2) {
-		yourHand.setSpacing(20);
-		yourHand.setPadding(new Insets(10));
-		
-		ImageView card1 = new ImageView(c1);
-		card1.setFitWidth(100); 
-		card1.setFitHeight(150); 
-		card1.setPreserveRatio(true);
+		Platform.runLater(()-> {
+			yourHand.setSpacing(20);
+			yourHand.setPadding(new Insets(10));
+			
+			ImageView card1 = new ImageView(c1);
+			card1.setFitWidth(100); 
+			card1.setFitHeight(150); 
+			card1.setPreserveRatio(true);
 
-		ImageView card2 = new ImageView(c2);
-		card2.setFitWidth(100); 
-		card2.setFitHeight(150); 
-		card2.setPreserveRatio(true);
-		
-		
-		
-		yourHand.getChildren().addAll(card1,card2);
+			ImageView card2 = new ImageView(c2);
+			card2.setFitWidth(100); 
+			card2.setFitHeight(150); 
+			card2.setPreserveRatio(true);
+			
+			
+			
+			yourHand.getChildren().addAll(card1,card2);
+		});
 
+	}
+	
+	public void initializeBetMenu() {
+			betDialog.initializeFuture();
+			
+			betDialog.setFold(() -> {
+				gameRun.fold();
+				betDialog.completeFuture();
+			});
+				
+			getBetDialog().setCheck(() -> {
+				gameRun.check();
+				betDialog.completeFuture();
+			});
+				
+			betDialog.setCall(() -> {
+				gameRun.call();
+				betDialog.completeFuture();
+			});
+				
+			betDialog.setRaise(()-> {
+				raise(this.mainStage);
+				
+					
+			});
+				
+			betMenuDisable();
+			updateOutput("");
+					
+	}
+	
+	public void betMenuEnable() {
+		Platform.runLater(() -> {
+			this.betDialog.enableButtons();
+		});
+		
+	}
+	
+	public void betMenuDisable() {
+		Platform.runLater(() -> {
+			this.betDialog.disableButtons();
+		});
+	}
+	
+	public betDialog getBetDialog() {
+		return this.betDialog;
+	}
+	
+	public void raise(Stage stage) {
+		Platform.runLater(()-> {
+			TextInputDialog amt= new TextInputDialog();
+			
+			amt.setTitle("Make a bet!");
+			amt.setHeaderText("How much would you like to bet?");
+			amt.setContentText("Bet");
+			
+			amt.initOwner(stage);
+			amt.setX(stage.getX()+300);
+			amt.setY(stage.getY()+430);
+			amt.setResizable(false);
+			
+			
+			UnaryOperator<TextFormatter.Change> filter = change -> {
+	            String newText = change.getControlNewText();
+	            if (newText.matches("[0-9]*")) {
+	                return change;
+	            } else {
+	                return null;
+	            }
+	        };
+	        
+	        TextFormatter form= new TextFormatter<>(filter);
+	      
+	        amt.getEditor().setTextFormatter(form);
+	        
+	        Button okay= (Button) amt.getDialogPane().lookupButton(ButtonType.OK);
+	        okay.setDisable(true);
+	        
+	        
+	        
+	        amt.getDialogPane().getButtonTypes().remove(ButtonType.CANCEL);
+	        amt.getDialogPane().getScene().getWindow().setOnCloseRequest(event -> {
+	        	Platform.exit();
+	        	System.exit(0);
+	        });
+	        
+	        amt.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
+	        	okay.setDisable(newValue.trim().isEmpty());
+	        	if (!newValue.trim().isEmpty()) {
+	        		Long val= Long.parseLong(newValue.trim());
+	            	if (val>gameRun.game.player.Bal) {
+	            		okay.setDisable(true);
+	            	} else {
+	            		okay.setDisable(false);
+	            	}
+	        	}
+	        });
+	        
+	        Optional<String> result2= amt.showAndWait();
+	    
+	        result2.ifPresent(value-> {
+	        	if (Integer.valueOf(value)>gameRun.game.player.Bal) {
+	    
+	        	}
+	        	amt.getDialogPane().lookupButton(ButtonType.OK).setDisable(true);
+	        	updateOutput(gameRun.game.player.play(Integer.valueOf(value)));
+	        	betDialog.completeFuture();
+	        });
+		});
+	}
+	
+	public static void main(String[] args) {
+		launch(args);
 	}
 	
 }

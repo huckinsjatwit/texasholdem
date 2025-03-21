@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 public class Player  {
 	
-	public static boolean fold = false;
+	public boolean fold = false;
 	//static Pot Money = new Pot();
 	public static int Bal = 1000;
 	public Hand playerHand;
@@ -18,18 +18,16 @@ public class Player  {
 		this.game=game;
 	}
 	
-	public static void standHand(boolean stand) {
+	public void standHand() {
 		fold = true;
 	}
-	public static void foldHand(boolean fold) {
-		if(fold == false) {
-			//skip over player and let bots play code
-		}
+	public void foldHand(boolean fold) {
+		
 	}
 	
 	//Will run all methods required for the player to play the round
 	
-	public void play(int n) {
+	public String play(int n) {
 		//Add code so that everytime a round starts, other than the start of the round, the player has an option to just checks
 		/*if(Game.miniRound == 1) {
 			if(buyIn() == 0) {
@@ -48,7 +46,7 @@ public class Player  {
 					playerHand.combineHand();
 					setCurrentBest();
 				}
-				makeBet(n);
+				return makeBet(n);
 			}
 	
 
@@ -57,10 +55,12 @@ public class Player  {
 
 	}
 	
-	public void makeBet(int betAmount) {
+	public String makeBet(int betAmount) {
 		Bal = Bal - betAmount;
 		game.pot.addBet(betAmount);
 		prevBet = betAmount;
+		
+		return ("You bet "+betAmount+" chips!\n");
 	}
 	
 	public void makeHand() {
