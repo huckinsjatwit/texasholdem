@@ -82,28 +82,19 @@ public class Game {
 		
 		for (Bot bot : botsCopy) {
 			if (bot.name=="Player") { //Checks if the bot is a player to check the players hand rather than placeholder bot
-				if (player.currentBest[0]<maxHand[0]) {
+				if (player.currentBest[0]<maxHand[0] || (player.currentBest[0] == maxHand[0] && player.currentBest[1]>maxHand[1])) {
 					maxHand=player.currentBest;
 					currentWinner=bot;
-				} else if (player.currentBest[0]==maxHand[0]) {
-					if (player.currentBest[1]>maxHand[1]) {
-						maxHand=player.currentBest;
-						currentWinner=bot;
-					}
-				} else if (Bot.findHand(bot.currentBest)[0]<maxHand[0]) {
+				}
+			} else if (Bot.findHand(bot.currentBest)[0]<maxHand[0] || (Bot.findHand(bot.currentBest)[0]==maxHand[0] && Bot.findHand(bot.currentBest)[1]>maxHand[1])) {
 					maxHand=Bot.findHand(bot.currentBest);
 					currentWinner=bot;
-				} else if (Bot.findHand(bot.currentBest)[0]==maxHand[0]) {
-					if (Bot.findHand(bot.currentBest)[1]>maxHand[1]) {
-						maxHand=Bot.findHand(bot.currentBest);
-						currentWinner=bot;
-					}
-				}
 			}
 		}
-		
 		return currentWinner;
 	}
+		
+		
 	
 	public String endOfRoundDisplay() {
 		ArrayList<Bot> botsCopy = new ArrayList<>();
