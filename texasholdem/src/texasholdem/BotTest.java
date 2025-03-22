@@ -272,13 +272,13 @@ public class BotTest {
     @Test
     public void testPair2() {
         Card[] sevenCardHand = {
-            new Card("Diamonds", 7),
+        	new Card("Diamonds", 7),
             new Card("Hearts", 7),
             new Card("Clubs", 4),
             new Card("Spades", 3),
             new Card("Hearts", 2),
-            new Card("Diamonds", 5), // Extra card
-            new Card("Clubs", 6)     // Extra card
+            new Card("Diamonds", 9), // Extra card (breaks the Straight)
+            new Card("Clubs", 10)    // Extra
         };
         Card[] bestHand = Bot.findBest(sevenCardHand);
         int[] result = Bot.findHand(bestHand);

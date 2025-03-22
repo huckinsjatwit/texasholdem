@@ -374,46 +374,21 @@ public class Bot {
 	 */
 
 	private static List<Card[]> findHandCombos(Card[] allCards) {
-		
-		
-		int k = 5;                             
-
-		List<Card[]> subsets = new ArrayList<>();
-		int[] s = new int[k];                  
-
-		if (k <= allCards.length) {
-		    for (int i = 0; (s[i] = i) < k - 1; i++) {
-		    	addIfUnique(allCards, s, subsets);
-
-		    }
-		    for(;;) {
-		        int i;
-		 
-		        for (i = k - 1; i >= 0 && s[i] == allCards.length - k + i; i--); 
-		        if (i < 0) {
-		            break;
-		        }
-		        s[i]++;                   
-		        for (++i; i < k; i++) {    
-		            s[i] = s[i - 1] + 1; 
-		        }
-
-		        addIfUnique(allCards, s,subsets);
-
-		    }
-		}
-		return subsets;
+		List<Card[]> combos = new ArrayList<>();
+		generateCombos(allCards, 5, 0, new Card[5], combos);
+		return combos;
 	}
 
 	
-	private static void addIfUnique(Card[] allCards, int[] subset, List<Card[]> subsets) {
-	    Set<Card> cardSet = new HashSet<>();
-	    for (int i : subset) {
-	        if (!cardSet.add(allCards[i])) {  
-	            return;  
-	        }
+	private static void generateCombos(Card[] allCards, int k, int start, Card[] current, List<Card[]> combos) {
+	    if (k==0) {
+	    	combos.add(current.clone());
+	    	return;
 	    }
-	    subsets.add(getSubset(allCards, subset));  
+		for (int i=start; i<=allCards.length-k; i++) {
+	    	current[current.length-k]= allCards[i];
+	    	generateCombos(allCards, k-1, i+1, current, combos);
+	    }
 	}
 
 		
