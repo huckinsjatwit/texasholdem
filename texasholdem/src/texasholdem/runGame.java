@@ -33,49 +33,53 @@ public class runGame {
 	
 
 	public void startGame(int botCount) {
-		this.game= new Game(this);
 		Thread gamePlay = new Thread(() -> {
-			view.updateRightDisplay(game.player.Bal, game.pot.currentPot);
-			view.updateOutput(game.setBots(botCount));
-			
-			Collections.shuffle(game.bots); //Shuffles order for first round
-			view.updateOutput("Game started!\n");
-			
-			game.deal();
-			view.showYourHand(game.player.playerHand.getCard(0).getImage(), game.player.playerHand.getCard(1).getImage());
-			
-			
-			
-			for (int i=0; i<4; i++) {
-				game.riverUpdates(i);
-				view.updateRiver(game.river.river);
+			boolean play = true;
+			while (play) {
+				this.game= new Game(this);
+				view.updateRightDisplay(game.player.Bal, game.pot.currentPot);
+				view.updateOutput(game.setBots(botCount));
 				
-				for (Bot bot: game.bots) {
-					if (bot.name.equals("Player")) {
-						view.getBetDialog().initializeFuture();
-						view.betMenuEnable();
-						waitForPlayerBet();
-						view.updateRightDisplay(game.player.Bal,game.pot.currentPot);
-					} else {
-						String output = bot.play(i);
-						try { 
-							Thread.sleep(1000);
-						} catch (InterruptedException x) {
-							System.err.print("Sleep intersrupted");
+				Collections.shuffle(game.bots); //Shuffles order for first round
+				view.updateOutput("Game started!\n");
+				
+				game.deal();
+				view.showYourHand(game.player.playerHand.getCard(0).getImage(), game.player.playerHand.getCard(1).getImage());
+				
+				
+				
+				for (int i=0; i<4; i++) {
+					
+					game.riverUpdates(i);
+					view.updateRiver(game.river.river);
+					
+					for (Bot bot: game.bots) {
+						if (bot.name.equals("Player")) {
+							view.getBetDialog().initializeFuture();
+							view.betMenuEnable();
+							waitForPlayerBet();
+							view.updateRightDisplay(game.player.Bal,game.pot.currentPot);
+						} else {
+							String output = bot.play(i);
+							try { 
+								Thread.sleep(1000);
+							} catch (InterruptedException x) {
+								System.err.print("Sleep intersrupted");
+							}
+							view.updateOutput(output);
+							view.updateRightDisplay(game.player.Bal, game.pot.currentPot);
 						}
-						view.updateOutput(output);
-						view.updateRightDisplay(game.player.Bal, game.pot.currentPot);
 					}
+					view.updateRightDisplay(game.player.Bal, game.pot.currentPot);
+					view.updateOutput("\n");
+					game.miniRound++;
+					game.shiftLeft(game.bots);
+					view.updateRightDisplay(game.player.Bal, game.pot.currentPot);
 				}
-				view.updateRightDisplay(game.player.Bal, game.pot.currentPot);
-				view.updateOutput("\n");
-				game.miniRound++;
-				game.shiftLeft(game.bots);
-				view.updateRightDisplay(game.player.Bal, game.pot.currentPot);
+				view.updateOutput(game.endOfRoundDisplay());
 			}
-			view.updateOutput(game.endOfRoundDisplay());
 		});
-		gamePlay.start();
+			gamePlay.start();
 	}
 	
 	public void waitForPlayerBet() {
