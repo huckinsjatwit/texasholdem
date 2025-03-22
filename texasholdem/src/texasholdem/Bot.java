@@ -236,19 +236,18 @@ public class Bot {
 		 if (possibleHands.isEmpty()) {
 		        throw new IllegalStateException("No valid 5-card combinations found. Check the input array.");
 		    }
-		int lowest=10;
-		int indexOfBest=0;
-		for (int i=0; i<possibleHands.size(); i++) {
-			readHands.add(findHand(possibleHands.get(i)));
-			if (readHands.get(i)[0]<lowest) {
-				lowest=readHands.get(i)[0];
-				indexOfBest=i;
-			}
-			if (readHands.get(i)[0]==lowest) {
-				if (readHands.get(i)[1]>readHands.get(indexOfBest)[1]) indexOfBest=i;
+
+
+		Card[] best=null;
+		int[] bestInfo= {10,0};
+		for (Card[] hand : possibleHands){
+			int[] info = findHand(hand);
+			if (info[0]<bestInfo[0] || info[0]== bestInfo[0] && info[1]>bestInfo[1]) {
+				best=hand;
+				bestInfo=info;
 			}
 		}
-		return possibleHands.get(indexOfBest);
+		return best;
 	}
 	
 	private void setCurrentBest() {
@@ -360,10 +359,12 @@ public class Bot {
 	 */
 	public static int[] countSuits(Card[] bigHand) {
 		int[] suitCount= new int[4];
-		for (int i=0; i<5; i++) {
-			for (int j=0; j<4; j++) {
-				if (bigHand[i].getSuit()==Deck.suits[j]) suitCount[j]++;
-			}
+		for (Card card: bigHand) {
+			
+			if (card.getSuit().equalsIgnoreCase("Hearts")) suitCount[0]++;
+			if (card.getSuit().equalsIgnoreCase("Clubs")) suitCount[1]++;
+			if (card.getSuit().equalsIgnoreCase("Spades")) suitCount[2]++;
+			if (card.getSuit().equalsIgnoreCase("Diamonds")) suitCount[3]++;
 		}
 		return suitCount;
 	}
@@ -462,6 +463,7 @@ public class Bot {
 	public static boolean checkRoyalFlush(int[] suitCount, int[] valueCount) {
 		for (int i=0; i<4; i++) {
 			if (suitCount[i]!=0 && suitCount[i]!=5) return false;
+			System.out.print(suitCount[i]);
 		}
 		for (int i=12; i>7; i--) {
 			if (valueCount[i]!=1) return false;
@@ -491,10 +493,11 @@ public class Bot {
 	public static int checkFlush(int[] suitCount, int[] valueCount) {
 		int value=0;
 		for (int i=0; i<4; i++) {
-			if (suitCount[i]!=0 && suitCount[i]!=5) return 0;
+			System.out.print(suitCount[i]);
+			if (suitCount[i]==5) return totalValue(valueCount);
 		}
 		
-		return totalValue(valueCount);
+		return 0;
 	}
 	
 	public static int checkFullHouse(int[] suitCount, int[] valueCount) {
