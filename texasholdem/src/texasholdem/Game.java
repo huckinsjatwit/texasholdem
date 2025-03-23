@@ -112,12 +112,12 @@ public class Game {
 			win+=("Your hand was "+hand+"!\n");
 			win+=("You win the pot of "+pot.currentPot+"!\n");
 			Player.Bal+=pot.payOut();
-			win+=("Your new balance is "+player.Bal+"!\n");
+			win+=("Your new balance is "+player.Bal+"!\n\n");
 		} else {
 			String hand=Bot.findHandToString(Bot.findHand(winner.currentBest));
 			win+=("Bot "+winner.name+" won this round!\n");
 			win+=("Their hand was "+hand+"!\n");
-			win+=("They win the pot of "+pot.currentPot+"!\n");
+			win+=("They win the pot of "+pot.currentPot+"!\n\n");
 			winner.Balance+=pot.payOut();
 		}
 		return win;
