@@ -284,6 +284,18 @@ public class gameView extends Application {
 		
 	}
 	
+	public void checkPossible() {
+		Platform.runLater(() -> {
+			this.betDialog.checkPossible();
+		});
+	}
+	
+	public void checkImpossible() {
+		Platform.runLater(() -> {
+			this.betDialog.checkImpossible();
+		});
+	}
+	
 	public void betMenuDisable() {
 		Platform.runLater(() -> {
 			this.betDialog.disableButtons();

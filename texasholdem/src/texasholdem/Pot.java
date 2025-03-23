@@ -28,22 +28,6 @@ public class Pot {
 		return pay;
 	}
 
-	public boolean allBetsSame() {
-		//create an array that refreshes every round with size of players
-		boolean isSame=true;
-		
-		//System.out.println("Highest: " + highest);
-		int [] currentBets = currentBets();				
-		int highest = highestBet(currentBets);
-		
-		for(int l = 0; l<currentBets.length;l++) {
-			if(currentBets[l]!=highest) {
-				isSame = false;
-			}
-		}
-		
-		return isSame;
-	}
 	
 	/*
 	 * creates an array of the current round bets using the arraylist of currentPlayers(botCopy) to get the number of current players. 
@@ -70,22 +54,15 @@ public class Pot {
 	/*
 	 * pairs with the currentBets method to return the highest bet of the round. Used for checking that all the bets match the highest. Useful for a player call method to make sure the player can't call lower than the highest bet
 	 */
-	public static int highestBet(int[] currentBets){
+	public int highestBet(){
 		int highest = 0;	
 
-		for(int i = 0; i < currentBets.length; i++) {
-			if(highest<currentBets[i]) {
-				highest = currentBets[i];
+		for(int bet: bets) {
+			if(highest<bet) {
+				highest = bet;
 			}
 
 		}
-		/* 
-		System.out.println("CurrentBets: ");					// for testing
-		for(int j = 0; j<currentBets.length; j++) {
-		System.out.print(currentBets[j]+" ");
-		}
-	*/
-		//System.out.println("Highest: " + highest);
 		return highest;
 	}
 	public String toString() {

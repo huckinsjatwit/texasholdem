@@ -57,6 +57,7 @@ public class Player  {
 	}
 	
 	public String makeBet(int betAmount) {
+		if (betAmount==0) return "You check! \n";
 		Bal = Bal - betAmount;
 		game.pot.addBet(betAmount);
 		prevBet = betAmount;
@@ -96,20 +97,8 @@ public class Player  {
 	}
 	
 	
-	public static boolean check() {
-		
-		Scanner input = new Scanner(System.in);
-		int checker;
-		do {
-			System.out.print("Do you check?(1 for YES/0 for NO): ");
-			checker = input.nextInt();
-		
-		if(checker > 1 || checker < 0) System.out.println("Please enter '1' for YES or '0' for NO.");
-		}while(checker > 1 || checker < 0);
-		
-		if(checker == 1) return true;
-		if(checker == 0) return false;
-		return true;
+	public void check() {
+		makeBet(0);
 	}
 	
 	public static boolean wantToContinue() {
@@ -130,23 +119,9 @@ public class Player  {
 	
 	//
 	
-	public int call() {
-		int high = Pot.highestBet((game.pot.currentBets())); //idk why this doesnt work
-		
-		if(prevBet == high) {
-			return 0;
-		}else {
-			int ans = askCall();
-			
-			if(ans == 0) return -1;
-			if(ans == 1) {
-				int diff = high - prevBet;
-				game.pot.currentPot += diff;
-				System.out.println("Player calls!");
-				return diff;
-			}
-		}
-		return 0;
+	public String call() {
+		int high = game.pot.highestBet(); //idk why this doesnt work
+		return makeBet(high);
 		
 	}
 	

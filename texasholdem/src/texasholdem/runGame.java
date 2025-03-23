@@ -53,6 +53,8 @@ public class runGame {
 					if (bot.name.equals("Player")) {
 						view.getBetDialog().initializeFuture();
 						view.betMenuEnable();
+						if (game.pot.bets.isEmpty()) view.checkPossible();
+						else view.checkImpossible();
 						waitForPlayerBet();
 						view.updateRightDisplay(game.player.Bal,game.pot.currentPot);
 						view.betMenuDisable();
@@ -71,6 +73,7 @@ public class runGame {
 				view.updateOutput("\n");
 				game.miniRound++;
 				game.shiftLeft(game.bots);
+				game.pot.resetBets();
 				view.updateRightDisplay(game.player.Bal, game.pot.currentPot);
 			}
 			view.updateOutput(game.endOfRoundDisplay());
@@ -116,11 +119,12 @@ public class runGame {
 	}
 	
 	public void check() {
-		game.player.check();
+		view.updateOutput(game.player.makeBet(0));
+		
 	}
 	
 	public void call() {
-		game.player.call();
+		view.updateOutput(game.player.call());
 	}
 	
 		
