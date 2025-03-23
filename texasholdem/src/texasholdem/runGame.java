@@ -50,7 +50,7 @@ public class runGame {
 				view.updateRiver(game.river.river);
 					
 				for (Bot bot: game.bots) {
-					if (bot.name.equals("Player")) {
+					if (bot.name.equals("Player")&& !game.player.fold) {
 						view.getBetDialog().initializeFuture();
 						view.betMenuEnable();
 						if (game.pot.bets.isEmpty()) view.checkPossible();
@@ -58,7 +58,7 @@ public class runGame {
 						waitForPlayerBet();
 						view.updateRightDisplay(game.player.Bal,game.pot.currentPot);
 						view.betMenuDisable();
-					} else {
+					} else if (bot.name!="Player") {
 						String output = bot.play(i);
 						try { 
 							Thread.sleep(1000);
