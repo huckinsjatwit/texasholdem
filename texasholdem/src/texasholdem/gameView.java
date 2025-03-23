@@ -348,7 +348,6 @@ public class gameView extends Application {
 	    
 	        result2.ifPresent(value-> {
 	        	if (Integer.valueOf(value)>gameRun.game.player.Bal) {
-	    
 	        	}
 	        	amt.getDialogPane().lookupButton(ButtonType.OK).setDisable(true);
 	        	updateOutput(gameRun.game.player.play(Integer.valueOf(value)));

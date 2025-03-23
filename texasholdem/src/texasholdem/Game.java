@@ -22,6 +22,7 @@ public class Game {
 	public int currentPlayerCount;
 	public Player player;
 	private runGame gameRun;
+	public boolean reset;
 	
 	
 	public Game(runGame gameRun) {
@@ -45,6 +46,7 @@ public class Game {
 		 * Allows user to pick number of bots, also creates a bot with the name player, this bot will be detected and start the players turn.
 		 */
 	public String setBots(int n) {
+		if (reset) return "";
 		String sendBack ="";
 		bots=new ArrayList<>();
 		Collections.shuffle(Bot.possibleNames);

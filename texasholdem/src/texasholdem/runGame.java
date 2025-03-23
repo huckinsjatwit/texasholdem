@@ -87,6 +87,7 @@ public class runGame {
 	}
 	
 	public void reset() {
+		game.reset=true;
 		game.deck=new Deck();
 		game.river=new River(game);
 		game.player.makeHand();
