@@ -516,7 +516,6 @@ public class Bot {
 		for (int i=0; i<13; i++) {
 			if (valueCount[i]==2) { 
 				pairCount++;
-				
 			}
 		}
 		if (pairCount==2) return totalValue(valueCount);

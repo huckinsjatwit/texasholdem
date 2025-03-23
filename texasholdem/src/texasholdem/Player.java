@@ -42,7 +42,8 @@ public class Player  {
 			ABOVE CODE WORKS BUT CONFLICTS WITH CURRENT GAME
 			WILL MAKE IT BOTS AFTER CANNOT BET/PLAY THE GAME
 			*/
-				if (game.miniRound>1) { 
+				if (game.miniRound>1) {
+					
 					playerHand.combineHand();
 					setCurrentBest();
 				}

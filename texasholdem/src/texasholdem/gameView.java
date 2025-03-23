@@ -36,6 +36,8 @@ public class gameView extends Application {
 	private BorderPane root;
 	private HBox yourHand;
 	private betDialog betDialog;
+	private Label emptyRiver;
+	private int botCount;
 	
 	runGame gameRun;
 	
@@ -47,7 +49,7 @@ public class gameView extends Application {
 		this.root= new BorderPane();
 		root.setStyle("-fx-background-color: #35654d;");
 		
-		Label emptyRiver= new Label("River is currently empty.");
+		emptyRiver= new Label("River is currently empty.");
 		emptyRiver.setFont(Font.font("verdana", FontWeight.BOLD, 20));
 		emptyRiver.setStyle("-fx-text-fill: black;");
 		
@@ -56,7 +58,7 @@ public class gameView extends Application {
 		RList.setSpacing(5);
 		RList.setStyle("-fx-background-color: #1e2e26;");
 		
-		River= new HBox(emptyRiver);
+		River=new HBox();
 		yourHand= new HBox();
 		this.betDialog= new betDialog();
 		mainMenu(gameRun);
@@ -84,11 +86,14 @@ public class gameView extends Application {
         	System.exit(0);
         });
 		
+		
+		
 		Button startButton = new Button("Start");
 		startButton.setPrefSize(435,50);
 		startButton.setOnAction(event ->  {
 			oneThroughSeven.showAndWait();
-			gameMenu(oneThroughSeven.getSelectedItem());
+			botCount=oneThroughSeven.getSelectedItem();
+			gameMenu(botCount);
 		});
 		
 		Alert exitAlert= new Alert(AlertType.CONFIRMATION, "Are you sure you want to quit?", ButtonType.YES, ButtonType.NO);
@@ -163,24 +168,27 @@ public class gameView extends Application {
 	
 	public void updateRiver(ArrayList<Card> river) {
 		Platform.runLater(()-> {
-			if (river==null) {
-				return;
-			}
-			River.setSpacing(10);
-			River.setPadding(new Insets(10));
-			
 			River.getChildren().clear();
-			ArrayList<ImageView> images = new ArrayList<>();
-			for (int i = 0; i < river.size(); i++) {
-		        ImageView imageView = new ImageView(river.get(i).getImage());
-		        imageView.setFitWidth(84); 
-		        imageView.setFitHeight(126);
-		        imageView.setPreserveRatio(true); 
-		        images.add(imageView);
-		    }
-			River.getChildren().addAll(images);
+			if (river==null || river.isEmpty()) {
+				return;
+			} else {
+				River.setSpacing(10);
+				River.setPadding(new Insets(10));
+				
+				
+				ArrayList<ImageView> images = new ArrayList<>();
+				for (int i = 0; i < river.size(); i++) {
+			        ImageView imageView = new ImageView(river.get(i).getImage());
+			        imageView.setFitWidth(84); 
+			        imageView.setFitHeight(126);
+			        imageView.setPreserveRatio(true); 
+			        images.add(imageView);
+			    }
+				River.getChildren().addAll(images);
+			}
 		});
 	}
+	
 	
 	public void updateRightDisplay(int balance, int pot) {
 		System.out.println("Updating right display - Balance: " + balance + ", Pot: " + pot); // Debugging
@@ -190,9 +198,9 @@ public class gameView extends Application {
 			Label currentBalance = new Label("Balance: "+balance);
 			Label currentPot= new Label("Pot: "+pot);
 			
-			currentBalance.setFont(Font.font("verdana", FontWeight.BOLD, 15));
+			currentBalance.setFont(Font.font("verdana", FontWeight.BOLD, 13));
 			currentBalance.setStyle("-fx-text-fill: white;");
-			currentPot.setFont(Font.font("verdana", FontWeight.BOLD, 15));
+			currentPot.setFont(Font.font("verdana", FontWeight.BOLD, 13));
 			currentPot.setStyle("-fx-text-fill: white;");
 			
 			RList.getChildren().addAll(currentBalance, currentPot);
@@ -205,6 +213,7 @@ public class gameView extends Application {
 	
 	public void showYourHand(Image c1, Image c2) {
 		Platform.runLater(()-> {
+			yourHand.getChildren().clear();
 			yourHand.setSpacing(20);
 			yourHand.setPadding(new Insets(10));
 			
@@ -223,6 +232,20 @@ public class gameView extends Application {
 			yourHand.getChildren().addAll(card1,card2);
 		});
 
+	}
+	
+	public void askToContinue() {
+		Platform.runLater(() -> {
+			Alert continueGame= new Alert(AlertType.CONFIRMATION, "Do you want to continue?", ButtonType.YES, ButtonType.NO);
+			Optional<ButtonType> result= continueGame.showAndWait();
+			if (result.get()==ButtonType.YES) {
+				gameRun.reset();
+				gameRun.startGame(botCount);
+			} else {
+				Platform.exit();
+				System.exit(0);
+			}
+		});
 	}
 	
 	public void initializeBetMenu() {
@@ -313,7 +336,7 @@ public class gameView extends Application {
 	        	okay.setDisable(newValue.trim().isEmpty());
 	        	if (!newValue.trim().isEmpty()) {
 	        		Long val= Long.parseLong(newValue.trim());
-	            	if (val>gameRun.game.player.Bal) {
+	            	if (val>gameRun.game.player.Bal || val==0) {
 	            		okay.setDisable(true);
 	            	} else {
 	            		okay.setDisable(false);

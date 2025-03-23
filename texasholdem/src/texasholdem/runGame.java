@@ -29,33 +29,33 @@ public class runGame {
 	
 	public runGame(gameView view) {
 		this.view=view;
+		this.game= new Game(this);
 	}
 	
 
 	public void startGame(int botCount) {
-		this.game= new Game(this);
 		Thread gamePlay = new Thread(() -> {
+			view.updateRiver(null);
 			view.updateRightDisplay(game.player.Bal, game.pot.currentPot);
 			view.updateOutput(game.setBots(botCount));
-			
+				
 			Collections.shuffle(game.bots); //Shuffles order for first round
-			view.updateOutput("Game started!\n");
-			
+			view.updateOutput("Game started!\n\n");
+				
 			game.deal();
 			view.showYourHand(game.player.playerHand.getCard(0).getImage(), game.player.playerHand.getCard(1).getImage());
-			
-			
-			
+				
 			for (int i=0; i<4; i++) {
 				game.riverUpdates(i);
 				view.updateRiver(game.river.river);
-				
+					
 				for (Bot bot: game.bots) {
 					if (bot.name.equals("Player")) {
 						view.getBetDialog().initializeFuture();
 						view.betMenuEnable();
 						waitForPlayerBet();
 						view.updateRightDisplay(game.player.Bal,game.pot.currentPot);
+						view.betMenuDisable();
 					} else {
 						String output = bot.play(i);
 						try { 
@@ -74,8 +74,33 @@ public class runGame {
 				view.updateRightDisplay(game.player.Bal, game.pot.currentPot);
 			}
 			view.updateOutput(game.endOfRoundDisplay());
+			view.updateRightDisplay(game.player.Bal, game.pot.currentPot);
+			try { 
+				Thread.sleep(1000);
+			} catch (InterruptedException x) {
+				System.err.print("Sleep intersrupted");
+			}
+			view.askToContinue();
+			
 		});
-		gamePlay.start();
+			gamePlay.start();
+	}
+	
+	public void reset() {
+		game.deck=new Deck();
+		game.river=new River(game);
+		game.player.makeHand();
+		game.miniRound=0;
+		
+		view.updateRiver(null);
+		for (Bot bot: game.bots) {
+			if (bot.name.equals("Player")) {
+				continue;
+			} else if (bot.Balance>0) {
+				bot.isOut=false;
+				bot.makeHand();
+			}
+		}
 	}
 	
 	public void waitForPlayerBet() {

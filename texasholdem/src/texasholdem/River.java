@@ -10,6 +10,7 @@ public class River {
 	
 	River(Game game) {
 		this.game=game;
+		this.river = new ArrayList<>();
 	}
 	
 	public void riverCreate() {
