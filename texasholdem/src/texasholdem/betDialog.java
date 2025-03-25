@@ -49,6 +49,10 @@ public class betDialog extends HBox {
 		call.setDisable(false);
 	}
 	
+	public void disableCall() {
+		call.setDisable(true);
+	}
+	
 	public void setFold(Runnable run) {
 		fold.setOnAction(event -> run.run());
 	

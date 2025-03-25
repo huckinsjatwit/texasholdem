@@ -55,6 +55,7 @@ public class runGame {
 						view.betMenuEnable();
 						if (game.pot.bets.isEmpty()) view.checkPossible();
 						else view.checkImpossible();
+						if (game.pot.highestBet()>game.player.Bal) view.disableCall();
 						waitForPlayerBet();
 						view.updateRightDisplay(game.player.Bal,game.pot.currentPot);
 						view.betMenuDisable();
