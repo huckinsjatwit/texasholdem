@@ -296,6 +296,12 @@ public class gameView extends Application {
 		});
 	}
 	
+	public void disableCall() {
+		Platform.runLater(() -> {
+			this.betDialog.disableCall();
+		});;
+	}
+	
 	public void betMenuDisable() {
 		Platform.runLater(() -> {
 			this.betDialog.disableButtons();
